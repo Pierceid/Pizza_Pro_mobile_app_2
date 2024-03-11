@@ -1,0 +1,108 @@
+<resources>
+    <string name="app_name">Pizza Pro 2</string>
+    <string name="example">example</string>
+    <string name="background">background</string>
+    <!-- Top app bar -->
+    <string name="basic">Basic</string>
+    <string name="profile">Profile</string>
+    <string name="history">History</string>
+    <string name="about_app">About app</string>
+    <string name="account">Account</string>
+    <string name="log_out">Log out</string>
+    <!-- Buttons -->
+    <string name="cancel">Cancel</string>
+    <string name="next">Next</string>
+    <string name="apply">Apply</string>
+    <string name="close">Close</string>
+    <string name="order">Order</string>
+    <string name="send">Send</string>
+    <string name="discard">Discard</string>
+    <string name="ok">OK</string>
+    <string name="clear">Clear</string>
+    <!-- Bottom app bar -->
+    <string name="shop">Shop</string>
+    <string name="cart">Cart</string>
+    <string name="feedback">Feedback</string>
+    <!-- Intro -->
+    <string name="logo">Logo</string>
+    <string name="motto">Motto</string>
+    <string name="lets_get_started">Lets get started</string>
+    <!-- Account -->
+    <string name="log_in_or_register">Log in or register</string>
+    <string name="register">Register</string>
+    <string name="log_in">Log in</string>
+    <string name="swap_icon">swap icon</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="location">Location</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="invalid_username">Invalid username. Username must be unique and 1–100 characters long.</string>
+    <string name="invalid_email">Invalid email. Email address must be unique and in valid form.</string>
+    <string name="invalid_password">Invalid password. Password must be 6–100 characters long.</string>
+    <string name="incorrect_password">Incorrect password. Check your password and try again.</string>
+    <string name="invalid_location">Invalid location. Location must be 1–100 characters long.</string>
+    <string name="change_visibility">Change visibility</string>
+    <!-- Shop -->
+    <string name="welcome_to_shop">Welcome to shop</string>
+    <string name="banner">Banner</string>
+    <string name="search">Search</string>
+    <string name="cross">cross</string>
+    <string name="search_your_favorite_pizza">Search your favorite pizza</string>
+    <!-- Cart -->
+    <string name="check_your_cart">Check your cart</string>
+    <string name="items_total">Items total:</string>
+    <string name="delivery_services">Delivery services:</string>
+    <string name="total">Total:</string>
+    <!-- Feedback -->
+    <string name="give_us_feedback">Give us feedback</string>
+    <string name="what_do_you_think_of_the_app">What do you think of the app?</string>
+    <string name="great">Great</string>
+    <string name="good">Good</string>
+    <string name="decent">Decent</string>
+    <string name="bad">Bad</string>
+    <string name="do_you_have_any_thoughts_you_d_like_to_share">Do you have any thoughts you\'d like to share?</string>
+    <string name="write_your_thoughts">Write your thoughts</string>
+    <string name="may_we_follow_you_up_on_your_feedback">May we follow you up on your feedback?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <!-- Detail -->
+    <string name="star">Star</string>
+    <string name="chronometer">Chronometer</string>
+    <string name="flame">Flame</string>
+    <string name="description">Description:</string>
+    <!-- Profile -->
+    <string name="profile_picture">Profile picture</string>
+    <string name="gender">Gender</string>
+    <!-- History -->
+    <string name="search_by_name">Search by name</string>
+    <string name="database_tables">Database tables</string>
+    <string name="users">Users</string>
+    <string name="orders">Orders</string>
+    <string name="delete">Delete</string>
+    <!-- Item pizza -->
+    <string name="pizza_picture">Pizza picture</string>
+    <string name="plus">+</string>
+    <string name="zero">0</string>
+    <string name="minus">-</string>
+    <!-- Pop up window -->
+    <string name="processing">Processing…</string>
+    <string name="ordered_successfully">Order has been\n placed successfully!</string>
+    <string name="cancelled_successfully">Order has been\n cancelled successfully!</string>
+    <string name="removed_successfully">User has been\n removed successfully!</string>
+    <string name="sent_successfully">Feedback has been\n sent successfully!</string>
+    <string name="cleared_successfully">History has been\n cleared successfully!</string>
+    <string name="check">Check</string>
+    <!-- Alert Dialog -->
+    <string name="place_order">Would you like to place your order?</string>
+    <string name="cancel_order">Would you like to cancel this order?</string>
+    <string name="remove_user">Would you like to remove this user?</string>
+    <string name="share_feedback">Would you like to share your feedback?</string>
+    <string name="clear_history">Would you like to clear the history?</string>
+    <string name="exit_app">Are you sure you want to exit?</string>
+    <!-- Toast -->
+    <string name="locked">Screen rotation is locked.</string>
+    <string name="unlocked">Screen rotation is unlocked.</string>
+</resources>
