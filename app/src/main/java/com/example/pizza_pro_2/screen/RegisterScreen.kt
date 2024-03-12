@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.pizza_pro_2.navigation.HOME_GRAPH_ROUTE
+import com.example.pizza_pro_2.navigation.Screen
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -26,8 +26,9 @@ fun RegisterScreen(navController: NavController) {
             modifier = Modifier.clickable(
                 onClick = {
                     navController.navigate(HOME_GRAPH_ROUTE) {
-                        popUpTo(navController.graph.findStartDestination().id)
-                        launchSingleTop = true
+                        popUpTo(Screen.Intro.route) {
+                            inclusive = true
+                        }
                     }
                 }
             )

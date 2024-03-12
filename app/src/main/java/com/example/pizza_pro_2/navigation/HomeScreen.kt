@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -66,7 +65,7 @@ fun RowScope.AddItem(
         } == true,
         onClick = {
             navController.navigate(screen.route) {
-                popUpTo(navController.graph.findStartDestination().id)
+                popUpTo(navController.graph.startDestinationId)
                 launchSingleTop = true
             }
         }
