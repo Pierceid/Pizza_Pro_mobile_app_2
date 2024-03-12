@@ -22,11 +22,9 @@ fun LoginScreen(navController: NavController) {
         Text(
             text = "login",
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.clickable {
-                navController.navigate(HOME_GRAPH_ROUTE) {
-
-                }
-            }
+            modifier = Modifier.clickable(
+                onClick = { navController.navigate(HOME_GRAPH_ROUTE) }
+            )
         )
     }
 }

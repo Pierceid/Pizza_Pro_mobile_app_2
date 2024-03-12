@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Pizza_Pro_2_Theme {
                 val navController = rememberNavController()
-                NavGraph(navController)
+                NavGraph(navController = navController)
             }
         }
     }

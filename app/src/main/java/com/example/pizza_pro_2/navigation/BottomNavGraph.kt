@@ -1,26 +1,32 @@
 package com.example.pizza_pro_2.navigation
 
-import androidx.navigation.NavGraphBuilder
+import androidx.compose.foundation.background
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import com.example.pizza_pro_2.screen.CartScreen
 import com.example.pizza_pro_2.screen.FeedbackScreen
 import com.example.pizza_pro_2.screen.ShopScreen
+import com.example.pizza_pro_2.ui.theme.Blue
 
-fun NavGraphBuilder.homeNavGraph(navHostController: NavHostController) {
-    navigation(
+@Composable
+fun BottomNavGraph(navController: NavHostController) {
+    NavHost(
+        modifier = Modifier.background(Blue),
+        navController = navController,
         startDestination = Screen.Shop.route,
         route = HOME_GRAPH_ROUTE
     ) {
         composable(route = Screen.Shop.route) {
-            ShopScreen(navController = navHostController)
+            ShopScreen()
         }
         composable(route = Screen.Cart.route) {
-            CartScreen(navController = navHostController)
+            CartScreen()
         }
         composable(route = Screen.Feedback.route) {
-            FeedbackScreen(navController = navHostController)
+            FeedbackScreen()
         }
     }
 }
