@@ -1,6 +1,5 @@
 package com.example.pizza_pro_2.screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +20,7 @@ fun ProfileScreen(navController: NavController) {
         Text(
             text = "profile",
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.clickable(onClick = {})
+
         )
     }
 }

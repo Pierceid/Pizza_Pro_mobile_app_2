@@ -18,12 +18,5 @@ sealed class Screen (val route: String) {
     data object Shop : Screen(route = "shop_screen")
     data object Cart : Screen(route = "cart_screen")
     data object Feedback : Screen(route = "feedback_screen")
-    data object Profile : Screen(route = "profile_screen?name={name}&email={email}") {
-        fun getArguments(
-            name: String = "Pierceid",
-            email: String = "e@e.e"
-        ): String {
-            return "profile_screen?name=$name&email=$name"
-        }
-    }
+    data object Profile : Screen(route = "profile_screen")
 }
