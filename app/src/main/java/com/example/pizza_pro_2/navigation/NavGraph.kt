@@ -7,16 +7,18 @@ import androidx.navigation.compose.composable
 import com.example.pizza_pro_2.screen.IntroScreen
 
 @Composable
-fun NavGraph(navHostController: NavHostController) {
+fun NavGraph(navController: NavHostController) {
     NavHost(
-        navController = navHostController,
+        navController = navController,
         startDestination = Screen.Intro.route,
         route = ROOT_GRAPH_ROUTE
     ) {
         composable(Screen.Intro.route) {
-            IntroScreen(navController = navHostController)
+            IntroScreen(navController = navController)
         }
-        authNavGraph(navHostController = navHostController)
-        homeNavGraph(navHostController = navHostController)
+        authNavGraph(navController = navController)
+        composable(HOME_GRAPH_ROUTE) {
+            HomeScreen()
+        }
     }
 }
