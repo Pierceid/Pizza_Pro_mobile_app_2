@@ -68,7 +68,12 @@ fun RegisterScreen(navController: NavController) {
                 modifier = Modifier
                     .size(36.dp)
                     .clickable(
-                        onClick = { navController.navigate(Screen.Login.route) }
+                        onClick = {
+                            navController.navigate(Screen.Login.route) {
+                                popUpTo(Screen.Intro.route)
+                                launchSingleTop = true
+                            }
+                        }
                     ),
                 imageVector = Icons.Default.ArrowForward,
                 contentDescription = stringResource(id = R.string.swap_icon),
