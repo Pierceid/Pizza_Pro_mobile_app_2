@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val Purple = Color(0xFF700070)
 val Blue = Color(0xFF0000A0)
+val Sky = Color(0xFF0060B0)
 val Teal = Color(0xFF009090)
 val Sea = Color(0xFF003333)
 val Green = Color(0xFF009000)
