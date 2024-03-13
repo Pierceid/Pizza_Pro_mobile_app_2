@@ -43,8 +43,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Pizza_Pro_2_Theme {
-                val navController = rememberNavController()
-                NavGraph(navController = navController)
+                NavGraph(navController = rememberNavController())
             }
         }
     }
