@@ -66,7 +66,15 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier
                     .size(36.dp)
                     .clickable(
-                        onClick = { navController.navigate(Screen.Register.route) }
+                        onClick = {
+                            navController.navigate(Screen.Register.route) {
+                                navController.popBackStack()
+                                popUpTo(Screen.Intro.route) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }
                     ),
                 imageVector = Icons.Default.ArrowForward,
                 contentDescription = stringResource(id = R.string.swap_icon),
