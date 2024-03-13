@@ -1,9 +1,11 @@
-package com.example.pizza_pro_2.navigation
+package com.example.pizza_pro_2.navigation.nav_graph
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pizza_pro_2.navigation.HOME_GRAPH_ROUTE
+import com.example.pizza_pro_2.navigation.Screen
 import com.example.pizza_pro_2.screen.CartScreen
 import com.example.pizza_pro_2.screen.FeedbackScreen
 import com.example.pizza_pro_2.screen.ProfileScreen

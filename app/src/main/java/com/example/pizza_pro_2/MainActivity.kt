@@ -30,7 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import com.example.pizza_pro_2.navigation.NavGraph
+import com.example.pizza_pro_2.navigation.nav_graph.NavGraph
 import com.example.pizza_pro_2.ui.theme.Ashen
 import com.example.pizza_pro_2.ui.theme.Black
 import com.example.pizza_pro_2.ui.theme.Grey
