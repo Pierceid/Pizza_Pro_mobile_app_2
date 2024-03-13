@@ -4,9 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import com.example.pizza_pro_2.navigation.ADDITIONAL_GRAPH_ROUTE
 import com.example.pizza_pro_2.navigation.HOME_GRAPH_ROUTE
 import com.example.pizza_pro_2.navigation.Screen
 import com.example.pizza_pro_2.screen.CartScreen
+import com.example.pizza_pro_2.screen.DetailScreen
 import com.example.pizza_pro_2.screen.FeedbackScreen
 import com.example.pizza_pro_2.screen.ProfileScreen
 import com.example.pizza_pro_2.screen.ShopScreen
@@ -29,6 +32,14 @@ fun BottomNavGraph(navController: NavHostController) {
         }
         composable(route = Screen.Profile.route) {
             ProfileScreen(navController = navController)
+        }
+        navigation(
+            startDestination = Screen.Detail.route,
+            route = ADDITIONAL_GRAPH_ROUTE
+        ) {
+            composable(route = Screen.Detail.route) {
+                DetailScreen(navController = navController)
+            }
         }
     }
 }
