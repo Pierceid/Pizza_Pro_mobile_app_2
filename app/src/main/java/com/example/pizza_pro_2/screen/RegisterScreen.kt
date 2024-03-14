@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
@@ -25,17 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.navigation.HOME_GRAPH_ROUTE
 import com.example.pizza_pro_2.navigation.Screen
 import com.example.pizza_pro_2.ui.theme.PizzaProBackground
 import com.example.pizza_pro_2.ui.theme.PizzaProButton
 import com.example.pizza_pro_2.ui.theme.PizzaProCard
-import com.example.pizza_pro_2.ui.theme.Pizza_Pro_2_Theme
 import com.example.pizza_pro_2.ui.theme.Purple
 import com.example.pizza_pro_2.ui.theme.Slate
 
@@ -73,7 +70,7 @@ fun RegisterScreen(navController: NavController) {
                                 }
                             }
                         ),
-                    imageVector = Icons.Default.ArrowForward,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = stringResource(id = R.string.swap_icon)
                 )
                 Text(
@@ -157,13 +154,5 @@ fun RegisterScreen(navController: NavController) {
                 }
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RegisterPreview() {
-    Pizza_Pro_2_Theme {
-        RegisterScreen(navController = rememberNavController())
     }
 }

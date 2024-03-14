@@ -3,10 +3,12 @@ package com.example.pizza_pro_2.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,20 +31,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import com.example.pizza_pro_2.R
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue,
-    secondary = Purple,
+    primaryContainer = Blue,
+    secondary = Black,
+    secondaryContainer = Blue,
     tertiary = Black
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Blue,
-    secondary = Purple,
+    primary = Sky,
+    primaryContainer = Sky,
+    secondary = White,
+    secondaryContainer = Sky,
     tertiary = Black
 )
 
@@ -51,7 +61,7 @@ fun PizzaProCard(content: @Composable ColumnScope.() -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(10.dp)
             .background(
                 brush = Brush.horizontalGradient(colors = listOf(Iron, Grey)),
                 shape = RoundedCornerShape(10.dp)
@@ -65,15 +75,25 @@ fun PizzaProCard(content: @Composable ColumnScope.() -> Unit) {
 
 @Composable
 fun PizzaProBackground(content: @Composable ColumnScope.() -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Brush.radialGradient(colors = listOf(Ashen, Sky), radius = 1111f))
-            .verticalScroll(rememberScrollState(), true),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        content = content
-    )
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.blue_background),
+            contentDescription = stringResource(id = R.string.background),
+            contentScale = ContentScale.FillBounds
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState(), true),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            content = content
+        )
+    }
 }
 
 @Composable
