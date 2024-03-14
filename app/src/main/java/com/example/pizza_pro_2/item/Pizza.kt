@@ -2,6 +2,7 @@ package com.example.pizza_pro_2.item
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.UUID
 
 data class Pizza(
     val name: String?,
@@ -11,7 +12,8 @@ data class Pizza(
     val time: Int,
     val calories: Int,
     val cost: Double,
-    var count: Int = 0
+    var count: Int = 0,
+    val id: String? = UUID.randomUUID().toString(),
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -21,7 +23,8 @@ data class Pizza(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readDouble(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -33,6 +36,7 @@ data class Pizza(
         parcel.writeInt(calories)
         parcel.writeDouble(cost)
         parcel.writeInt(count)
+        parcel.writeString(id)
     }
 
     override fun describeContents(): Int {
