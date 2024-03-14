@@ -24,14 +24,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -45,9 +49,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.item.Pizza
+import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Blue,
+    primary = Black,
     onPrimary = White,
     primaryContainer = Blue,
     onPrimaryContainer = White,
@@ -59,7 +64,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Sky,
+    primary = Black,
     onPrimary = Black,
     primaryContainer = Sky,
     onPrimaryContainer = Black,
@@ -125,7 +130,9 @@ fun PizzaProButton(modifier: Modifier, text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun PizzaCard(pizza: Pizza) {
+fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit) {
+    val countState = remember { mutableIntStateOf(pizza.count) }
+
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -142,20 +149,20 @@ fun PizzaCard(pizza: Pizza) {
                 modifier = Modifier
                     .padding(10.dp)
                     .border(border = BorderStroke(1.dp, Black))
-                    .clickable(onClick = {}),
+                    .clickable(onClick = onClick),
                 painter = painterResource(id = pizza.imageSource),
-                contentDescription = null,
+                contentDescription = pizza.name,
                 contentScale = ContentScale.Fit
             )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp, 5.dp, 10.dp, 10.dp),
+                    .padding(10.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = pizza.name.toString(),
+                    text = pizza.name!!.capitalizeText(),
                     style = MaterialTheme.typography.titleMedium,
                     color = Red,
                     modifier = Modifier.clickable(onClick = {})
@@ -183,15 +190,23 @@ fun PizzaCard(pizza: Pizza) {
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.plus),
-                            contentDescription = null,
-                            contentScale = ContentScale.Fit,
-                            modifier = Modifier.clickable(onClick = {})
-                        )
+                        TextButton(
+                            onClick = {
+                                if (countState.intValue < 10) {
+                                    countState.intValue++
+                                    onCountChanged(pizza.copy(count = countState.intValue))
+                                }
+                            },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.plus),
+                                contentDescription = stringResource(id = R.string.plus)
+                            )
+                        }
                         Box(
                             modifier = Modifier
-                                .size(40.dp, 40.dp)
+                                .size(40.dp)
                                 .background(
                                     color = Sun,
                                     shape = RoundedCornerShape(40.dp)
@@ -203,17 +218,25 @@ fun PizzaCard(pizza: Pizza) {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "0",
+                                text = countState.intValue.toString(),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Black
                             )
                         }
-                        Image(
-                            painter = painterResource(id = R.drawable.minus),
-                            contentDescription = null,
-                            contentScale = ContentScale.Fit,
-                            modifier = Modifier.clickable(onClick = {})
-                        )
+                        TextButton(
+                            onClick = {
+                                if (countState.intValue > 0) {
+                                    countState.intValue--
+                                    onCountChanged(pizza.copy(count = countState.intValue))
+                                }
+                            },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.minus),
+                                contentDescription = stringResource(id = R.string.minus)
+                            )
+                        }
                     }
                 }
             }
