@@ -28,13 +28,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.database.entity.User
 import com.example.pizza_pro_2.navigation.HOME_GRAPH_ROUTE
 import com.example.pizza_pro_2.navigation.Screen
+import com.example.pizza_pro_2.option.Gender
 import com.example.pizza_pro_2.ui.theme.PizzaProBackground
 import com.example.pizza_pro_2.ui.theme.PizzaProButton
 import com.example.pizza_pro_2.ui.theme.PizzaProCard
 import com.example.pizza_pro_2.ui.theme.Purple
 import com.example.pizza_pro_2.ui.theme.Slate
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -48,7 +51,7 @@ fun RegisterScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp),
+                    .padding(12.dp, 24.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -91,12 +94,12 @@ fun RegisterScreen(navController: NavController) {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp),
+                    .padding(horizontal = 12.dp),
             )
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
+                    .padding(12.dp),
                 value = email.value,
                 onValueChange = { email.value = it },
                 label = { Text(stringResource(id = R.string.email)) },
@@ -110,7 +113,7 @@ fun RegisterScreen(navController: NavController) {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp),
+                    .padding(horizontal = 12.dp),
                 value = password.value,
                 onValueChange = { password.value = it },
                 label = { Text(stringResource(id = R.string.password)) },
@@ -131,7 +134,7 @@ fun RegisterScreen(navController: NavController) {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
+                    .padding(12.dp),
                 value = location.value,
                 onValueChange = { location.value = it },
                 label = { Text(stringResource(id = R.string.location)) },
@@ -143,16 +146,48 @@ fun RegisterScreen(navController: NavController) {
                 }
             )
             PizzaProButton(
-                modifier = Modifier.padding(24.dp).height(60.dp),
+                modifier = Modifier
+                    .padding(12.dp, 24.dp)
+                    .height(60.dp),
                 text = stringResource(id = R.string.register),
                 onClick = {
-                    navController.navigate(HOME_GRAPH_ROUTE) {
-                        popUpTo(Screen.Intro.route) {
-                            inclusive = true
+                    if (validateInput(name.value, email.value, password.value, location.value)) {
+                        insertUserIntoDB(name.value, email.value, password.value, location.value)
+                        navController.navigate(HOME_GRAPH_ROUTE) {
+                            popUpTo(Screen.Intro.route) {
+                                inclusive = true
+                            }
                         }
                     }
                 }
             )
         }
     }
+}
+
+private fun insertUserIntoDB(
+    name: String,
+    email: String,
+    password: String,
+    location: String
+) {
+    val user = User(
+        name = name,
+        email = email,
+        password = password,
+        location = location,
+        gender = Gender.MALE
+    )
+    runBlocking {
+
+    }
+}
+
+private fun validateInput(
+    name: String,
+    email: String,
+    password: String,
+    location: String
+): Boolean {
+    return name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && location.isNotEmpty() || true
 }

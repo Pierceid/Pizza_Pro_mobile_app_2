@@ -2,26 +2,26 @@ package com.example.pizza_pro_2.database
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.database.entity.Order
 import com.example.pizza_pro_2.database.entity.User
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class MyViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository: MyRepository
-    var users: LiveData<MutableList<User>>
-    var orders: LiveData<MutableList<Order>>
-    var user: User?
+class MyViewModel(
+    private val repository: MyRepository = Graph.repository
+): ViewModel() {
+    var users: Flow<MutableList<User>>
+    var orders: Flow<MutableList<Order>>
+    var user: Flow<User?>
 
     init {
-        val dao = MyDatabase.getDatabase(application).dao
-        repository = MyRepository(dao)
         orders = repository.allOrders
         users = repository.allUsers
-        user = null
+        user = flow { }
     }
 
     fun addUser(user: User) {

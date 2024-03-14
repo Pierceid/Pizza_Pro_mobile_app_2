@@ -1,7 +1,9 @@
 package com.example.pizza_pro_2.database
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.pizza_pro_2.database.entity.Order
 import com.example.pizza_pro_2.database.entity.User
 
@@ -14,6 +16,7 @@ abstract class MyDatabase : RoomDatabase() {
 
         @Volatile
         private var INSTANCE: MyDatabase? = null
+
 
         fun getDatabase(context: Context): MyDatabase {
             synchronized(this) {

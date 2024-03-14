@@ -11,8 +11,7 @@ fun DetailScreen(navController: NavController) {
     PizzaProBackground {
         Text(
             text = "detail",
-            style = MaterialTheme.typography.titleLarge,
-
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }

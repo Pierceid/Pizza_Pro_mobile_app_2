@@ -1,13 +1,13 @@
 package com.example.pizza_pro_2.database
 
-import androidx.lifecycle.LiveData
 import com.example.pizza_pro_2.database.entity.Order
 import com.example.pizza_pro_2.database.entity.User
+import kotlinx.coroutines.flow.Flow
 
 class MyRepository(private val dao: MyDao) {
 
-    var allUsers: LiveData<MutableList<User>> = dao.getAllUsers()
-    var allOrders: LiveData<MutableList<Order>> = dao.getAllOrders()
+    var allUsers: Flow<MutableList<User>> = dao.getAllUsers()
+    var allOrders: Flow<MutableList<Order>> = dao.getAllOrders()
 
     suspend fun addUser(user: User) = dao.upsertUser(user)
     suspend fun addOrder(order: Order) = dao.upsertOrder(order)

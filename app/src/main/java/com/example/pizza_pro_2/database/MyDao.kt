@@ -1,9 +1,9 @@
 package com.example.pizza_pro_2.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.pizza_pro_2.database.entity.Order
 import com.example.pizza_pro_2.database.entity.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MyDao {
@@ -26,17 +26,17 @@ interface MyDao {
     suspend fun clearAllOrders()
 
     @Query("SELECT * FROM user_table WHERE name = :name OR email = :email LIMIT 1")
-    fun getUser(name: String, email: String): User?
+    fun getUser(name: String, email: String): Flow<User?>
 
     @Query("SELECT * FROM user_table WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
-    fun getFilteredUsers(regex: String): LiveData<MutableList<User>>
+    fun getFilteredUsers(regex: String): Flow<MutableList<User>>
 
     @Query("SELECT * FROM order_table WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
-    fun getFilteredOrders(regex: String): LiveData<MutableList<Order>>
+    fun getFilteredOrders(regex: String): Flow<MutableList<Order>>
 
     @Query("SELECT * FROM user_table ORDER BY id DESC")
-    fun getAllUsers(): LiveData<MutableList<User>>
+    fun getAllUsers(): Flow<MutableList<User>>
 
     @Query("SELECT * FROM order_table ORDER BY id DESC")
-    fun getAllOrders(): LiveData<MutableList<Order>>
+    fun getAllOrders(): Flow<MutableList<Order>>
 }

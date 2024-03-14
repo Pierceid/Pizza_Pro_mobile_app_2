@@ -49,7 +49,7 @@ fun LoginScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp, 12.dp, 12.dp, 24.dp),
+                    .padding(12.dp, 24.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -134,7 +134,7 @@ fun LoginScreen(navController: NavController) {
             )
             PizzaProButton(
                 modifier = Modifier
-                    .padding(24.dp)
+                    .padding(12.dp, 24.dp)
                     .height(60.dp),
                 text = stringResource(id = R.string.log_in),
                 onClick = {

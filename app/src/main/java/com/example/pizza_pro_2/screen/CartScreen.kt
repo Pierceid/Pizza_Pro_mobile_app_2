@@ -11,8 +11,7 @@ fun CartScreen(navController : NavController) {
     PizzaProBackground {
         Text(
             text = "cart",
-            style = MaterialTheme.typography.titleLarge,
-
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }

@@ -11,8 +11,7 @@ fun FeedbackScreen(navController : NavController) {
     PizzaProBackground {
         Text(
             text = "feedback",
-            style = MaterialTheme.typography.titleLarge,
-
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
