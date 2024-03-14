@@ -1,7 +1,5 @@
 package com.example.pizza_pro_2.database
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.database.entity.Order
