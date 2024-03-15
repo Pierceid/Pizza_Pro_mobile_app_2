@@ -27,10 +27,11 @@
     <string name="logo">Logo</string>
     <string name="motto">Motto</string>
     <string name="lets_get_started">Lets get started</string>
-    <!-- Account -->
-    <string name="log_in_or_register">Log in or register</string>
-    <string name="register">Register</string>
-    <string name="log_in">Log in</string>
+    <!-- Auth -->
+    <string name="do_not_have_an_account">Don\'t have an account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
     <string name="swap_icon">swap icon</string>
     <string name="name">Name</string>
     <string name="email">Email</string>

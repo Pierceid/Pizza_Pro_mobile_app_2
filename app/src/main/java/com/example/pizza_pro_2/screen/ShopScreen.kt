@@ -11,18 +11,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pizza_pro_2.component.DefaultColumn
+import com.example.pizza_pro_2.component.PizzaItem
 import com.example.pizza_pro_2.data.DataSource
 import com.example.pizza_pro_2.item.Pizza
 import com.example.pizza_pro_2.navigation.Screen
-import com.example.pizza_pro_2.ui.theme.PizzaItem
-import com.example.pizza_pro_2.ui.theme.PizzaProBackground
 
 @Composable
 fun ShopScreen(navController: NavController) {
     val pizzas: MutableList<Pizza> = remember { DataSource().loadData() }
     val updatedPizzas = remember { mutableStateListOf(*pizzas.toTypedArray()) }
 
-    PizzaProBackground {
+    DefaultColumn {
         Text(
             text = "shop",
             style = MaterialTheme.typography.titleLarge,

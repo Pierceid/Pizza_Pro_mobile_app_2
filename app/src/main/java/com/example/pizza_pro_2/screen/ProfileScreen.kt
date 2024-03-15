@@ -6,12 +6,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.pizza_pro_2.component.DefaultColumn
 import com.example.pizza_pro_2.navigation.Screen
-import com.example.pizza_pro_2.ui.theme.PizzaProBackground
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    PizzaProBackground {
+    DefaultColumn {
         Text(
             text = "profile",
             style = MaterialTheme.typography.titleLarge,
