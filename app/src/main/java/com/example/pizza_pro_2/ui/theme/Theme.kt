@@ -22,21 +22,27 @@ private val DarkColorScheme = darkColorScheme(
     onPrimaryContainer = White,
     secondary = Black,
     onSecondary = White,
-    secondaryContainer = Blue,
+    secondaryContainer = Smoke,
     onSecondaryContainer = White,
-    tertiary = Black
+    tertiary = Yellow,
+    onTertiary = Black,
+    tertiaryContainer = Orange,
+    onTertiaryContainer = Black
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Black,
     onPrimary = White,
-    primaryContainer = Black,
-    onPrimaryContainer = White,
-    secondary = Black,
-    onSecondary = White,
-    secondaryContainer = Blue,
-    onSecondaryContainer = White,
-    tertiary = Black
+    primaryContainer = White,
+    onPrimaryContainer = Black,
+    secondary = White,
+    onSecondary = Black,
+    secondaryContainer = Iron,
+    onSecondaryContainer = Black,
+    tertiary = Orange,
+    onTertiary = White,
+    tertiaryContainer = Brown,
+    onTertiaryContainer = White
 )
 
 @Composable
@@ -59,8 +65,8 @@ fun Pizza_Pro_2_Theme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.tertiary.toArgb()
-            window.navigationBarColor = colorScheme.tertiary.toArgb()
+            window.statusBarColor = colorScheme.primary.toArgb()
+            window.navigationBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

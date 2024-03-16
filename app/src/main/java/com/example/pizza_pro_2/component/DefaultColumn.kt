@@ -30,7 +30,7 @@ fun DefaultColumn(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp)
+                .padding(12.dp)
                 .verticalScroll(rememberScrollState(), true),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = verticalArrangement,

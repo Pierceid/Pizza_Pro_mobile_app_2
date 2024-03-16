@@ -3,6 +3,7 @@ package com.example.pizza_pro_2.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +23,7 @@ import com.example.pizza_pro_2.ui.theme.Pizza_Pro_2_Theme
 
 @Composable
 fun IntroScreen(navController: NavController) {
-    DefaultColumn (verticalArrangement = Arrangement.spacedBy(30.dp, Alignment.CenterVertically)) {
+    DefaultColumn (verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)) {
         Image(
             modifier = Modifier.size(400.dp, 320.dp),
             painter = painterResource(id = R.drawable.logo),
@@ -38,7 +39,7 @@ fun IntroScreen(navController: NavController) {
         ActionButton(
             text = stringResource(id = R.string.lets_get_started),
             onClick = { navController.navigate(Screen.Register.route) },
-            modifier = Modifier.height(80.dp)
+            modifier = Modifier.height(120.dp).padding(vertical = 20.dp)
         )
     }
 }
