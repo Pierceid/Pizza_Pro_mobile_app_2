@@ -4,6 +4,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.pizza_pro_2.ui.theme.Magenta
+import com.example.pizza_pro_2.ui.theme.Violet
 
 @Composable
 fun HeaderText(text: String, modifier: Modifier = Modifier) {
@@ -11,6 +13,6 @@ fun HeaderText(text: String, modifier: Modifier = Modifier) {
         modifier = modifier,
         text = text,
         style = MaterialTheme.typography.headlineLarge,
-        color = MaterialTheme.colorScheme.onSecondary
+        color = Magenta
     )
 }

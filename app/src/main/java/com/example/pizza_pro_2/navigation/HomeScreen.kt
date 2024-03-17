@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,7 +47,7 @@ fun HomeScreen() {
 fun TopBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    
+
     val header = when (currentDestination?.route) {
         Screen.Shop.route -> stringResource(id = R.string.shop)
         Screen.Cart.route -> stringResource(id = R.string.cart)
@@ -58,12 +59,6 @@ fun TopBar(navController: NavHostController) {
     TopAppBar(
         title = { Text(text = header) },
         actions = {
-            IconButton(onClick = { }) {
-                Icon(
-                    imageVector = Icons.Default.Refresh,
-                    contentDescription = stringResource(id = R.string.locked)
-                )
-            }
             IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Default.Star,

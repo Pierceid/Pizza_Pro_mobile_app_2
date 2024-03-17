@@ -10,7 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
-import com.example.pizza_pro_2.ui.theme.Purple
+import com.example.pizza_pro_2.ui.theme.Magenta
+import com.example.pizza_pro_2.ui.theme.Violet
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
@@ -34,7 +35,7 @@ fun FooterText(
             Text(
                 text = hyperText,
                 style = MaterialTheme.typography.titleMedium,
-                color = Purple,
+                color = Magenta,
                 textDecoration = TextDecoration.Underline
             )
         }
