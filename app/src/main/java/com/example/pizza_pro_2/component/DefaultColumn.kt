@@ -24,12 +24,12 @@ fun DefaultColumn(
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val pattern = if (isSystemInDarkTheme()) listOf(Blue, Azure) else listOf(Sky, Azure)
+    val colors = if (isSystemInDarkTheme()) listOf(Azure, Blue) else listOf(Sky, Blue)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(pattern)),
+            .background(Brush.radialGradient(colors = colors, radius = 1250f)),
     ) {
         Column(
             modifier = Modifier
