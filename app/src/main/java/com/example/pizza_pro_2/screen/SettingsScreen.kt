@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import com.example.pizza_pro_2.component.DefaultColumn
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun SettingsScreen(navController : NavController) {
     DefaultColumn {
 
     }

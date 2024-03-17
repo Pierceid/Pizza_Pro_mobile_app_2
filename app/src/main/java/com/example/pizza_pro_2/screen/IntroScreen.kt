@@ -38,7 +38,7 @@ fun IntroScreen(navController: NavController) {
         )
         ActionButton(
             text = stringResource(id = R.string.lets_get_started),
-            onClick = { navController.navigate(Screen.Register.route) },
+            onClick = { navController.navigate(Screen.SignUp.route) },
             modifier = Modifier.height(120.dp).padding(vertical = 20.dp)
         )
     }

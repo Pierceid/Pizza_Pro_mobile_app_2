@@ -16,33 +16,43 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Black,
-    onPrimary = White,
+    primary = White,
+    onPrimary = Black,
     primaryContainer = Black,
     onPrimaryContainer = White,
     secondary = Black,
-    onSecondary = White,
-    secondaryContainer = Smoke,
+    onSecondary = Magenta,
+    secondaryContainer = Azure,
     onSecondaryContainer = White,
     tertiary = Yellow,
     onTertiary = Black,
     tertiaryContainer = Orange,
-    onTertiaryContainer = Black
+    onTertiaryContainer = Black,
+    surface = Navy,
+    onSurface = White,
+    onSurfaceVariant = White,
+    outline = White,
+    background = Black
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Black,
-    onPrimary = White,
+    primary = White,
+    onPrimary = Black,
     primaryContainer = White,
     onPrimaryContainer = Black,
     secondary = White,
-    onSecondary = Black,
-    secondaryContainer = Iron,
+    onSecondary = Violet,
+    secondaryContainer = Sky,
     onSecondaryContainer = Black,
     tertiary = Orange,
     onTertiary = White,
     tertiaryContainer = Brown,
-    onTertiaryContainer = White
+    onTertiaryContainer = White,
+    surface = Blue,
+    onSurface = White,
+    onSurfaceVariant = White,
+    outline = White,
+    background = Black
 )
 
 @Composable
@@ -65,8 +75,8 @@ fun Pizza_Pro_2_Theme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            window.navigationBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = colorScheme.background.toArgb()
+            window.navigationBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

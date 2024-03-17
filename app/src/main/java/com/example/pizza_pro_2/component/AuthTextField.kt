@@ -5,7 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,8 +12,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.pizza_pro_2.ui.theme.Lilac
-import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
 fun AuthTextField(
@@ -36,17 +33,6 @@ fun AuthTextField(
         },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         visualTransformation = visualTransformation,
-        shape = RoundedCornerShape(16.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = Lilac,
-            unfocusedTextColor = White,
-            focusedLabelColor = Lilac,
-            unfocusedLabelColor = White,
-            focusedBorderColor = Lilac,
-            unfocusedBorderColor = White,
-            focusedLeadingIconColor = Lilac,
-            unfocusedLeadingIconColor = White,
-            cursorColor = Lilac
-        )
+        shape = RoundedCornerShape(16.dp)
     )
 }

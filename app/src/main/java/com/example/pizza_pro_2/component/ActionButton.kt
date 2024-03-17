@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.pizza_pro_2.ui.theme.Purple
+import com.example.pizza_pro_2.ui.theme.Violet
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
@@ -18,7 +18,7 @@ fun ActionButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifie
         modifier = modifier.height(60.dp),
         border = BorderStroke(2.dp, White),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Purple,
+            containerColor = Violet,
             contentColor = White
         ),
         onClick = onClick

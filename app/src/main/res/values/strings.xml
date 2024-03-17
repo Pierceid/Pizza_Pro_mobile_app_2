@@ -19,20 +19,20 @@
     <string name="discard">Discard</string>
     <string name="ok">OK</string>
     <string name="clear">Clear</string>
-    <!-- Bottom app bar -->
+    <!-- App bar -->
     <string name="shop">Shop</string>
     <string name="cart">Cart</string>
     <string name="feedback">Feedback</string>
+    <string name="settings">Settings</string>
     <!-- Intro -->
     <string name="logo">Logo</string>
     <string name="motto">Motto</string>
-    <string name="lets_get_started">Lets get started</string>
+    <string name="lets_get_started">Let\'s get started</string>
     <!-- Auth -->
     <string name="do_not_have_an_account">Don\'t have an account?</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
-    <string name="swap_icon">swap icon</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -45,20 +45,15 @@
     <string name="invalid_password">Invalid password. Password must be 6–100 characters long.</string>
     <string name="incorrect_password">Incorrect password. Check your password and try again.</string>
     <string name="invalid_location">Invalid location. Location must be 1–100 characters long.</string>
-    <string name="change_visibility">Change visibility</string>
     <!-- Shop -->
-    <string name="welcome_to_shop">Welcome to shop</string>
-    <string name="banner">Banner</string>
     <string name="search">Search</string>
     <string name="cross">cross</string>
     <string name="search_your_favorite_pizza">Search your favorite pizza</string>
     <!-- Cart -->
-    <string name="check_your_cart">Check your cart</string>
     <string name="items_total">Items total:</string>
     <string name="delivery_services">Delivery services:</string>
     <string name="total">Total:</string>
     <!-- Feedback -->
-    <string name="give_us_feedback">Give us feedback</string>
     <string name="what_do_you_think_of_the_app">What do you think of the app?</string>
     <string name="great">Great</string>
     <string name="good">Good</string>

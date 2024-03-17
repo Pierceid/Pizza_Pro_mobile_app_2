@@ -7,8 +7,8 @@ import androidx.navigation.compose.navigation
 import com.example.pizza_pro_2.navigation.AUTH_GRAPH_ROUTE
 import com.example.pizza_pro_2.navigation.Screen
 import com.example.pizza_pro_2.screen.IntroScreen
-import com.example.pizza_pro_2.screen.LoginScreen
-import com.example.pizza_pro_2.screen.RegisterScreen
+import com.example.pizza_pro_2.screen.SignInScreen
+import com.example.pizza_pro_2.screen.SignUpScreen
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     navigation(
@@ -18,11 +18,11 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
         composable(route = Screen.Intro.route) {
             IntroScreen(navController = navController)
         }
-        composable(route = Screen.Register.route) {
-            RegisterScreen(navController = navController)
+        composable(route = Screen.SignUp.route) {
+            SignUpScreen(navController = navController)
         }
-        composable(route = Screen.Login.route) {
-            LoginScreen(navController = navController)
+        composable(route = Screen.SignIn.route) {
+            SignInScreen(navController = navController)
         }
     }
 }
