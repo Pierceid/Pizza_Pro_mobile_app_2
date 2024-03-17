@@ -51,4 +51,3 @@ fun IntroPreview() {
         IntroScreen(navController = rememberNavController())
     }
 }
-

@@ -9,19 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.pizza_pro_2.component.DefaultColumn
 import com.example.pizza_pro_2.component.PizzaItem
 import com.example.pizza_pro_2.data.DataSource
 import com.example.pizza_pro_2.item.Pizza
-import com.example.pizza_pro_2.navigation.Screen
-import com.example.pizza_pro_2.ui.theme.Pizza_Pro_2_Theme
+import com.example.pizza_pro_2.navigation.DETAIL_GRAPH_ROUTE
+import com.example.pizza_pro_2.view_model.SharedViewModel
 
 @Composable
-fun ShopScreen(navController: NavController) {
+fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val pizzas: MutableList<Pizza> = remember { DataSource().loadData() }
     val updatedPizzas = remember { mutableStateListOf(*pizzas.toTypedArray()) }
 
@@ -44,17 +42,14 @@ fun ShopScreen(navController: NavController) {
                             updatedPizzas[index] = updatedPizza
                         }
                     },
-                    onClick = { navController.navigate(Screen.Detail.route) }
+                    onClick = {
+                        sharedViewModel.addPizza(pizza)
+                        navController.navigate(DETAIL_GRAPH_ROUTE) {
+                            launchSingleTop = true
+                        }
+                    }
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ShopPreview() {
-    Pizza_Pro_2_Theme {
-        ShopScreen(navController = rememberNavController())
     }
 }

@@ -33,6 +33,7 @@ import com.example.pizza_pro_2.item.Pizza
 import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
+import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 
 @Composable
 fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit) {
@@ -67,7 +68,7 @@ fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = String.format("Price: %.2f €", pizza.cost),
+                text = "Price: ${pizza.cost.toString().formatDouble("%.2f")} €",
                 style = MaterialTheme.typography.titleSmall,
                 color = Red
             )

@@ -19,6 +19,7 @@
     <string name="discard">Discard</string>
     <string name="ok">OK</string>
     <string name="clear">Clear</string>
+    <string name="go_back">Go Back</string>
     <!-- App bar -->
     <string name="shop">Shop</string>
     <string name="cart">Cart</string>
@@ -66,7 +67,7 @@
     <string name="no">No</string>
     <!-- Detail -->
     <string name="star">Star</string>
-    <string name="chronometer">Chronometer</string>
+    <string name="time">Time</string>
     <string name="flame">Flame</string>
     <string name="description">Description:</string>
     <!-- Profile -->

@@ -12,5 +12,10 @@ class Util {
                 }
             }
         }
+
+        fun String.formatDouble(form: String): String {
+            return form.format(this.toDouble()).replace(',', '.')
+        }
+
     }
 }
