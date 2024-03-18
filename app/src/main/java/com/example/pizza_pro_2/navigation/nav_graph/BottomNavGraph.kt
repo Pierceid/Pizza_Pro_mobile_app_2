@@ -28,10 +28,10 @@ fun BottomNavGraph(navController: NavHostController) {
         route = HOME_GRAPH_ROUTE
     ) {
         composable(route = Screen.Shop.route) {
-            ShopScreen(navController = navController, sharedViewModel)
+            ShopScreen(navController = navController, sharedViewModel = sharedViewModel)
         }
         composable(route = Screen.Cart.route) {
-            CartScreen(navController = navController)
+            CartScreen(navController = navController, sharedViewModel = sharedViewModel)
         }
         composable(route = Screen.Feedback.route) {
             FeedbackScreen(navController = navController)
@@ -44,7 +44,7 @@ fun BottomNavGraph(navController: NavHostController) {
             route = DETAIL_GRAPH_ROUTE
         ) {
             composable(route = Screen.Detail.route) {
-                DetailScreen(navController, sharedViewModel)
+                DetailScreen(navController = navController, sharedViewModel = sharedViewModel)
             }
         }
         navigation(

@@ -14,14 +14,15 @@ import androidx.navigation.NavController
 import com.example.pizza_pro_2.component.DefaultColumn
 import com.example.pizza_pro_2.component.PizzaItem
 import com.example.pizza_pro_2.data.DataSource
-import com.example.pizza_pro_2.item.Pizza
 import com.example.pizza_pro_2.navigation.DETAIL_GRAPH_ROUTE
 import com.example.pizza_pro_2.view_model.SharedViewModel
 
 @Composable
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
-    val pizzas: MutableList<Pizza> = remember { DataSource().loadData() }
-    val updatedPizzas = remember { mutableStateListOf(*pizzas.toTypedArray()) }
+    if (sharedViewModel.pizzas.isEmpty()) {
+        sharedViewModel.addPizzas(DataSource().loadData())
+    }
+    val updatedPizzas = remember { mutableStateListOf(*sharedViewModel.pizzas.toTypedArray()) }
 
     DefaultColumn {
         LazyVerticalGrid(
@@ -36,10 +37,10 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 PizzaItem(
                     pizza = pizza,
                     onCountChanged = { updatedPizza ->
-                        val index = pizzas.indexOfFirst { it.id == updatedPizza.id }
+                        val index = updatedPizzas.indexOfFirst { it.id == updatedPizza.id }
                         if (index != -1) {
-                            pizzas[index] = updatedPizza
-                            updatedPizzas[index] = updatedPizza
+                            updatedPizzas[index].count = updatedPizza.count
+                            sharedViewModel.pizzas[index].count = updatedPizza.count
                         }
                     },
                     onClick = {

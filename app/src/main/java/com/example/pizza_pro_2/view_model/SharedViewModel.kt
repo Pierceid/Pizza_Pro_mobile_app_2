@@ -10,7 +10,13 @@ class SharedViewModel : ViewModel() {
     var pizza by mutableStateOf<Pizza?>(null)
         private set
 
+    var pizzas by mutableStateOf(emptyList<Pizza>())
+
     fun addPizza(newPizza: Pizza) {
         pizza = newPizza
+    }
+
+    fun addPizzas(newPizzas: List<Pizza>) {
+        pizzas = newPizzas
     }
 }
