@@ -43,7 +43,7 @@
     <string name="other">Other</string>
     <string name="invalid_username">Invalid username. Username must be unique and 1–100 characters long.</string>
     <string name="invalid_email">Invalid email. Email address must be unique and in valid form.</string>
-    <string name="invalid_password">Invalid password. Password must be 6–100 characters long.</string>
+    <string name="invalid_password">Invalid password. Password must be 8–100 characters long and contain at least 1 letter and number.</string>
     <string name="incorrect_password">Incorrect password. Check your password and try again.</string>
     <string name="invalid_location">Invalid location. Location must be 1–100 characters long.</string>
     <!-- Shop -->
@@ -102,4 +102,6 @@
     <!-- Toast -->
     <string name="locked">Screen rotation is locked.</string>
     <string name="unlocked">Screen rotation is unlocked.</string>
+    <string name="signed_up_successfully">Signed up successfully!</string>
+    <string name="signed_in_successfully">Signed in successfully!</string>
 </resources>

@@ -18,6 +18,7 @@ fun AuthTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
+    isError: Boolean,
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
