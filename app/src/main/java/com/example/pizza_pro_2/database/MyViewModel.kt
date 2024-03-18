@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class MyViewModel(
-    private val repository: MyRepository = Graph.repository
-): ViewModel() {
+class MyViewModel(private val repository: MyRepository) : ViewModel() {
     var users: Flow<MutableList<User>>
     var orders: Flow<MutableList<Order>>
     var user: Flow<User?>
