@@ -1,7 +1,7 @@
 package com.example.pizza_pro_2.data
 
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.item.Pizza
+import com.example.pizza_pro_2.models.Pizza
 
 class DataSource {
 

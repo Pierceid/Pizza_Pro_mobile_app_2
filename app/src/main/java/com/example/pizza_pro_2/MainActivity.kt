@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
-import com.example.pizza_pro_2.navigation.nav_graph.NavGraph
+import com.example.pizza_pro_2.navigation.graphs.NavGraph
 import com.example.pizza_pro_2.ui.theme.Pizza_Pro_2_Theme
 
 class MainActivity : ComponentActivity() {

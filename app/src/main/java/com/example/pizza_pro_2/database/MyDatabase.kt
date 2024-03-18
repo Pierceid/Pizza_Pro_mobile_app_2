@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.pizza_pro_2.database.entity.Order
-import com.example.pizza_pro_2.database.entity.User
+import com.example.pizza_pro_2.database.entities.Order
+import com.example.pizza_pro_2.database.entities.User
 
 @Database(entities = [User::class, Order::class], version = 3, exportSchema = false)
 abstract class MyDatabase : RoomDatabase() {

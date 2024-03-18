@@ -25,7 +25,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.navigation.nav_graph.BottomNavGraph
+import com.example.pizza_pro_2.navigation.graphs.BottomNavGraph
+import com.example.pizza_pro_2.presentation.screens.Screen
 
 @Composable
 fun HomeScreen() {

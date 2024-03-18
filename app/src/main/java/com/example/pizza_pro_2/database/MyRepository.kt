@@ -1,7 +1,7 @@
 package com.example.pizza_pro_2.database
 
-import com.example.pizza_pro_2.database.entity.Order
-import com.example.pizza_pro_2.database.entity.User
+import com.example.pizza_pro_2.database.entities.Order
+import com.example.pizza_pro_2.database.entities.User
 import kotlinx.coroutines.flow.Flow
 
 class MyRepository(private val dao: MyDao) {
