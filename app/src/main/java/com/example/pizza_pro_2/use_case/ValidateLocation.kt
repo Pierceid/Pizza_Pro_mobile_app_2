@@ -1,4 +1,4 @@
-package com.example.pizza_pro_2.domain
+package com.example.pizza_pro_2.use_case
 
 class ValidateLocation {
     fun execute(location: String): ValidationResult {

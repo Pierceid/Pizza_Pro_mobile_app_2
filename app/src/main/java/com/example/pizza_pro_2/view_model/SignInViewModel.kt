@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pizza_pro_2.domain.ValidateEmail
-import com.example.pizza_pro_2.domain.ValidateLocation
-import com.example.pizza_pro_2.domain.ValidatePassword
+import com.example.pizza_pro_2.use_case.ValidateEmail
+import com.example.pizza_pro_2.use_case.ValidateLocation
+import com.example.pizza_pro_2.use_case.ValidatePassword
 import com.example.pizza_pro_2.presentation.SignInFormEvent
 import com.example.pizza_pro_2.presentation.SignInFormState
 import kotlinx.coroutines.channels.Channel

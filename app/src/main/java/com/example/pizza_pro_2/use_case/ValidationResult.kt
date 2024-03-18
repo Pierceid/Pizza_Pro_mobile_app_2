@@ -1,4 +1,4 @@
-package com.example.pizza_pro_2.domain
+package com.example.pizza_pro_2.use_case
 
 data class ValidationResult(
     val successful: Boolean,
