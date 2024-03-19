@@ -37,7 +37,7 @@ import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 
 @Composable
 fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit) {
-    val countState = remember { mutableIntStateOf(0) }
+    val countState = remember { mutableIntStateOf(pizza.count) }
 
     Card(shape = RoundedCornerShape(8.dp), border = BorderStroke(1.dp, White)) {
         Column(

@@ -5,7 +5,7 @@ class ValidateName {
         if (name.isBlank()) {
             return ValidationResult(
                 false,
-                "Name must be unique and 1–100 characters long."
+                "Name must be unique and not blank."
             )
         }
         return ValidationResult(true)

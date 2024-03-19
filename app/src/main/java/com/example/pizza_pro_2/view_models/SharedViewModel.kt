@@ -60,7 +60,7 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
         val updatedList = state.allPizzas
         updatedList.first { it.id == pizza.id }.count = pizza.count
         val orderedList = updatedList.filter { it.count > 0 }
-        updateState(state.copy(allPizzas = updatedList, filteredPizzas = updatedList, orderedPizzas = orderedList))
+        updateState(state.copy(allPizzas = updatedList, orderedPizzas = orderedList))
         updateCost()
     }
 

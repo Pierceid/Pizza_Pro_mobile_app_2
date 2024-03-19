@@ -41,17 +41,10 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
-    <string name="invalid_username">Invalid username. Username must be unique and 1–100 characters long.</string>
-    <string name="invalid_email">Invalid email. Email address must be unique and in valid form.</string>
-    <string name="invalid_password">Invalid password. Password must be 8–100 characters long and contain at least 1 letter and number.</string>
-    <string name="incorrect_password">Incorrect password. Check your password and try again.</string>
-    <string name="invalid_location">Invalid location. Location must be 1–100 characters long.</string>
     <!-- Shop -->
     <string name="search">Search</string>
-    <string name="cross">cross</string>
-    <string name="search_your_favorite">Search your favorite</string>
     <!-- Cart -->
-    <string name="items_total">Items total:</string>
+    <string name="items_cost">Items cost:</string>
     <string name="delivery_services">Delivery services:</string>
     <string name="total">Total:</string>
     <!-- Feedback -->
@@ -74,16 +67,14 @@
     <string name="profile_picture">Profile picture</string>
     <string name="gender">Gender</string>
     <!-- History -->
-    <string name="search_by_name">Search by name</string>
     <string name="database_tables">Database tables</string>
     <string name="users">Users</string>
     <string name="orders">Orders</string>
     <string name="delete">Delete</string>
     <!-- Item pizza -->
     <string name="pizza_picture">Pizza picture</string>
-    <string name="plus">+</string>
-    <string name="zero">0</string>
-    <string name="minus">-</string>
+    <string name="plus">plus</string>
+    <string name="minus">minus</string>
     <!-- Pop up window -->
     <string name="processing">Processing…</string>
     <string name="ordered_successfully">Order has been\n placed successfully!</string>

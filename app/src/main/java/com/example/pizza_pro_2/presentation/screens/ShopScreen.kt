@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +24,7 @@ import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
-    val state = sharedViewModel.state
+    var state = sharedViewModel.state
 
     DefaultColumn {
         InputTextField(
@@ -31,8 +32,16 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             onValueChange = {
                 sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(it))
             },
-            label = stringResource(id = R.string.search_your_favorite),
-            leadingIcon = Icons.Default.Search
+            label = stringResource(id = R.string.search),
+            leadingIcon = Icons.Default.Search,
+            trailingIcon = Icons.Default.Clear,
+            onLeadingIconClick = {
+                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(state.searchQuery))
+            },
+            onTrailingIconClick = {
+                state = state.copy(searchQuery = "")
+                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(state.searchQuery))
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
