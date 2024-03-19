@@ -17,7 +17,9 @@ import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.SharedFormEvent
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
+import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.PizzaItem
+import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
@@ -49,10 +51,17 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             }
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+
+        HeaderText(
+            text = "${stringResource(id = R.string.total)} " +
+                    "${state.itemsCost.toString().formatDouble("%.2f")} €"
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         ActionButton(
-            text = stringResource(id = R.string.apply),
+            text = stringResource(id = R.string.order),
             onClick = { sharedViewModel.onEvent(SharedFormEvent.Refresh) },
             modifier = Modifier.fillMaxWidth()
         )

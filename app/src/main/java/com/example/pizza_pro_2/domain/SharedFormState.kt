@@ -7,5 +7,6 @@ data class SharedFormState(
     val selectedPizza: Pizza? = null,
     val allPizzas: List<Pizza> = emptyList(),
     val filteredPizzas: List<Pizza> = emptyList(),
-    val orderedPizzas: List<Pizza> = emptyList()
+    val orderedPizzas: List<Pizza> = emptyList(),
+    val itemsCost: Double = 0.0
 )
