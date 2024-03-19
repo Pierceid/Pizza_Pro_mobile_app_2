@@ -1,25 +1,28 @@
 package com.example.pizza_pro_2.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.SharedFormEvent
+import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.PizzaItem
 import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
 fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
-    val orderedPizzas = remember {
-        mutableStateListOf(*sharedViewModel.pizzas.filter { it.count > 0 }.toTypedArray())
-    }
+    val state = sharedViewModel.state
 
     DefaultColumn {
         LazyVerticalGrid(
@@ -30,21 +33,14 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(items = orderedPizzas, key = { it.id!! }) { pizza ->
+            items(items = state.orderedPizzas, key = { it.id!! }) { pizza ->
                 PizzaItem(
                     pizza = pizza,
-                    onCountChanged = { updatedPizza ->
-                        val index = orderedPizzas.indexOfFirst { it.id == updatedPizza.id }
-                        if (index != -1) {
-                            orderedPizzas[index].count = updatedPizza.count
-                            sharedViewModel.pizzas[index].count = updatedPizza.count
-                        }
-                        if (updatedPizza.count == 0) {
-                            orderedPizzas.remove(updatedPizza)
-                        }
+                    onCountChanged = {
+                        sharedViewModel.onEvent(SharedFormEvent.OnPizzaCountChange(it))
                     },
                     onClick = {
-                        sharedViewModel.addPizza(pizza)
+                        sharedViewModel.onEvent(SharedFormEvent.OnPizzaSelectionChange(pizza))
                         navController.navigate(DETAIL_GRAPH_ROUTE) {
                             launchSingleTop = true
                         }
@@ -52,5 +48,13 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        ActionButton(
+            text = stringResource(id = R.string.apply),
+            onClick = { sharedViewModel.onEvent(SharedFormEvent.Refresh) },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }

@@ -49,7 +49,7 @@
     <!-- Shop -->
     <string name="search">Search</string>
     <string name="cross">cross</string>
-    <string name="search_your_favorite_pizza">Search your favorite pizza</string>
+    <string name="search_your_favorite">Search your favorite</string>
     <!-- Cart -->
     <string name="items_total">Items total:</string>
     <string name="delivery_services">Delivery services:</string>

@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.presentation.components.ActionButton
-import com.example.pizza_pro_2.presentation.components.AuthTextField
+import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.FooterText
@@ -29,6 +29,7 @@ import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.domain.SignUpFormEvent
+import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.view_models.SignUpViewModel
 import kotlinx.coroutines.runBlocking
 
@@ -42,7 +43,7 @@ fun SignUpScreen(navController: NavController) {
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
             when (event) {
-                is SignUpViewModel.ValidationEvent.Success -> {
+                is ValidationEvent.Success -> {
                     insertUserIntoDB(state.name, state.email, state.password, state.location)
 
                     navController.navigate(HOME_GRAPH_ROUTE) {
@@ -62,7 +63,7 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        AuthTextField(
+        InputTextField(
             value = state.name,
             onValueChange = {
                 viewModel.onEvent(SignUpFormEvent.NameChanged(it))
@@ -77,7 +78,7 @@ fun SignUpScreen(navController: NavController) {
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-        AuthTextField(
+        InputTextField(
             value = state.email,
             onValueChange = {
                 viewModel.onEvent(SignUpFormEvent.EmailChanged(it))
@@ -94,7 +95,7 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AuthTextField(
+        InputTextField(
             value = state.password,
             onValueChange = {
                 viewModel.onEvent(SignUpFormEvent.PasswordChanged(it))
@@ -112,7 +113,7 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AuthTextField(
+        InputTextField(
             value = state.location,
             onValueChange = {
                 viewModel.onEvent(SignUpFormEvent.LocationChanged(it))
