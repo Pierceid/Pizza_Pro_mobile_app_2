@@ -11,6 +11,7 @@ import com.example.pizza_pro_2.use_cases.ValidateName
 import com.example.pizza_pro_2.use_cases.ValidatePassword
 import com.example.pizza_pro_2.domain.SignUpFormEvent
 import com.example.pizza_pro_2.domain.SignUpFormState
+import com.example.pizza_pro_2.domain.ValidationEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -75,9 +76,5 @@ class SignUpViewModel(
         viewModelScope.launch {
             validationChannel.send(ValidationEvent.Success)
         }
-    }
-
-    sealed class ValidationEvent {
-        data object Success : ValidationEvent()
     }
 }

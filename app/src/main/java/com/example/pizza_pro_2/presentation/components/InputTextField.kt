@@ -14,12 +14,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AuthTextField(
+fun InputTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    isError: Boolean,
     modifier: Modifier = Modifier,
+    isError: Boolean = false,
     leadingIcon: ImageVector? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     visualTransformation: VisualTransformation = VisualTransformation.None

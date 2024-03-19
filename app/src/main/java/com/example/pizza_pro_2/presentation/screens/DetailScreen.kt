@@ -40,7 +40,7 @@ import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
 fun DetailScreen(navController: NavController, sharedViewModel: SharedViewModel) {
-    val pizza = sharedViewModel.pizza!!
+    val pizza = sharedViewModel.state.selectedPizza!!
 
     DefaultColumn(verticalArrangement = Arrangement.Center) {
         Column(

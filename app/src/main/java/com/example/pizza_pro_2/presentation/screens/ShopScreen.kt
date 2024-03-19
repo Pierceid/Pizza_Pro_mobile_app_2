@@ -1,29 +1,42 @@
 package com.example.pizza_pro_2.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.SharedFormEvent
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
+import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.PizzaItem
-import com.example.pizza_pro_2.data.DataSource
 import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
-    if (sharedViewModel.pizzas.isEmpty()) {
-        sharedViewModel.addPizzas(DataSource().loadData())
-    }
-    val updatedPizzas = remember { mutableStateListOf(*sharedViewModel.pizzas.toTypedArray()) }
+    val state = sharedViewModel.state
 
     DefaultColumn {
+        InputTextField(
+            value = state.searchQuery,
+            onValueChange = {
+                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(it))
+            },
+            label = stringResource(id = R.string.search_your_favorite),
+            leadingIcon = Icons.Default.Search
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
@@ -32,18 +45,14 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(items = updatedPizzas, key = { it.id!! }) { pizza ->
+            items(items = state.filteredPizzas, key = { it.id!! }) { pizza ->
                 PizzaItem(
                     pizza = pizza,
-                    onCountChanged = { updatedPizza ->
-                        val index = updatedPizzas.indexOfFirst { it.id == updatedPizza.id }
-                        if (index != -1) {
-                            updatedPizzas[index].count = updatedPizza.count
-                            sharedViewModel.pizzas[index].count = updatedPizza.count
-                        }
+                    onCountChanged = {
+                        sharedViewModel.onEvent(SharedFormEvent.OnPizzaCountChange(it))
                     },
                     onClick = {
-                        sharedViewModel.addPizza(pizza)
+                        sharedViewModel.onEvent(SharedFormEvent.OnPizzaSelectionChange(pizza))
                         navController.navigate(DETAIL_GRAPH_ROUTE) {
                             launchSingleTop = true
                         }

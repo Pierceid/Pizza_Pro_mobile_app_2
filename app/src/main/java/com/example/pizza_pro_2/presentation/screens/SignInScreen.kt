@@ -20,12 +20,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.presentation.components.ActionButton
-import com.example.pizza_pro_2.presentation.components.AuthTextField
+import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.FooterText
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.domain.SignInFormEvent
+import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.view_models.SignInViewModel
 
 @Composable
@@ -38,7 +39,7 @@ fun SignInScreen(navController: NavController) {
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
             when (event) {
-                is SignInViewModel.ValidationEvent.Success -> {
+                is ValidationEvent.Success -> {
                     navController.navigate(HOME_GRAPH_ROUTE) {
                         popUpTo(Screen.Intro.route) {
                             inclusive = true
@@ -56,7 +57,7 @@ fun SignInScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        AuthTextField(
+        InputTextField(
             value = state.email,
             onValueChange = {
                 viewModel.onEvent(SignInFormEvent.EmailChanged(it))
@@ -72,7 +73,7 @@ fun SignInScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AuthTextField(
+        InputTextField(
             value = state.password,
             onValueChange = {
                 viewModel.onEvent(SignInFormEvent.PasswordChanged(it))
@@ -89,7 +90,7 @@ fun SignInScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AuthTextField(
+        InputTextField(
             value = state.location,
             onValueChange = {
                 viewModel.onEvent(SignInFormEvent.LocationChanged(it))
