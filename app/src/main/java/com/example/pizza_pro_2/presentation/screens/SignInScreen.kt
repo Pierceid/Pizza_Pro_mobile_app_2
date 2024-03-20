@@ -19,18 +19,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.SignInFormEvent
+import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.presentation.components.ActionButton
-import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.FooterText
 import com.example.pizza_pro_2.presentation.components.HeaderText
-import com.example.pizza_pro_2.domain.SignInFormEvent
-import com.example.pizza_pro_2.domain.ValidationEvent
+import com.example.pizza_pro_2.presentation.components.InputTextField
+import com.example.pizza_pro_2.view_models.SharedViewModel
 import com.example.pizza_pro_2.view_models.SignInViewModel
 
 @Composable
-fun SignInScreen(navController: NavController) {
+fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val viewModel = viewModel<SignInViewModel>()
     val state = viewModel.state
     val context = LocalContext.current

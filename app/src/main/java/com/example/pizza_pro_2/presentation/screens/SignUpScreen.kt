@@ -20,21 +20,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.database.entities.User
+import com.example.pizza_pro_2.domain.SignUpFormEvent
+import com.example.pizza_pro_2.domain.ValidationEvent
+import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.presentation.components.ActionButton
-import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.FooterText
 import com.example.pizza_pro_2.presentation.components.HeaderText
-import com.example.pizza_pro_2.database.entities.User
-import com.example.pizza_pro_2.options.Gender
-import com.example.pizza_pro_2.domain.SignUpFormEvent
-import com.example.pizza_pro_2.domain.ValidationEvent
+import com.example.pizza_pro_2.presentation.components.InputTextField
+import com.example.pizza_pro_2.view_models.SharedViewModel
 import com.example.pizza_pro_2.view_models.SignUpViewModel
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun SignUpScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val viewModel = viewModel<SignUpViewModel>()
     val state = viewModel.state
     val context = LocalContext.current

@@ -49,7 +49,8 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f),
+                .weight(1f)
+                .then(Modifier.height(240.dp)),
             columns = GridCells.Adaptive(160.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)

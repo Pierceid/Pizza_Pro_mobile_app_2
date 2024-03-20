@@ -21,7 +21,7 @@ import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.PizzaItem
-import com.example.pizza_pro_2.ui.theme.Lilac
+import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import com.example.pizza_pro_2.view_models.SharedViewModel
@@ -68,12 +68,12 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             HeaderText(
                 text = stringResource(id = R.string.items_cost),
                 textStyle = MaterialTheme.typography.titleMedium,
-                color = Lilac
+                color = Silver
             )
             HeaderText(
                 text = "${itemsCost.toString().formatDouble("%.2f")} €",
                 textStyle = MaterialTheme.typography.titleMedium,
-                color = Lilac
+                color = Silver
             )
         }
 
@@ -84,12 +84,12 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             HeaderText(
                 text = stringResource(id = R.string.delivery_services),
                 textStyle = MaterialTheme.typography.titleMedium,
-                color = Lilac
+                color = Silver
             )
             HeaderText(
                 text = "${deliveryServices.toString().formatDouble("%.2f")} €",
                 textStyle = MaterialTheme.typography.titleMedium,
-                color = Lilac
+                color = Silver
             )
         }
 

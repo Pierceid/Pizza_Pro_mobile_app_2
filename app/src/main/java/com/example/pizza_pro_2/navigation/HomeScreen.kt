@@ -27,16 +27,17 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.navigation.graphs.BottomNavGraph
 import com.example.pizza_pro_2.presentation.screens.Screen
+import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(sharedViewModel: SharedViewModel) {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar(navController = navController) },
         bottomBar = { BottomBar(navController = navController) },
         content = { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                BottomNavGraph(navController = navController)
+                BottomNavGraph(navController = navController, sharedViewModel = sharedViewModel)
             }
         }
     )
