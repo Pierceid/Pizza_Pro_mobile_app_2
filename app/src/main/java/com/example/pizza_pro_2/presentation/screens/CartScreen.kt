@@ -1,11 +1,13 @@
 package com.example.pizza_pro_2.presentation.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -92,6 +94,14 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 color = Silver
             )
         }
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp)
+                .height(2.dp)
+                .background(Silver)
+        )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
