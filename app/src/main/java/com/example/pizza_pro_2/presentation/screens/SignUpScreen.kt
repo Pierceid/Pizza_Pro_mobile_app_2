@@ -53,7 +53,7 @@ fun SignUpScreen(navController: NavController, sharedViewModel: SharedViewModel)
                         }
                     }
 
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
