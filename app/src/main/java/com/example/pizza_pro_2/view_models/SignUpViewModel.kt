@@ -5,13 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pizza_pro_2.domain.SignUpFormEvent
+import com.example.pizza_pro_2.domain.SignUpFormState
+import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.use_cases.ValidateEmail
 import com.example.pizza_pro_2.use_cases.ValidateLocation
 import com.example.pizza_pro_2.use_cases.ValidateName
 import com.example.pizza_pro_2.use_cases.ValidatePassword
-import com.example.pizza_pro_2.domain.SignUpFormEvent
-import com.example.pizza_pro_2.domain.SignUpFormState
-import com.example.pizza_pro_2.domain.ValidationEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -27,25 +27,27 @@ class SignUpViewModel(
     val validationEvents = validationChannel.receiveAsFlow()
 
     fun onEvent(event: SignUpFormEvent) {
-        when (event) {
-            is SignUpFormEvent.NameChanged -> {
-                state = state.copy(name = event.name)
-            }
+        viewModelScope.launch {
+            when (event) {
+                is SignUpFormEvent.NameChanged -> {
+                    state = state.copy(name = event.name)
+                }
 
-            is SignUpFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email)
-            }
+                is SignUpFormEvent.EmailChanged -> {
+                    state = state.copy(email = event.email)
+                }
 
-            is SignUpFormEvent.PasswordChanged -> {
-                state = state.copy(password = event.password)
-            }
+                is SignUpFormEvent.PasswordChanged -> {
+                    state = state.copy(password = event.password)
+                }
 
-            is SignUpFormEvent.LocationChanged -> {
-                state = state.copy(location = event.location)
-            }
+                is SignUpFormEvent.LocationChanged -> {
+                    state = state.copy(location = event.location)
+                }
 
-            is SignUpFormEvent.Submit -> {
-                submitData()
+                is SignUpFormEvent.Submit -> {
+                    submitData()
+                }
             }
         }
     }

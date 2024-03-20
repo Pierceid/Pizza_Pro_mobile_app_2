@@ -25,21 +25,23 @@ class SignInViewModel(
     val validationEvents = validationChannel.receiveAsFlow()
 
     fun onEvent(event: SignInFormEvent) {
-        when (event) {
-            is SignInFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email)
-            }
+        viewModelScope.launch {
+            when (event) {
+                is SignInFormEvent.EmailChanged -> {
+                    state = state.copy(email = event.email)
+                }
 
-            is SignInFormEvent.PasswordChanged -> {
-                state = state.copy(password = event.password)
-            }
+                is SignInFormEvent.PasswordChanged -> {
+                    state = state.copy(password = event.password)
+                }
 
-            is SignInFormEvent.LocationChanged -> {
-                state = state.copy(location = event.location)
-            }
+                is SignInFormEvent.LocationChanged -> {
+                    state = state.copy(location = event.location)
+                }
 
-            is SignInFormEvent.Submit -> {
-                submitData()
+                is SignInFormEvent.Submit -> {
+                    submitData()
+                }
             }
         }
     }
