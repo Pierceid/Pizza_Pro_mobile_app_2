@@ -2,8 +2,10 @@ package com.example.pizza_pro_2.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.compose.runtime.Stable
 import java.util.UUID
 
+@Stable
 data class Pizza(
     val name: String?,
     val description: String?,

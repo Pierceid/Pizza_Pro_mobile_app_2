@@ -1,5 +1,8 @@
 package com.example.pizza_pro_2.domain
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class SignUpFormState(
     val name: String = "",
     val nameError: String? = null,

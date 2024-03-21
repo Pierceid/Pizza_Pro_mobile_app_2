@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -39,7 +40,12 @@ import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit) {
     val countState = remember { mutableIntStateOf(pizza.count) }
 
-    Card(shape = RoundedCornerShape(8.dp), border = BorderStroke(1.dp, White)) {
+    Card(
+        modifier = Modifier.drawBehind {
+            RoundedCornerShape(8.dp)
+        },
+        border = BorderStroke(1.dp, White)
+    ) {
         Column(
             modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
             verticalArrangement = Arrangement.SpaceBetween,
@@ -80,58 +86,52 @@ fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.tertiaryContainer),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+            TextButton(
+                modifier = Modifier.size(40.dp),
+                onClick = {
+                    if (countState.intValue < 10) {
+                        countState.intValue++
+                        onCountChanged(pizza.copy(count = countState.intValue))
+                    }
+                }
             ) {
-                TextButton(
-                    modifier = Modifier.size(40.dp),
-                    onClick = {
-                        if (countState.intValue < 10) {
-                            countState.intValue++
-                            onCountChanged(pizza.copy(count = countState.intValue))
-                        }
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.plus),
-                        contentDescription = stringResource(id = R.string.plus),
-                        tint = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
+                Icon(
+                    painter = painterResource(id = R.drawable.plus),
+                    contentDescription = stringResource(id = R.string.plus),
+                    tint = MaterialTheme.colorScheme.onTertiary
+                )
+            }
 
-                Box(
-                    modifier = Modifier
-                        .size(60.dp, 40.dp)
-                        .background(MaterialTheme.colorScheme.tertiary),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = countState.intValue.toString(),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
+            Box(
+                modifier = Modifier
+                    .size(60.dp, 40.dp)
+                    .background(MaterialTheme.colorScheme.tertiary),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = countState.intValue.toString(),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onTertiary
+                )
+            }
 
-                TextButton(
-                    modifier = Modifier.size(40.dp),
-                    onClick = {
-                        if (countState.intValue > 0) {
-                            countState.intValue--
-                            onCountChanged(pizza.copy(count = countState.intValue))
-                        }
+            TextButton(
+                modifier = Modifier.size(40.dp),
+                onClick = {
+                    if (countState.intValue > 0) {
+                        countState.intValue--
+                        onCountChanged(pizza.copy(count = countState.intValue))
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.minus),
-                        contentDescription = stringResource(id = R.string.minus),
-                        tint = MaterialTheme.colorScheme.onTertiary
-                    )
                 }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.minus),
+                    contentDescription = stringResource(id = R.string.minus),
+                    tint = MaterialTheme.colorScheme.onTertiary
+                )
             }
         }
     }

@@ -1,12 +1,15 @@
 package com.example.pizza_pro_2.data
 
+import androidx.compose.runtime.Stable
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.models.Pizza
 
+@Stable
 class DataSource {
 
-    fun loadData() : MutableList<Pizza> {
-        return mutableListOf(
+    @Stable
+    fun loadData() : List<Pizza> {
+        return listOf(
             Pizza("Neapolitan pizza", "Thin, soft crust with tomato sauce, fresh mozzarella, basil, and olive oil. A simple, traditional Italian delight.", R.drawable.neapolitan_pizza, 4.8, 20, 850, 10.50),
             Pizza("New York pizza", "Large, thin slices with a foldable crust, topped with classic tomato sauce and mozzarella. An iconic NYC favorite.", R.drawable.newyork_pizza, 4.5, 23, 800, 9.20),
             Pizza("California pizza", "Artisanal, thin-crust pizza with creative toppings like arugula, goat cheese, and sun-dried tomatoes. A West Coast culinary adventure.", R.drawable.california_pizza, 4.2, 15 , 770, 9.50),

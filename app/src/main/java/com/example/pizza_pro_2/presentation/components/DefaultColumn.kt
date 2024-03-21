@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -19,6 +20,7 @@ import com.example.pizza_pro_2.ui.theme.Azure
 import com.example.pizza_pro_2.ui.theme.Blue
 import com.example.pizza_pro_2.ui.theme.Sky
 
+@Stable
 @Composable
 fun DefaultColumn(
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
@@ -37,8 +39,9 @@ fun DefaultColumn(
                 .padding(12.dp)
                 .verticalScroll(rememberScrollState(), true),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = verticalArrangement,
-            content = content
-        )
+            verticalArrangement = verticalArrangement
+        ) {
+            content()
+        }
     }
 }

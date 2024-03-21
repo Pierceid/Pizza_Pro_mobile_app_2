@@ -1,7 +1,9 @@
 package com.example.pizza_pro_2.domain
 
+import androidx.compose.runtime.Stable
 import com.example.pizza_pro_2.models.Pizza
 
+@Stable
 data class SharedFormState(
     val searchQuery: String = "",
     val selectedPizza: Pizza? = null,

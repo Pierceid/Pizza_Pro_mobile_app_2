@@ -7,12 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import com.example.pizza_pro_2.ui.theme.Magenta
 import com.example.pizza_pro_2.ui.theme.White
 
+@Stable
 @Composable
 fun FooterText(
     text: String,
