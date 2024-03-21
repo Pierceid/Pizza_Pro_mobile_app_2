@@ -20,6 +20,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -37,10 +41,15 @@ import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import com.example.pizza_pro_2.view_models.SharedViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun DetailScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val pizza = sharedViewModel.state.selectedPizza!!
+    var poppingBackStack by remember { mutableStateOf(false) }
 
     DefaultColumn(verticalArrangement = Arrangement.Center) {
         Column(
@@ -113,7 +122,17 @@ fun DetailScreen(navController: NavController, sharedViewModel: SharedViewModel)
 
             ActionButton(
                 text = stringResource(id = R.string.go_back),
-                onClick = { navController.popBackStack() },
+                onClick = {
+                    if (!poppingBackStack) {
+                        poppingBackStack = true
+                        navController.popBackStack()
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            delay(1000)
+                            poppingBackStack = false
+                        }
+                    }
+                },
                 modifier = Modifier.padding(20.dp)
             )
         }
