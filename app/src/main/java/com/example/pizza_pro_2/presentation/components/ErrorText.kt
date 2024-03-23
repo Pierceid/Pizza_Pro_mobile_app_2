@@ -14,6 +14,6 @@ fun ErrorText(message: String, modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         text = message,
         color = MaterialTheme.colorScheme.error,
-        style = MaterialTheme.typography.titleSmall
+        style = MaterialTheme.typography.bodyMedium
     )
 }

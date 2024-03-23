@@ -39,6 +39,10 @@ class SignInViewModel(
                     state = state.copy(location = event.location)
                 }
 
+                is SignInFormEvent.GenderChanged -> {
+                    state = state.copy(gender = event.gender)
+                }
+
                 is SignInFormEvent.Submit -> {
                     submitData()
                 }

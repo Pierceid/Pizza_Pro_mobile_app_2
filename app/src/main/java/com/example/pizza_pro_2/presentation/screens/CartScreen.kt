@@ -61,7 +61,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -117,11 +117,13 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             )
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         ActionButton(
             text = stringResource(id = R.string.order),
-            onClick = { sharedViewModel.onEvent(SharedFormEvent.Refresh) },
+            onClick = {
+                sharedViewModel.onEvent(SharedFormEvent.Refresh)
+            },
             modifier = Modifier.fillMaxWidth()
         )
     }

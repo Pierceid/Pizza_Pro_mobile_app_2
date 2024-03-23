@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -105,8 +106,8 @@ fun RowScope.AddItem(
         },
         icon = {
             Icon(
-                imageVector = if (isSelected) screen.selectedIcon else screen.unselectedIcon,
-                contentDescription = "icon"
+                painter = painterResource(id = if (isSelected) screen.selectedIconId else screen.unselectedIconId),
+                contentDescription = stringResource(id = R.string.app_bar_icon)
             )
         },
         selected = isSelected,

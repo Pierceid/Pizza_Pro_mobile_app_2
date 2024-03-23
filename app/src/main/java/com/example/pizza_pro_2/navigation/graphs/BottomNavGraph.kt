@@ -31,7 +31,7 @@ fun BottomNavGraph(navController: NavHostController, sharedViewModel: SharedView
             CartScreen(navController = navController, sharedViewModel = sharedViewModel)
         }
         composable(route = Screen.Feedback.route) {
-            FeedbackScreen(navController = navController, sharedViewModel = sharedViewModel)
+            FeedbackScreen(navController = navController)
         }
         composable(route = Screen.Settings.route) {
             SettingsScreen(navController = navController, sharedViewModel = sharedViewModel)

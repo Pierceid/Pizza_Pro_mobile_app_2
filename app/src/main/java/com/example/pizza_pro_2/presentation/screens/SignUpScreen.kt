@@ -1,9 +1,11 @@
 package com.example.pizza_pro_2.presentation.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
@@ -11,6 +13,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -30,6 +33,7 @@ import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.FooterText
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
+import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.view_models.SharedViewModel
 import com.example.pizza_pro_2.view_models.SignUpViewModel
 import kotlinx.coroutines.runBlocking
@@ -60,95 +64,114 @@ fun SignUpScreen(navController: NavController, sharedViewModel: SharedViewModel)
     }
 
     DefaultColumn {
-        HeaderText(text = stringResource(id = R.string.sign_up))
+        Column(
+            modifier = Modifier.width(480.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HeaderText(text = stringResource(id = R.string.sign_up))
 
-        Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        InputTextField(
-            value = state.name,
-            onValueChange = {
-                viewModel.onEvent(SignUpFormEvent.NameChanged(it))
-            },
-            label = stringResource(id = R.string.name),
-            isError = state.nameError != null,
-            leadingIcon = Icons.Default.Person
-        )
+            InputTextField(
+                value = state.name,
+                onValueChange = {
+                    viewModel.onEvent(SignUpFormEvent.NameChanged(it))
+                },
+                label = stringResource(id = R.string.name),
+                isError = state.nameError != null,
+                leadingIcon = Icons.Default.Person
+            )
 
-        if (state.nameError != null) {
-            ErrorText(message = state.nameError)
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        InputTextField(
-            value = state.email,
-            onValueChange = {
-                viewModel.onEvent(SignUpFormEvent.EmailChanged(it))
-            },
-            label = stringResource(id = R.string.email),
-            isError = state.emailError != null,
-            leadingIcon = Icons.Default.Email,
-            keyboardType = KeyboardType.Email
-        )
-
-        if (state.emailError != null) {
-            ErrorText(message = state.emailError)
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        InputTextField(
-            value = state.password,
-            onValueChange = {
-                viewModel.onEvent(SignUpFormEvent.PasswordChanged(it))
-            },
-            label = stringResource(id = R.string.password),
-            isError = state.passwordError != null,
-            leadingIcon = Icons.Default.Lock,
-            keyboardType = KeyboardType.Password,
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        if (state.passwordError != null) {
-            ErrorText(message = state.passwordError)
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        InputTextField(
-            value = state.location,
-            onValueChange = {
-                viewModel.onEvent(SignUpFormEvent.LocationChanged(it))
-            },
-            label = stringResource(id = R.string.location),
-            isError = state.locationError != null,
-            leadingIcon = Icons.Default.LocationOn,
-        )
-        if (state.locationError != null) {
-            ErrorText(message = state.locationError)
-        }
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        ActionButton(
-            text = stringResource(id = R.string.sign_up),
-            onClick = { viewModel.onEvent(SignUpFormEvent.Submit) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        FooterText(
-            text = stringResource(id = R.string.already_have_an_account),
-            hyperText = stringResource(id = R.string.sign_in),
-            onClick = {
-                navController.navigate(Screen.SignIn.route) {
-                    popUpTo(Screen.SignUp.route) {
-                        inclusive = true
-                    }
-                    launchSingleTop = true
-                }
+            if (state.nameError != null) {
+                ErrorText(message = state.nameError)
             }
-        )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            InputTextField(
+                value = state.email,
+                onValueChange = {
+                    viewModel.onEvent(SignUpFormEvent.EmailChanged(it))
+                },
+                label = stringResource(id = R.string.email),
+                isError = state.emailError != null,
+                leadingIcon = Icons.Default.Email,
+                keyboardType = KeyboardType.Email
+            )
+
+            if (state.emailError != null) {
+                ErrorText(message = state.emailError)
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            InputTextField(
+                value = state.password,
+                onValueChange = {
+                    viewModel.onEvent(SignUpFormEvent.PasswordChanged(it))
+                },
+                label = stringResource(id = R.string.password),
+                isError = state.passwordError != null,
+                leadingIcon = Icons.Default.Lock,
+                keyboardType = KeyboardType.Password,
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            if (state.passwordError != null) {
+                ErrorText(message = state.passwordError)
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            InputTextField(
+                value = state.location,
+                onValueChange = {
+                    viewModel.onEvent(SignUpFormEvent.LocationChanged(it))
+                },
+                label = stringResource(id = R.string.location),
+                isError = state.locationError != null,
+                leadingIcon = Icons.Default.LocationOn,
+            )
+            if (state.locationError != null) {
+                ErrorText(message = state.locationError)
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            RadioGroup(
+                inRow = true,
+                selected = state.gender,
+                onSelectionChange = {
+                    viewModel.onEvent(SignUpFormEvent.GenderChanged(it))
+                },
+                options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ActionButton(
+                text = stringResource(id = R.string.sign_up),
+                onClick = {
+                    viewModel.onEvent(SignUpFormEvent.Submit)
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            FooterText(
+                text = stringResource(id = R.string.already_have_an_account),
+                hyperText = stringResource(id = R.string.sign_in),
+                onClick = {
+                    navController.navigate(Screen.SignIn.route) {
+                        popUpTo(Screen.SignUp.route) {
+                            inclusive = true
+                        }
+
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
     }
 }
 

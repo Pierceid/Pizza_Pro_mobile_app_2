@@ -58,7 +58,7 @@ fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit
             ) {
                 Image(
                     painter = painterResource(id = pizza.imageSource),
-                    contentDescription = stringResource(id = R.string.pizza_picture),
+                    contentDescription = stringResource(id = R.string.pizza_image),
                     contentScale = ContentScale.Fit
                 )
             }
@@ -67,7 +67,7 @@ fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit
 
             Text(
                 text = pizza.name!!.capitalizeText(),
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
@@ -75,7 +75,7 @@ fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit
 
             Text(
                 text = "Price: ${pizza.cost.toString().formatDouble("%.2f")} €",
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = Red
             )
 
@@ -113,7 +113,7 @@ fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit
             ) {
                 Text(
                     text = countState.intValue.toString(),
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             }

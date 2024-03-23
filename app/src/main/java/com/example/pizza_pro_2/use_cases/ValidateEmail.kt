@@ -7,7 +7,7 @@ class ValidateEmail {
         if (email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return ValidationResult(
                 false,
-                "Email address must be unique and in valid form."
+                "Email must be unique and in valid form."
             )
         }
         return ValidationResult(true)

@@ -25,12 +25,13 @@
     <string name="cart">Cart</string>
     <string name="feedback">Feedback</string>
     <string name="settings">Settings</string>
+    <string name="app_bar_icon">App bar icon</string>
     <!-- Intro -->
     <string name="logo">Logo</string>
     <string name="motto">Motto</string>
-    <string name="lets_get_started">Let\'s get started</string>
+    <string name="let_s_get_started">Let\'s get started</string>
     <!-- Auth -->
-    <string name="do_not_have_an_account">Don\'t have an account?</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
@@ -48,14 +49,15 @@
     <string name="delivery_services">Delivery services:</string>
     <string name="total">Total:</string>
     <!-- Feedback -->
-    <string name="what_do_you_think_of_the_app">What do you think of the app?</string>
+    <string name="what_are_your_impressions_of_the_application">1. What are your impressions of the application?</string>
     <string name="great">Great</string>
     <string name="good">Good</string>
     <string name="decent">Decent</string>
     <string name="bad">Bad</string>
-    <string name="do_you_have_any_thoughts_you_d_like_to_share">Do you have any thoughts you\'d like to share?</string>
-    <string name="write_your_thoughts">Write your thoughts</string>
-    <string name="may_we_follow_you_up_on_your_feedback">May we follow you up on your feedback?</string>
+    <string name="do_you_have_any_thoughts_to_share">2. Do you have any thoughts to share?</string>
+    <string name="thoughts">Thoughts</string>
+    <string name="may_we_follow_you_up_on_your_feedback">3. May we follow you up on your feedback?</string>
+    <string name="f_u_switch">Switch</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <!-- Detail -->
@@ -71,8 +73,9 @@
     <string name="users">Users</string>
     <string name="orders">Orders</string>
     <string name="delete">Delete</string>
-    <!-- Item pizza -->
-    <string name="pizza_picture">Pizza picture</string>
+    <!-- Items -->
+    <string name="pizza_image">Pizza image</string>
+    <string name="satisfaction_image">Satisfaction image</string>
     <string name="plus">plus</string>
     <string name="minus">minus</string>
     <!-- Pop up window -->

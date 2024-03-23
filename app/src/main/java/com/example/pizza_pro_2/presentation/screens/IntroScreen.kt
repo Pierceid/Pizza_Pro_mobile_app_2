@@ -22,7 +22,7 @@ import com.example.pizza_pro_2.ui.theme.Pizza_Pro_2_Theme
 
 @Composable
 fun IntroScreen(navController: NavController) {
-    DefaultColumn (verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)) {
+    DefaultColumn(verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)) {
         Image(
             modifier = Modifier.size(400.dp, 320.dp),
             painter = painterResource(id = R.drawable.logo),
@@ -36,9 +36,13 @@ fun IntroScreen(navController: NavController) {
             contentScale = ContentScale.Fit
         )
         ActionButton(
-            text = stringResource(id = R.string.lets_get_started),
-            onClick = { navController.navigate(Screen.SignUp.route) },
-            modifier = Modifier.height(120.dp).padding(vertical = 20.dp)
+            text = stringResource(id = R.string.let_s_get_started),
+            onClick = {
+                navController.navigate(Screen.SignUp.route)
+            },
+            modifier = Modifier
+                .height(120.dp)
+                .padding(vertical = 24.dp)
         )
     }
 }

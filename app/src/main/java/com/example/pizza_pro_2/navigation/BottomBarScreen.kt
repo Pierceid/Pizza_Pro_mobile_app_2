@@ -1,47 +1,38 @@
 package com.example.pizza_pro_2.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.ShoppingCart
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.presentation.screens.Screen
 
 sealed class BottomBarScreen(
     val route: String,
     val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
+    val selectedIconId: Int,
+    val unselectedIconId: Int
 ) {
     data object Shop: BottomBarScreen(
         route = Screen.Shop.route,
         title = "Shop",
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home
+        selectedIconId = R.drawable.filled_shop_24,
+        unselectedIconId = R.drawable.outlined_shop_24
     )
     data object Cart: BottomBarScreen(
         route = Screen.Cart.route,
         title = "Cart",
-        selectedIcon = Icons.Filled.ShoppingCart,
-        unselectedIcon = Icons.Outlined.ShoppingCart
+        selectedIconId = R.drawable.filled_cart_24,
+        unselectedIconId = R.drawable.outlined_cart_24
     )
     data object Feedback: BottomBarScreen(
         route = Screen.Feedback.route,
         title = "Feedback",
-        selectedIcon = Icons.Filled.Email,
-        unselectedIcon = Icons.Outlined.Email
+        selectedIconId = R.drawable.filled_feedback_24,
+        unselectedIconId = R.drawable.outlined_feedback_24
     )
 
     data object Settings: BottomBarScreen(
         route = Screen.Settings.route,
         title = "Settings",
-        selectedIcon = Icons.Filled.Settings,
-        unselectedIcon = Icons.Outlined.Settings
+        selectedIconId = R.drawable.filled_settings_24,
+        unselectedIconId = R.drawable.outlined_settings_24
     )
 }
 

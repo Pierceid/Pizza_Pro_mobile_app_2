@@ -24,7 +24,7 @@ import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
-    var state = sharedViewModel.state
+    val state = sharedViewModel.state
 
     DefaultColumn {
         InputTextField(
@@ -35,12 +35,8 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             label = stringResource(id = R.string.search),
             leadingIcon = Icons.Default.Search,
             trailingIcon = Icons.Default.Clear,
-            onLeadingIconClick = {
-                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(state.searchQuery))
-            },
             onTrailingIconClick = {
-                state = state.copy(searchQuery = "")
-                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(state.searchQuery))
+                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(""))
             }
         )
 
