@@ -35,8 +35,8 @@ fun <T> RadioGroup(
     val selectedOption = remember { mutableStateOf(selected) }
 
     Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = modifier.fillMaxWidth().padding(end = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (inRow) {
@@ -63,10 +63,7 @@ fun <T> RadioGroup(
         } else {
             Column {
                 options.forEach { option ->
-                    Row(
-                        modifier = Modifier.padding(0.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(
                             selected = selectedOption.value == option,
                             onClick = {
