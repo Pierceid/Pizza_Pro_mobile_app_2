@@ -19,7 +19,7 @@ import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.SharedFormEvent
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.InputTextField
-import com.example.pizza_pro_2.presentation.components.PizzaItem
+import com.example.pizza_pro_2.presentation.components.ShopPizzaCard
 import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
@@ -40,19 +40,18 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f)
-                .then(Modifier.height(240.dp)),
-            columns = GridCells.Adaptive(160.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                .weight(1f),
+            columns = GridCells.Adaptive(168.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(items = state.filteredPizzas, key = { it.id!! }) { pizza ->
-                PizzaItem(
+                ShopPizzaCard(
                     pizza = pizza,
                     onCountChanged = {
                         sharedViewModel.onEvent(SharedFormEvent.OnPizzaCountChange(it))

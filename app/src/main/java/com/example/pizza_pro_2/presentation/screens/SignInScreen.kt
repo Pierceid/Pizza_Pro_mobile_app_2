@@ -77,6 +77,7 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
                 leadingIcon = Icons.Default.Email,
                 keyboardType = KeyboardType.Email
             )
+
             if (state.emailError != null) {
                 ErrorText(message = state.emailError)
             }
@@ -94,6 +95,7 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
                 keyboardType = KeyboardType.Password,
                 visualTransformation = PasswordVisualTransformation()
             )
+
             if (state.passwordError != null) {
                 ErrorText(message = state.passwordError)
             }
@@ -109,6 +111,7 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
                 isError = state.locationError != null,
                 leadingIcon = Icons.Default.LocationOn,
             )
+
             if (state.locationError != null) {
                 ErrorText(message = state.locationError)
             }

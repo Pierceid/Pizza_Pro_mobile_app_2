@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,16 +31,19 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.models.Pizza
 import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.White
+import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
+import kotlin.math.roundToInt
 
 @Composable
-fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit) {
+fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit) {
     val countState = remember { mutableIntStateOf(pizza.count) }
 
     Card(
@@ -48,38 +54,59 @@ fun PizzaItem(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit
     ) {
         Column(
             modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
-            verticalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TextButton(
                 shape = RectangleShape,
-                onClick = onClick,
-                contentPadding = PaddingValues(0.dp)
+                contentPadding = PaddingValues(0.dp),
+                onClick = onClick
             ) {
                 Image(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .aspectRatio(3f / 2f),
                     painter = painterResource(id = pizza.imageSource),
                     contentDescription = stringResource(id = R.string.pizza_image),
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.FillBounds
                 )
             }
-
-            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = pizza.name!!.capitalizeText(),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                textDecoration = TextDecoration.Underline
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Row {
+                for (i in 1..pizza.rating.roundToInt()) {
+                    Icon(
+                        modifier = Modifier.size(20.dp),
+                        imageVector = Icons.Default.Star,
+                        contentDescription = stringResource(id = R.string.star),
+                        tint = Yellow
+                    )
+                }
+            }
 
-            Text(
-                text = "Price: ${pizza.cost.toString().formatDouble("%.2f")} €",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Red
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.price_20),
+                    contentDescription = stringResource(id = R.string.add_item),
+                    tint = Red
+                )
 
-            Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = "${pizza.cost.toString().formatDouble("%.2f")} €",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Red
+                )
+            }
+
+            Spacer(modifier = Modifier)
         }
 
         Row(

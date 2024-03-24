@@ -85,6 +85,7 @@ fun SignUpScreen(navController: NavController, sharedViewModel: SharedViewModel)
             if (state.nameError != null) {
                 ErrorText(message = state.nameError)
             }
+
             Spacer(modifier = Modifier.height(8.dp))
 
             InputTextField(
@@ -131,6 +132,7 @@ fun SignUpScreen(navController: NavController, sharedViewModel: SharedViewModel)
                 isError = state.locationError != null,
                 leadingIcon = Icons.Default.LocationOn,
             )
+
             if (state.locationError != null) {
                 ErrorText(message = state.locationError)
             }

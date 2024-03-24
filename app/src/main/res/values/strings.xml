@@ -76,7 +76,10 @@
     <!-- Items -->
     <string name="pizza_image">Pizza image</string>
     <string name="satisfaction_image">Satisfaction image</string>
+    <string name="add_item">Add item</string>
+    <string name="plus_sign">+</string>
     <string name="plus">plus</string>
+    <string name="minus_sign">-</string>
     <string name="minus">minus</string>
     <!-- Pop up window -->
     <string name="processing">Processing…</string>
@@ -98,4 +101,5 @@
     <string name="unlocked">Screen rotation is unlocked.</string>
     <string name="signed_up_successfully">Signed up successfully!</string>
     <string name="signed_in_successfully">Signed in successfully!</string>
+    <string name="add_to_cart">Add to cart</string>
 </resources>

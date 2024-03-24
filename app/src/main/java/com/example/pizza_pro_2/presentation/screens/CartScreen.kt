@@ -20,9 +20,9 @@ import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.SharedFormEvent
 import com.example.pizza_pro_2.presentation.components.ActionButton
+import com.example.pizza_pro_2.presentation.components.CartPizzaCard
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
-import com.example.pizza_pro_2.presentation.components.PizzaItem
 import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
@@ -41,12 +41,12 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f),
-            columns = GridCells.Adaptive(160.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            columns = GridCells.Adaptive(168.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(items = state.orderedPizzas, key = { it.id!! }) { pizza ->
-                PizzaItem(
+                CartPizzaCard(
                     pizza = pizza,
                     onCountChanged = {
                         sharedViewModel.onEvent(SharedFormEvent.OnPizzaCountChange(it))
