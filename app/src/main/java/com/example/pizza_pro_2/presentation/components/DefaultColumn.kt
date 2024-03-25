@@ -31,13 +31,13 @@ fun DefaultColumn(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.radialGradient(colors = colors, radius = 1250f)),
+            .background(brush = Brush.radialGradient(colors = colors, radius = 1250f)),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
-                .verticalScroll(rememberScrollState(), true),
+                .verticalScroll(state = rememberScrollState(), enabled = true),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = verticalArrangement
         ) {

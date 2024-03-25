@@ -48,15 +48,13 @@ import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import java.text.NumberFormat
 import kotlin.math.roundToInt
 
-
-//TODO rearrange it whole (maybe)
 @Composable
 fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> Unit) {
     val countState = remember { mutableIntStateOf(pizza.count) }
 
     Card(
         modifier = Modifier
-            .height(84.dp)
+            .height(92.dp)
             .drawBehind {
                 RoundedCornerShape(8.dp)
             },
@@ -65,7 +63,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
         ) {
             TextButton(
                 shape = RectangleShape,
@@ -88,7 +86,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             ) {
                 Text(
                     text = pizza.name!!.capitalizeText(),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textDecoration = TextDecoration.Underline
                 )
@@ -98,12 +96,13 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
                 ) {
                     Column(modifier = Modifier.fillMaxHeight()) {
                         Row {
                             for (i in 1..pizza.rating.roundToInt()) {
                                 Icon(
-                                    modifier = Modifier.size(18.dp),
+                                    modifier = Modifier.size(20.dp),
                                     imageVector = Icons.Default.Star,
                                     contentDescription = stringResource(id = R.string.star),
                                     tint = Yellow
@@ -115,7 +114,6 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                modifier = Modifier.size(18.dp),
                                 painter = painterResource(id = R.drawable.price_20),
                                 contentDescription = stringResource(id = R.string.add_item),
                                 tint = Red
@@ -127,7 +125,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                                 text = NumberFormat.getCurrencyInstance().format(pizza.cost)
                                     .toString()
                                     .formatDouble(),
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = Red
                             )
                         }
@@ -135,14 +133,15 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
                     Row(
                         modifier = Modifier
+                            .padding(2.dp)
                             .background(
                                 color = MaterialTheme.colorScheme.tertiaryContainer,
-                                shape = RoundedCornerShape(42.dp)
+                                shape = RoundedCornerShape(40.dp)
                             ),
                         verticalAlignment = Alignment.Bottom
                     ) {
                         IconButton(
-                            modifier = Modifier.size(42.dp),
+                            modifier = Modifier.size(40.dp),
                             onClick = {
                                 if (countState.intValue < 10) {
                                     countState.intValue++
@@ -159,8 +158,8 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
                         Box(
                             modifier = Modifier
-                                .size(42.dp)
-                                .background(MaterialTheme.colorScheme.tertiary),
+                                .size(40.dp)
+                                .background(color = MaterialTheme.colorScheme.tertiary),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -171,7 +170,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         }
 
                         IconButton(
-                            modifier = Modifier.size(42.dp),
+                            modifier = Modifier.size(40.dp),
                             onClick = {
                                 if (countState.intValue > 0) {
                                     countState.intValue--

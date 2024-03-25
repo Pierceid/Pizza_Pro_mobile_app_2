@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.presentation.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -20,11 +22,13 @@ import com.example.pizza_pro_2.domain.SharedFormEvent
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.ShopPizzaCard
+import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val state = sharedViewModel.state
+    val context = LocalContext.current
 
     DefaultColumn {
         InputTextField(
@@ -55,6 +59,8 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     pizza = pizza,
                     onCountChanged = {
                         sharedViewModel.onEvent(SharedFormEvent.OnPizzaCountChange(it))
+                        val toastMessage = "( ${pizza.name!!.capitalizeText()} Pizza )\nwas added to your cart !"
+                        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
                         sharedViewModel.onEvent(SharedFormEvent.OnPizzaSelectionChange(pizza))

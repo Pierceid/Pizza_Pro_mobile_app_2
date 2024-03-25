@@ -2,7 +2,9 @@ package com.example.pizza_pro_2.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,19 +23,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
+import com.example.pizza_pro_2.ui.theme.Lime
 import com.example.pizza_pro_2.ui.theme.Red
+import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import com.example.pizza_pro_2.view_models.SharedViewModel
@@ -45,7 +50,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun DetailScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val pizza = sharedViewModel.state.selectedPizza!!
-    var poppingBackStack by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    var poppingBackStack by rememberSaveable { mutableStateOf(false) }
 
     DefaultColumn(verticalArrangement = Arrangement.Center) {
         Column(
@@ -103,18 +109,36 @@ fun DetailScreen(navController: NavController, sharedViewModel: SharedViewModel)
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
-                text = pizza.name!!.capitalizeText(),
+                text = "${pizza.name!!.capitalizeText()} Pizza",
                 style = MaterialTheme.typography.titleMedium,
                 color = Red
             )
 
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp, 0.dp, 20.dp, 20.dp),
-                text = pizza.description!!,
-                style = MaterialTheme.typography.titleSmall
-            )
+            Column {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp, 0.dp, 20.dp, 20.dp),
+                    text = pizza.description!!,
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = if (expanded) Int.MAX_VALUE else 5,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Box(Modifier.fillMaxWidth()) {
+                    Text(
+                        modifier = Modifier
+                            .background(
+                                color = if (expanded) Salmon else Lime,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(4.dp)
+                            .align(Alignment.Center)
+                            .clickable { expanded = !expanded },
+                        text = stringResource(id = if (expanded) R.string.show_less else R.string.show_more)
+                    )
+                }
+            }
 
             ActionButton(
                 text = stringResource(id = R.string.go_back),

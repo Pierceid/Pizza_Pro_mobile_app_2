@@ -65,6 +65,8 @@
     <string name="time">Time</string>
     <string name="flame">Flame</string>
     <string name="description">Description:</string>
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
     <!-- Profile -->
     <string name="profile_picture">Profile picture</string>
     <string name="gender">Gender</string>
