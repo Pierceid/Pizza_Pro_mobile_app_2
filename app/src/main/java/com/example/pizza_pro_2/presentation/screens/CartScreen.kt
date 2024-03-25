@@ -26,6 +26,7 @@ import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import com.example.pizza_pro_2.view_models.SharedViewModel
+import java.text.NumberFormat
 
 @Composable
 fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
@@ -70,7 +71,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 color = Silver
             )
             HeaderText(
-                text = "${itemsCost.toString().formatDouble("%.2f")} €",
+                text = NumberFormat.getCurrencyInstance().format(itemsCost).toString().formatDouble(),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
@@ -86,7 +87,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 color = Silver
             )
             HeaderText(
-                text = "${deliveryServices.toString().formatDouble("%.2f")} €",
+                text = NumberFormat.getCurrencyInstance().format(deliveryServices).toString().formatDouble(),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
@@ -109,7 +110,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 color = White
             )
             HeaderText(
-                text = "${total.toString().formatDouble("%.2f")} €",
+                text = NumberFormat.getCurrencyInstance().format(total).toString().formatDouble(),
                 color = White
             )
         }

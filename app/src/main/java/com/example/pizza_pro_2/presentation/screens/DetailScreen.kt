@@ -79,7 +79,7 @@ fun DetailScreen(navController: NavController, sharedViewModel: SharedViewModel)
                         contentDescription = stringResource(id = R.string.star)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Rating: ${pizza.rating.toString().formatDouble("%.1f")}")
+                    Text(text = "Rating: ${pizza.rating.toString().formatDouble()}")
                 }
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Icon(

@@ -46,6 +46,7 @@ import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
+import java.text.NumberFormat
 import kotlin.math.roundToInt
 
 @Composable
@@ -117,7 +118,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Text(
-                            text = "${pizza.cost.toString().formatDouble("%.2f")} €",
+                            text = NumberFormat.getCurrencyInstance().format(pizza.cost).toString().formatDouble(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red
                         )
