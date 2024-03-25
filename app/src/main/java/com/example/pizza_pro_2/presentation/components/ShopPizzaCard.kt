@@ -21,7 +21,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -57,11 +57,9 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             RoundedCornerShape(8.dp)
         },
         border = BorderStroke(1.dp, White),
-        colors = CardColors(
+        colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Column {

@@ -38,7 +38,12 @@ fun IntroScreen(navController: NavController) {
         ActionButton(
             text = stringResource(id = R.string.let_s_get_started),
             onClick = {
-                navController.navigate(Screen.SignUp.route)
+                navController.navigate(HOME_GRAPH_ROUTE) {
+                    popUpTo(Screen.Intro.route) {
+                        inclusive = true
+                    }
+                }
+                //navController.navigate(Screen.SignUp.route)
             },
             modifier = Modifier
                 .height(120.dp)
