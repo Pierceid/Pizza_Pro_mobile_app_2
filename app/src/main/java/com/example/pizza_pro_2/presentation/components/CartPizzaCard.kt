@@ -3,7 +3,6 @@ package com.example.pizza_pro_2.presentation.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +10,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,9 +22,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -64,9 +65,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             TextButton(
                 shape = RectangleShape,
@@ -74,14 +73,19 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                 onClick = onClick
             ) {
                 Image(
-                    modifier = Modifier.aspectRatio(4f / 3f),
+                    modifier = Modifier.aspectRatio(5f / 4f),
                     painter = painterResource(id = pizza.imageSource),
                     contentDescription = stringResource(id = R.string.pizza_image),
                     contentScale = ContentScale.FillBounds
                 )
             }
 
-            Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(6.dp),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
                 Text(
                     text = pizza.name!!.capitalizeText(),
                     style = MaterialTheme.typography.bodyMedium,
@@ -89,85 +93,99 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                     textDecoration = TextDecoration.Underline
                 )
 
-                Row {
-                    for (i in 1..pizza.rating.roundToInt()) {
-                        Icon(
-                            modifier = Modifier.size(20.dp),
-                            imageVector = Icons.Default.Star,
-                            contentDescription = stringResource(id = R.string.star),
-                            tint = Yellow
-                        )
-                    }
-                }
+                Spacer(modifier = Modifier.height(6.dp))
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.price_20),
-                        contentDescription = stringResource(id = R.string.add_item),
-                        tint = Red
-                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Column(modifier = Modifier.fillMaxHeight()) {
+                        Row {
+                            for (i in 1..pizza.rating.roundToInt()) {
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    imageVector = Icons.Default.Star,
+                                    contentDescription = stringResource(id = R.string.star),
+                                    tint = Yellow
+                                )
+                            }
+                        }
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
 
-                    Text(
-                        text = NumberFormat.getCurrencyInstance().format(pizza.cost).toString().formatDouble(),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Red
-                    )
-                }
-            }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                painter = painterResource(id = R.drawable.price_20),
+                                contentDescription = stringResource(id = R.string.add_item),
+                                tint = Red
+                            )
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedIconButton(
-                    modifier = Modifier.size(40.dp),
-                    colors = IconButtonDefaults.outlinedIconButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                    ),
-                    onClick = {
-                        if (countState.intValue < 10) {
-                            countState.intValue++
-                            onCountChanged(pizza.copy(count = countState.intValue))
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            Text(
+                                text = NumberFormat.getCurrencyInstance().format(pizza.cost)
+                                    .toString()
+                                    .formatDouble(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Red
+                            )
                         }
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.plus),
-                        contentDescription = stringResource(id = R.string.plus)
-                    )
-                }
 
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onTertiaryContainer)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = countState.intValue.toString(),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                }
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.tertiaryContainer,
+                                shape = RoundedCornerShape(42.dp)
+                            ),
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        IconButton(
+                            modifier = Modifier.size(42.dp),
+                            onClick = {
+                                if (countState.intValue < 10) {
+                                    countState.intValue++
+                                    onCountChanged(pizza.copy(count = countState.intValue))
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.plus),
+                                contentDescription = stringResource(id = R.string.plus),
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
 
-                OutlinedIconButton(
-                    modifier = Modifier.size(40.dp),
-                    colors = IconButtonDefaults.outlinedIconButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    ),
-                    onClick = {
-                        if (countState.intValue > 0) {
-                            countState.intValue--
-                            onCountChanged(pizza.copy(count = countState.intValue))
+                        Box(
+                            modifier = Modifier
+                                .size(42.dp)
+                                .background(MaterialTheme.colorScheme.tertiary),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = countState.intValue.toString(),
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
+
+                        IconButton(
+                            modifier = Modifier.size(42.dp),
+                            onClick = {
+                                if (countState.intValue > 0) {
+                                    countState.intValue--
+                                    onCountChanged(pizza.copy(count = countState.intValue))
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.minus),
+                                contentDescription = stringResource(id = R.string.minus),
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
                         }
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.minus),
-                        contentDescription = stringResource(id = R.string.plus)
-                    )
                 }
             }
         }

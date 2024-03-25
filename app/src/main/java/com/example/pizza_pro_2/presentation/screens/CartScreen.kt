@@ -32,9 +32,9 @@ import java.text.NumberFormat
 fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val state = sharedViewModel.state
 
-    val itemsCost = state.itemsCost
-    val deliveryServices = state.itemsCost / 10
-    val total = itemsCost + deliveryServices
+    val itemsTotal = state.itemsCost
+    val deliveryServices = state.itemsCost / 20
+    val total = itemsTotal + deliveryServices
 
     DefaultColumn {
         LazyColumn(
@@ -66,12 +66,12 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HeaderText(
-                text = stringResource(id = R.string.items_cost),
+                text = stringResource(id = R.string.items_total),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
             HeaderText(
-                text = NumberFormat.getCurrencyInstance().format(itemsCost).toString().formatDouble(),
+                text = NumberFormat.getCurrencyInstance().format(itemsTotal).toString().formatDouble(),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )

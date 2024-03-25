@@ -45,7 +45,7 @@
     <!-- Shop -->
     <string name="search">Search</string>
     <!-- Cart -->
-    <string name="items_cost">Items cost:</string>
+    <string name="items_total">Items total:</string>
     <string name="delivery_services">Delivery services:</string>
     <string name="total">Total:</string>
     <!-- Feedback -->
