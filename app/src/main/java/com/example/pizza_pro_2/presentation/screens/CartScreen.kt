@@ -32,9 +32,9 @@ import java.text.NumberFormat
 fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val state = sharedViewModel.state
 
-    val itemsTotal = state.itemsCost
-    val deliveryServices = state.itemsCost / 20
-    val total = itemsTotal + deliveryServices
+    val items = state.itemsCost
+    val delivery = if (items == 0.0) 0 else 5
+    val total = items + delivery
 
     DefaultColumn {
         LazyColumn(
@@ -66,12 +66,12 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HeaderText(
-                text = stringResource(id = R.string.items_total),
+                text = stringResource(id = R.string.items),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
             HeaderText(
-                text = NumberFormat.getCurrencyInstance().format(itemsTotal).toString().formatDouble(),
+                text = NumberFormat.getCurrencyInstance().format(items).toString().formatDouble(),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
@@ -82,12 +82,13 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HeaderText(
-                text = stringResource(id = R.string.delivery_services),
+                text = stringResource(id = R.string.delivery),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
             HeaderText(
-                text = NumberFormat.getCurrencyInstance().format(deliveryServices).toString().formatDouble(),
+                text = NumberFormat.getCurrencyInstance().format(delivery).toString()
+                    .formatDouble(),
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
@@ -110,7 +111,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 color = White
             )
             HeaderText(
-                text = NumberFormat.getCurrencyInstance().format(total).toString().formatDouble(),
+                text = NumberFormat.getCurrencyInstance().format(total).formatDouble(),
                 color = White
             )
         }

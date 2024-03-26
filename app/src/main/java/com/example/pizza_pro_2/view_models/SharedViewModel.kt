@@ -65,8 +65,7 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
     }
 
     private fun updateCost() {
-        var sum = 0.0
-        state.allPizzas.forEach { sum += it.count * it.cost }
+        val sum = state.orderedPizzas.sumOf { it.count * it.cost }
         updateState(state.copy(itemsCost = sum))
     }
 

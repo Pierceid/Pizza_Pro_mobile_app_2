@@ -3,6 +3,7 @@ package com.example.pizza_pro_2.presentation.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -80,7 +81,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             }
 
             Text(
-                modifier = Modifier.padding(8.dp, 8.dp, 8.dp, 0.dp),
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                 text = pizza.name!!.capitalizeText(),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -90,9 +91,9 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Bottom
             ) {
                 Column {
                     Row {
@@ -118,29 +119,32 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Text(
-                            text = NumberFormat.getCurrencyInstance().format(pizza.cost).toString().formatDouble(),
+                            text = NumberFormat.getCurrencyInstance().format(pizza.cost).toString()
+                                .formatDouble(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red
                         )
                     }
                 }
 
-                IconButton(
-                    modifier = Modifier.size(48.dp),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = Green,
-                        contentColor = White
-                    ),
-                    onClick = {
-                        countState.intValue = 1
-                        onCountChanged(pizza.copy(count = countState.intValue))
+                Box(modifier = Modifier.padding(bottom = 2.dp)) {
+                    IconButton(
+                        modifier = Modifier.size(44.dp),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Green,
+                            contentColor = White
+                        ),
+                        onClick = {
+                            countState.intValue = 1
+                            onCountChanged(pizza.copy(count = countState.intValue))
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(0.8f),
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(id = R.string.add_item)
+                        )
                     }
-                ) {
-                    Icon(
-                        modifier = Modifier.fillMaxSize(0.8f),
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_item)
-                    )
                 }
             }
         }

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -65,6 +66,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
         ) {
+
             TextButton(
                 shape = RectangleShape,
                 contentPadding = PaddingValues(0.dp),
@@ -81,17 +83,37 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(6.dp),
+                    .padding(horizontal = 6.dp, vertical = 4.dp),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text(
-                    text = pizza.name!!.capitalizeText(),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    textDecoration = TextDecoration.Underline
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = pizza.name!!.capitalizeText(),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        textDecoration = TextDecoration.Underline
+                    )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                    IconButton(
+                        modifier = Modifier.size(20.dp),
+                        onClick = {
+                            countState.intValue = 0
+                            onCountChanged(pizza.copy(count = countState.intValue))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(id = R.string.close),
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -110,7 +132,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(6.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
@@ -133,7 +155,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
                     Row(
                         modifier = Modifier
-                            .padding(2.dp)
+                            .padding(horizontal = 2.dp, vertical = 4.dp)
                             .background(
                                 color = MaterialTheme.colorScheme.tertiaryContainer,
                                 shape = RoundedCornerShape(40.dp)
