@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.presentation.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,48 +20,48 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.FeedbackFormEvent
-import com.example.pizza_pro_2.options.Impression
+import com.example.pizza_pro_2.options.Satisfaction
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
-import com.example.pizza_pro_2.ui.theme.Green
-import com.example.pizza_pro_2.ui.theme.Orange
-import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.Sea
 import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.Slate
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
-import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.view_models.FeedbackViewModel
 
 @Composable
 fun FeedbackScreen(navController: NavController) {
     val viewModel = viewModel<FeedbackViewModel>()
     val state = viewModel.state
+    val context = LocalContext.current
+    val toastMessage = stringResource(id = R.string.sent_successfully)
 
-    val iconPainterId = when (state.impression) {
-        Impression.GREAT -> R.drawable.great_160
-        Impression.GOOD -> R.drawable.good_160
-        Impression.DECENT -> R.drawable.decent_160
-        Impression.BAD -> R.drawable.bad_160
-    }
+    val choices = listOf(
+        Satisfaction.AWFUL,
+        Satisfaction.BAD,
+        Satisfaction.GOOD,
+        Satisfaction.GREAT,
+        Satisfaction.AMAZING
+    )
 
-    val iconColor = when (state.impression) {
-        Impression.GREAT -> Green
-        Impression.GOOD -> Yellow
-        Impression.DECENT -> Orange
-        Impression.BAD -> Red
-    }
+    val imagePainterIds = listOf(
+        R.drawable.awful,
+        R.drawable.bad,
+        R.drawable.good,
+        R.drawable.great,
+        R.drawable.amazing
+    )
 
     DefaultColumn {
         Column(
@@ -75,19 +76,12 @@ fun FeedbackScreen(navController: NavController) {
             )
 
             RadioGroup(
-                inRow = false,
-                selected = state.impression,
+                selected = state.satisfaction,
                 onSelectionChange = {
-                    viewModel.onEvent(FeedbackFormEvent.ImpressionChanged(it))
+                    viewModel.onEvent(FeedbackFormEvent.SatisfactionChanged(it))
                 },
-                options = listOf(
-                    Impression.GREAT,
-                    Impression.GOOD,
-                    Impression.DECENT,
-                    Impression.BAD
-                ),
-                iconPainter = painterResource(iconPainterId),
-                iconColor = iconColor
+                choices = choices,
+                imagePainterIds = imagePainterIds
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -170,6 +164,7 @@ fun FeedbackScreen(navController: NavController) {
                     text = stringResource(id = R.string.send),
                     onClick = {
                         viewModel.onEvent(FeedbackFormEvent.Send)
+                        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier.weight(1f)
                 )

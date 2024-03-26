@@ -2,9 +2,11 @@ package com.example.pizza_pro_2.options
 
 import java.io.Serializable
 
-enum class Impression : Serializable {
+enum class Satisfaction : Serializable {
+    LOVING,
+    AMAZING,
     GREAT,
     GOOD,
-    DECENT,
-    BAD
+    BAD,
+    AWFUL
 }

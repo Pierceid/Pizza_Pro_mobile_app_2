@@ -15,8 +15,8 @@ class FeedbackViewModel : ViewModel() {
     fun onEvent(event: FeedbackFormEvent) {
         viewModelScope.launch {
             when (event) {
-                is FeedbackFormEvent.ImpressionChanged -> {
-                    state = state.copy(impression = event.impression)
+                is FeedbackFormEvent.SatisfactionChanged -> {
+                    state = state.copy(satisfaction = event.satisfaction)
                 }
 
                 is FeedbackFormEvent.ThoughtsChanged -> {

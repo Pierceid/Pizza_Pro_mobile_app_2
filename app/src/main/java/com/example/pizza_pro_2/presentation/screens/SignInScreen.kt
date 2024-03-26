@@ -119,12 +119,11 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
             Spacer(modifier = Modifier.height(8.dp))
 
             RadioGroup(
-                inRow = true,
                 selected = state.gender,
                 onSelectionChange = {
                     viewModel.onEvent(SignInFormEvent.GenderChanged(it))
                 },
-                options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE)
+                choices = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
