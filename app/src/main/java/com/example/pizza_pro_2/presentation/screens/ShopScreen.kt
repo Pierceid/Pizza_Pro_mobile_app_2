@@ -12,6 +12,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -19,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.SharedFormEvent
+import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.ShopPizzaCard
@@ -29,6 +34,7 @@ import com.example.pizza_pro_2.view_models.SharedViewModel
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val state = sharedViewModel.state
     val context = LocalContext.current
+    var openedDetail by rememberSaveable { mutableStateOf(false) }
 
     DefaultColumn {
         InputTextField(
@@ -59,17 +65,19 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     pizza = pizza,
                     onCountChanged = {
                         sharedViewModel.onEvent(SharedFormEvent.OnPizzaCountChange(it))
-                        val toastMessage = "( ${pizza.name!!.capitalizeText()} Pizza )\nwas added to your cart !"
+                        val toastMessage =
+                            "( ${pizza.name!!.capitalizeText()} Pizza )\nwas added to your cart !"
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
                         sharedViewModel.onEvent(SharedFormEvent.OnPizzaSelectionChange(pizza))
-                        navController.navigate(DETAIL_GRAPH_ROUTE) {
-                            launchSingleTop = true
-                        }
+                        openedDetail = true
                     }
                 )
             }
         }
+    }
+    if (openedDetail) {
+        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { openedDetail = it })
     }
 }

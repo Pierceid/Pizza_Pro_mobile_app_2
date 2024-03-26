@@ -6,8 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.pizza_pro_2.presentation.screens.CartScreen
-import com.example.pizza_pro_2.presentation.screens.DETAIL_GRAPH_ROUTE
-import com.example.pizza_pro_2.presentation.screens.DetailScreen
 import com.example.pizza_pro_2.presentation.screens.FeedbackScreen
 import com.example.pizza_pro_2.presentation.screens.HOME_GRAPH_ROUTE
 import com.example.pizza_pro_2.presentation.screens.PROFILE_GRAPH_ROUTE
@@ -35,14 +33,6 @@ fun BottomNavGraph(navController: NavHostController, sharedViewModel: SharedView
         }
         composable(route = Screen.Settings.route) {
             SettingsScreen(navController = navController, sharedViewModel = sharedViewModel)
-        }
-        navigation(
-            startDestination = Screen.Detail.route,
-            route = DETAIL_GRAPH_ROUTE
-        ) {
-            composable(route = Screen.Detail.route) {
-                DetailScreen(navController = navController, sharedViewModel = sharedViewModel)
-            }
         }
         navigation(
             startDestination = Screen.Profile.route,

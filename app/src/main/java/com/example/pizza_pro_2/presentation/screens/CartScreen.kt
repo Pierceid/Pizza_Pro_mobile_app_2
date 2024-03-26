@@ -12,12 +12,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.SharedFormEvent
+import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.CartPizzaCard
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
@@ -31,6 +36,7 @@ import java.text.NumberFormat
 @Composable
 fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val state = sharedViewModel.state
+    var openedDetail by rememberSaveable { mutableStateOf(false) }
 
     val items = state.itemsCost
     val delivery = if (items == 0.0) 0 else 5
@@ -51,9 +57,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     },
                     onClick = {
                         sharedViewModel.onEvent(SharedFormEvent.OnPizzaSelectionChange(pizza))
-                        navController.navigate(DETAIL_GRAPH_ROUTE) {
-                            launchSingleTop = true
-                        }
+                        openedDetail = true
                     }
                 )
             }
@@ -125,5 +129,9 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             },
             modifier = Modifier.fillMaxWidth()
         )
+    }
+
+    if (openedDetail) {
+        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { openedDetail = it })
     }
 }

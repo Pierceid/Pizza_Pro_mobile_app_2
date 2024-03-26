@@ -71,9 +71,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                 onClick = onClick
             ) {
                 Image(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(3f / 2f),
+                    modifier = Modifier.aspectRatio(3f / 2f),
                     painter = painterResource(id = pizza.imageSource),
                     contentDescription = stringResource(id = R.string.pizza_image),
                     contentScale = ContentScale.FillBounds

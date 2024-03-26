@@ -26,7 +26,7 @@ fun DefaultColumn(
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val colors = if (isSystemInDarkTheme()) listOf(Azure, Blue) else listOf(Sky, Blue)
+    val colors = if (isSystemInDarkTheme()) listOf(Azure, Blue) else listOf(Sky, Azure)
 
     Box(
         modifier = Modifier
