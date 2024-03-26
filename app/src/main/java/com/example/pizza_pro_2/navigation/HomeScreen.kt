@@ -1,4 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.example.pizza_pro_2.navigation
 
@@ -44,6 +43,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -101,9 +101,7 @@ fun RowScope.AddItem(
     val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
 
     NavigationBarItem(
-        label = {
-            if (!isSelected) Text(text = screen.title)
-        },
+        label = { if (!isSelected) Text(text = screen.title) },
         icon = {
             Icon(
                 painter = painterResource(id = if (isSelected) screen.selectedIconId else screen.unselectedIconId),

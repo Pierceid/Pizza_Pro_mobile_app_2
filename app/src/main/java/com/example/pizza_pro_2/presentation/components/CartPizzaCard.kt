@@ -56,17 +56,14 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
     Card(
         modifier = Modifier
             .height(92.dp)
-            .drawBehind {
-                RoundedCornerShape(8.dp)
-            },
-        border = BorderStroke(1.dp, White)
+            .drawBehind { RoundedCornerShape(8.dp) },
+        border = BorderStroke(width = 1.dp, color = White)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
         ) {
-
             TextButton(
                 shape = RectangleShape,
                 contentPadding = PaddingValues(0.dp),
@@ -145,8 +142,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
                             Text(
                                 text = NumberFormat.getCurrencyInstance().format(pizza.cost)
-                                    .toString()
-                                    .formatDouble(),
+                                    .toString().formatDouble(),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = Red
                             )
@@ -186,7 +182,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         ) {
                             Text(
                                 text = countState.intValue.toString(),
-                                style = MaterialTheme.typography.titleSmall,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }

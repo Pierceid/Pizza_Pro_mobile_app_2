@@ -55,7 +55,7 @@ fun <T> RadioGroup(
                             onSelectionChange(selectedOption.value)
                         },
                         text = option.toString(),
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = White
                     )
                 }
@@ -77,7 +77,7 @@ fun <T> RadioGroup(
                                 onSelectionChange(selectedOption.value)
                             },
                             text = option.toString(),
-                            style = MaterialTheme.typography.titleSmall,
+                            style = MaterialTheme.typography.bodyLarge,
                             color = White
                         )
                     }

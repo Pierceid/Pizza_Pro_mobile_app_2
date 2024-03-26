@@ -10,18 +10,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,12 +37,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.ui.theme.Lime
+import com.example.pizza_pro_2.ui.theme.Magenta
+import com.example.pizza_pro_2.ui.theme.Orange
 import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.Salmon
+import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import com.example.pizza_pro_2.view_models.SharedViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) {
     val pizza = sharedViewModel.state.selectedPizza!!
@@ -57,12 +54,15 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
 
     ModalBottomSheet(
         sheetState = rememberModalBottomSheetState(),
-        onDismissRequest = { onDismiss(false) }
+        onDismissRequest = { onDismiss(false) },
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(horizontal = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TextButton(
@@ -71,66 +71,78 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
                 onClick = { }
             ) {
                 Image(
-                    modifier = Modifier.aspectRatio(4f / 3f),
+                    modifier = Modifier.aspectRatio(3f / 2f),
                     painter = painterResource(id = pizza.imageSource),
                     contentDescription = stringResource(id = R.string.pizza_image),
                     contentScale = ContentScale.FillBounds
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = stringResource(id = R.string.star)
+                        painter = painterResource(id = R.drawable.star_24),
+                        contentDescription = stringResource(id = R.string.star),
+                        tint = Yellow
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Rating: ${pizza.rating.toString().formatDouble()}")
+                    Text(
+                        text = " ${pizza.rating.toString().formatDouble()}",
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
-                Row(modifier = Modifier.fillMaxWidth()) {
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = stringResource(id = R.string.time)
+                        painter = painterResource(id = R.drawable.time_24),
+                        contentDescription = stringResource(id = R.string.time),
+                        tint = Orange
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Time: ${pizza.time} min")
+                    Text(
+                        text = " ${pizza.time} min",
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
-                Row(modifier = Modifier.fillMaxWidth()) {
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = stringResource(id = R.string.flame)
+                        painter = painterResource(id = R.drawable.flame_24),
+                        contentDescription = stringResource(id = R.string.flame),
+                        tint = Red
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Calories: ${pizza.calories} kcal")
+                    Text(
+                        text = " ${pizza.calories} kcal",
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "${pizza.name!!.capitalizeText()} Pizza",
                 style = MaterialTheme.typography.titleMedium,
-                color = Red
+                color = Magenta
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
 
             Column {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = pizza.description!!,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.bodyLarge,
                     maxLines = if (expanded) Int.MAX_VALUE else 5,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Box(Modifier.fillMaxWidth()) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
                     Text(
                         modifier = Modifier
                             .background(

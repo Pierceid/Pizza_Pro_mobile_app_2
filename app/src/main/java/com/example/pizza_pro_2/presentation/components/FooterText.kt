@@ -29,13 +29,13 @@ fun FooterText(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleSmall,
             color = White
         )
         TextButton(onClick = onClick) {
             Text(
                 text = hyperText,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleSmall,
                 color = Magenta,
                 textDecoration = TextDecoration.Underline
             )

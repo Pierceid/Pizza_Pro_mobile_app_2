@@ -55,10 +55,8 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
     val countState = remember { mutableIntStateOf(pizza.count) }
 
     Card(
-        modifier = Modifier.drawBehind {
-            RoundedCornerShape(8.dp)
-        },
-        border = BorderStroke(1.dp, White),
+        modifier = Modifier.drawBehind { RoundedCornerShape(8.dp) },
+        border = BorderStroke(width = 1.dp, color = White),
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -79,7 +77,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             }
 
             Text(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 text = pizza.name!!.capitalizeText(),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -89,7 +87,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                    .padding(start = 8.dp, end = 8.dp, bottom = 6.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Bottom
             ) {
@@ -105,7 +103,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -117,8 +115,8 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Text(
-                            text = NumberFormat.getCurrencyInstance().format(pizza.cost).toString()
-                                .formatDouble(),
+                            text = NumberFormat.getCurrencyInstance().format(pizza.cost)
+                                .toString().formatDouble(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red
                         )
@@ -127,7 +125,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
                 Box(modifier = Modifier.padding(bottom = 2.dp)) {
                     IconButton(
-                        modifier = Modifier.size(44.dp),
+                        modifier = Modifier.size(42.dp),
                         colors = IconButtonDefaults.iconButtonColors(
                             containerColor = Green,
                             contentColor = White

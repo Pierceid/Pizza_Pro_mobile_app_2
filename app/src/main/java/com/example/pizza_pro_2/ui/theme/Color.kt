@@ -2,15 +2,15 @@ package com.example.pizza_pro_2.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple = Color(0xFF700070)
+val Purple = Color(0xFF770077)
 val Magenta = Color(0xFFF000F0)
 val Navy = Color(0xFF000030)
-val Blue = Color(0xFF00006A)
-val Azure = Color(0xFF0000B5)
-val Sky = Color(0xFF0030F0)
+val Blue = Color(0xFF000064)
+val Azure = Color(0xFF0020A4)
+val Sky = Color(0xFF0040E8)
 val Teal = Color(0xFF00B0B0)
 val Sea = Color(0xFF005050)
-val Lime = Color(0xFF50C050)
+val Lime = Color(0xFF60B060)
 val Green = Color(0xFF009000)
 val Yellow = Color(0xFFF0A000)
 val Peach = Color(0xFFF0C090)
