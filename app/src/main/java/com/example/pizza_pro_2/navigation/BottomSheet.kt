@@ -54,14 +54,12 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
 
     ModalBottomSheet(
         sheetState = rememberModalBottomSheetState(),
-        onDismissRequest = { onDismiss(false) },
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        onDismissRequest = { onDismiss(false) }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 12.dp),
+                .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
