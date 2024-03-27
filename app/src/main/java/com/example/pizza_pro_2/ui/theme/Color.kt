@@ -3,7 +3,7 @@ package com.example.pizza_pro_2.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val Purple = Color(0xFF770077)
-val Magenta = Color(0xFFFF00FF)
+val Pink = Color(0xFFFF55FF)
 val Navy = Color(0xFF000022)
 val Blue = Color(0xFF000055)
 val Azure = Color(0xFF0020A0)

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import com.example.pizza_pro_2.ui.theme.Magenta
+import com.example.pizza_pro_2.ui.theme.Pink
 
 @Stable
 @Composable
@@ -15,7 +15,7 @@ fun HeaderText(
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
-    color: Color = Magenta
+    color: Color = Pink
 ) {
     Text(modifier = modifier, text = text, style = textStyle, color = color)
 }
