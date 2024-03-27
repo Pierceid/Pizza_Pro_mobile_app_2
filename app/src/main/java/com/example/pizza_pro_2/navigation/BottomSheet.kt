@@ -37,8 +37,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.ui.theme.Lime
-import com.example.pizza_pro_2.ui.theme.Pink
 import com.example.pizza_pro_2.ui.theme.Orange
+import com.example.pizza_pro_2.ui.theme.Pink
 import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Yellow
@@ -89,6 +89,7 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
                         contentDescription = stringResource(id = R.string.star),
                         tint = Yellow
                     )
+
                     Text(
                         text = " ${pizza.rating.toString().formatDouble()}",
                         style = MaterialTheme.typography.titleSmall
@@ -101,6 +102,7 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
                         contentDescription = stringResource(id = R.string.time),
                         tint = Orange
                     )
+
                     Text(
                         text = " ${pizza.time} min",
                         style = MaterialTheme.typography.titleSmall
@@ -113,6 +115,7 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
                         contentDescription = stringResource(id = R.string.flame),
                         tint = Red
                     )
+
                     Text(
                         text = " ${pizza.calories} kcal",
                         style = MaterialTheme.typography.titleSmall
