@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val Purple = Color(0xFF770077)
 val Pink = Color(0xFFFF55FF)
+val Lilac = Color(0xFFFF88FF)
 val Navy = Color(0xFF000022)
 val Blue = Color(0xFF000055)
 val Azure = Color(0xFF0020A0)

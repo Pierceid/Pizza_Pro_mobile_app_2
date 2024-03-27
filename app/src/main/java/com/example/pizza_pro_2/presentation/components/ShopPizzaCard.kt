@@ -107,7 +107,8 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(id = R.drawable.price_20),
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.price_24),
                             contentDescription = stringResource(id = R.string.add_item),
                             tint = Red
                         )
