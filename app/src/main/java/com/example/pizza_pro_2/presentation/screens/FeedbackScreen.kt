@@ -52,7 +52,7 @@ fun FeedbackScreen(navController: NavController) {
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.sent_successfully)
 
-    val choices = listOf(
+    val options = listOf(
         Satisfaction.AWFUL,
         Satisfaction.BAD,
         Satisfaction.GOOD,
@@ -85,7 +85,7 @@ fun FeedbackScreen(navController: NavController) {
                 onSelectionChange = {
                     viewModel.onEvent(FeedbackFormEvent.SatisfactionChanged(it))
                 },
-                choices = choices,
+                options = options,
                 imagePainterIds = imagePainterIds
             )
 
@@ -295,7 +295,6 @@ fun FeedbackScreen(navController: NavController) {
                     text = stringResource(id = R.string.send),
                     onClick = {
                         viewModel.onEvent(FeedbackFormEvent.Send)
-                        navController.navigate(Screen.Shop.route)
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier.weight(1f)

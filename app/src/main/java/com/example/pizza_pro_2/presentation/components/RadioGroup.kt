@@ -32,7 +32,7 @@ import com.example.pizza_pro_2.ui.theme.White
 fun <T> RadioGroup(
     selected: T,
     onSelectionChange: (T) -> Unit,
-    choices: List<T>,
+    options: List<T>,
     modifier: Modifier = Modifier,
     imagePainterIds: List<Int> = emptyList()
 ) {
@@ -45,7 +45,7 @@ fun <T> RadioGroup(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        choices.forEachIndexed { index, option ->
+        options.forEachIndexed { index, option ->
             val isSelected = selectedOption == option
 
             if (imagePainterIds.isNotEmpty()) {

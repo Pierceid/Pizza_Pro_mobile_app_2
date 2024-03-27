@@ -144,7 +144,7 @@ fun SignUpScreen(navController: NavController, sharedViewModel: SharedViewModel)
                 onSelectionChange = {
                     viewModel.onEvent(SignUpFormEvent.GenderChanged(it))
                 },
-                choices = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE)
+                options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

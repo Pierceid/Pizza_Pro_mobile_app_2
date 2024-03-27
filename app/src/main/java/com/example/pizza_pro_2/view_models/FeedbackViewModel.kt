@@ -40,11 +40,11 @@ class FeedbackViewModel : ViewModel() {
                 }
 
                 is FeedbackFormEvent.Discard -> {
-
+                    state = FeedbackFormState()
                 }
 
                 is FeedbackFormEvent.Send -> {
-
+                    state = FeedbackFormState()
                 }
             }
         }
