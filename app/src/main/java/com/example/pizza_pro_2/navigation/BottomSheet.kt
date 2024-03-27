@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.ui.theme.Lime
-import com.example.pizza_pro_2.ui.theme.Magenta
+import com.example.pizza_pro_2.ui.theme.Pink
 import com.example.pizza_pro_2.ui.theme.Orange
 import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.Salmon
@@ -124,7 +124,7 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
                 modifier = Modifier.fillMaxWidth(),
                 text = "${pizza.name!!.capitalizeText()} Pizza",
                 style = MaterialTheme.typography.titleMedium,
-                color = Magenta
+                color = Pink
             )
 
             Column {
