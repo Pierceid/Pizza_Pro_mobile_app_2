@@ -55,7 +55,7 @@ fun <T> RadioGroup(
                     IconButton(
                         onClick = {
                             selectedOption = option
-                            onSelectionChange(selectedOption)
+                            onSelectionChange(option)
                         }
                     ) {
                         Image(

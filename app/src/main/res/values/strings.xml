@@ -49,14 +49,17 @@
     <string name="delivery">Delivery:</string>
     <string name="total">Total:</string>
     <!-- Feedback -->
-    <string name="what_are_your_impressions_of_the_application">1. What are your impressions of the application?</string>
+    <string name="how_would_you_rate_your_experience">1. How would you rate your experience?</string>
     <string name="great">Great</string>
     <string name="good">Good</string>
     <string name="decent">Decent</string>
     <string name="bad">Bad</string>
-    <string name="do_you_have_any_thoughts_to_share">2. Do you have any thoughts to share?</string>
-    <string name="thoughts">Thoughts</string>
-    <string name="may_we_follow_you_up_on_your_feedback">3. May we follow you up on your feedback?</string>
+    <string name="would_you_tell_us_a_little_more_about_your_experience">2. Would you tell us a little more about your experience?</string>
+    <string name="delivery_time">Delivery time</string>
+    <string name="product_quality">Product quality</string>
+    <string name="customer_service">Customer service</string>
+    <string name="comment">3. Comment (optional)</string>
+    <string name="may_we_follow_you_up_on_your_feedback">4. May we follow you up on your feedback?</string>
     <string name="f_u_switch">Switch</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

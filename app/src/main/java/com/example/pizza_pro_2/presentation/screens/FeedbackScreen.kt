@@ -12,7 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -20,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,6 +36,8 @@ import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
+import com.example.pizza_pro_2.ui.theme.Lime
+import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Sea
 import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.Slate
@@ -70,7 +75,7 @@ fun FeedbackScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeaderText(
-                text = stringResource(id = R.string.what_are_your_impressions_of_the_application),
+                text = stringResource(id = R.string.how_would_you_rate_your_experience),
                 textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -84,28 +89,153 @@ fun FeedbackScreen(navController: NavController) {
                 imagePainterIds = imagePainterIds
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             HeaderText(
-                text = stringResource(id = R.string.do_you_have_any_thoughts_to_share),
+                text = stringResource(id = R.string.would_you_tell_us_a_little_more_about_your_experience),
+                textStyle = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.delivery_time),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = White
+                )
+
+                Row {
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(FeedbackFormEvent.DeliveryTimeChanged(true))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ThumbUp,
+                            contentDescription = stringResource(id = R.string.delivery_time),
+                            tint = if (state.deliveryTime) Lime else Silver
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(FeedbackFormEvent.DeliveryTimeChanged(false))
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.rotate(180f),
+                            imageVector = Icons.Default.ThumbUp,
+                            contentDescription = stringResource(id = R.string.delivery_time),
+                            tint = if (!state.deliveryTime) Salmon else Silver
+                        )
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.product_quality),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = White
+                )
+
+                Row {
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(FeedbackFormEvent.ProductQualityChanged(true))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ThumbUp,
+                            contentDescription = stringResource(id = R.string.product_quality),
+                            tint = if (state.productQuality) Lime else Silver
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(FeedbackFormEvent.ProductQualityChanged(false))
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.rotate(180f),
+                            imageVector = Icons.Default.ThumbUp,
+                            contentDescription = stringResource(id = R.string.product_quality),
+                            tint = if (!state.productQuality) Salmon else Silver
+                        )
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.customer_service),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = White
+                )
+
+                Row {
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(FeedbackFormEvent.CustomerServiceChanged(true))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ThumbUp,
+                            contentDescription = stringResource(id = R.string.customer_service),
+                            tint = if (state.customerService) Lime else Silver
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(FeedbackFormEvent.CustomerServiceChanged(false))
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.rotate(180f),
+                            imageVector = Icons.Default.ThumbUp,
+                            contentDescription = stringResource(id = R.string.customer_service),
+                            tint = if (!state.customerService) Salmon else Silver
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            HeaderText(
+                text = stringResource(id = R.string.comment),
                 textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
 
             InputTextField(
-                value = state.thoughts,
+                value = state.comment,
                 onValueChange = {
-                    viewModel.onEvent(FeedbackFormEvent.ThoughtsChanged(it))
+                    viewModel.onEvent(FeedbackFormEvent.CommentChanged(it))
                 },
-                label = stringResource(id = R.string.thoughts),
+                label = "",
                 leadingIcon = Icons.Default.Create,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
-                    viewModel.onEvent(FeedbackFormEvent.ThoughtsChanged(""))
+                    viewModel.onEvent(FeedbackFormEvent.CommentChanged(""))
                 }
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             HeaderText(
                 text = stringResource(id = R.string.may_we_follow_you_up_on_your_feedback),
@@ -150,7 +280,7 @@ fun FeedbackScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 ActionButton(
@@ -160,10 +290,12 @@ fun FeedbackScreen(navController: NavController) {
                     },
                     modifier = Modifier.weight(1f)
                 )
+
                 ActionButton(
                     text = stringResource(id = R.string.send),
                     onClick = {
                         viewModel.onEvent(FeedbackFormEvent.Send)
+                        navController.navigate(Screen.Shop.route)
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     modifier = Modifier.weight(1f)

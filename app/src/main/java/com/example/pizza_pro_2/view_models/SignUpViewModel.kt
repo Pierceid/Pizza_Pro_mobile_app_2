@@ -62,12 +62,8 @@ class SignUpViewModel(
         val passwordResult = validatePassword.execute(password = state.password)
         val locationResult = validateLocation.execute(location = state.location)
 
-        val hasError = listOf(
-            nameResult,
-            emailResult,
-            passwordResult,
-            locationResult
-        ).any { !it.successful }
+        val hasError = listOf(nameResult, emailResult, passwordResult, locationResult)
+            .any { !it.successful }
 
         if (hasError) {
             state = state.copy(

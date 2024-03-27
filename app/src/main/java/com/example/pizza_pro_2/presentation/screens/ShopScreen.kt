@@ -40,13 +40,13 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
         InputTextField(
             value = state.searchQuery,
             onValueChange = {
-                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(it))
+                sharedViewModel.onEvent(SharedFormEvent.SearchQueryChanged(it))
             },
             label = stringResource(id = R.string.search),
             leadingIcon = Icons.Default.Search,
             trailingIcon = Icons.Default.Clear,
             onTrailingIconClick = {
-                sharedViewModel.onEvent(SharedFormEvent.OnSearchQueryChange(""))
+                sharedViewModel.onEvent(SharedFormEvent.SearchQueryChanged(""))
             }
         )
 
@@ -64,13 +64,13 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 ShopPizzaCard(
                     pizza = pizza,
                     onCountChanged = {
-                        sharedViewModel.onEvent(SharedFormEvent.OnPizzaCountChange(it))
+                        sharedViewModel.onEvent(SharedFormEvent.PizzaCountChanged(it))
                         val toastMessage =
                             "( ${pizza.name!!.capitalizeText()} Pizza )\nwas added to your cart !"
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
-                        sharedViewModel.onEvent(SharedFormEvent.OnPizzaSelectionChange(pizza))
+                        sharedViewModel.onEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
                         openedDetail = true
                     }
                 )

@@ -32,21 +32,24 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
     fun onEvent(event: SharedFormEvent) {
         viewModelScope.launch {
             when (event) {
-                is SharedFormEvent.OnSearchQueryChange -> {
-                    state = state.copy(searchQuery = event.query)
-                    filterPizzas()
+                is SharedFormEvent.SearchQueryChanged -> {
+                    filterPizzas(query = event.query)
                 }
 
-                is SharedFormEvent.OnPizzaCountChange -> {
+                is SharedFormEvent.PizzaCountChanged -> {
                     updatePizzaCount(pizza = event.pizza)
                 }
 
-                is SharedFormEvent.OnPizzaSelectionChange -> {
+                is SharedFormEvent.PizzaSelectionChanged -> {
                     selectPizza(pizza = event.pizza)
                 }
 
-                is SharedFormEvent.Refresh -> {
+                is SharedFormEvent.Discard -> {
+                    clearPizzas()
+                }
 
+                is SharedFormEvent.Order -> {
+                    clearPizzas()
                 }
             }
         }
@@ -71,7 +74,13 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
 
     private fun filterPizzas(query: String = state.searchQuery.lowercase()) {
         val filteredList = state.allPizzas.filter { it.name!!.lowercase().contains(query) }
-        updateState(state.copy(filteredPizzas = filteredList))
+        updateState(state.copy(searchQuery = query, filteredPizzas = filteredList))
+    }
+
+    private fun clearPizzas() {
+        val clearedList = state.allPizzas.map { it.copy(count = 0) }
+        updateState(state.copy(allPizzas = clearedList, orderedPizzas = emptyList()))
+        updateCost()
     }
 
     private fun updateState(newState: SharedFormState) {

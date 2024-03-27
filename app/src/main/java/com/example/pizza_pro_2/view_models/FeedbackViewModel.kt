@@ -19,8 +19,20 @@ class FeedbackViewModel : ViewModel() {
                     state = state.copy(satisfaction = event.satisfaction)
                 }
 
-                is FeedbackFormEvent.ThoughtsChanged -> {
-                    state = state.copy(thoughts = event.thoughts)
+                is FeedbackFormEvent.DeliveryTimeChanged -> {
+                    state = state.copy(deliveryTime = event.deliveryTime)
+                }
+
+                is FeedbackFormEvent.ProductQualityChanged -> {
+                    state = state.copy(productQuality = event.productQuality)
+                }
+
+                is FeedbackFormEvent.CustomerServiceChanged -> {
+                    state = state.copy(customerService = event.customerService)
+                }
+
+                is FeedbackFormEvent.CommentChanged -> {
+                    state = state.copy(comment = event.comment)
                 }
 
                 is FeedbackFormEvent.FollowUpChanged -> {
@@ -28,11 +40,11 @@ class FeedbackViewModel : ViewModel() {
                 }
 
                 is FeedbackFormEvent.Discard -> {
-                    state = FeedbackFormState()
+
                 }
 
                 is FeedbackFormEvent.Send -> {
-                    state = FeedbackFormState()
+
                 }
             }
         }

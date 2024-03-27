@@ -6,6 +6,9 @@ import com.example.pizza_pro_2.options.Satisfaction
 @Stable
 data class FeedbackFormState(
     val satisfaction: Satisfaction = Satisfaction.GOOD,
-    val thoughts: String = "",
+    val deliveryTime: Boolean = true,
+    val productQuality: Boolean = true,
+    val customerService: Boolean = true,
+    val comment: String = "",
     val followUp: Boolean = false
 )
