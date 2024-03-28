@@ -13,7 +13,7 @@ import com.example.pizza_pro_2.presentation.screens.ProfileScreen
 import com.example.pizza_pro_2.presentation.screens.Screen
 import com.example.pizza_pro_2.presentation.screens.SettingsScreen
 import com.example.pizza_pro_2.presentation.screens.ShopScreen
-import com.example.pizza_pro_2.view_models.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 
 @Composable
 fun BottomNavGraph(navController: NavHostController, sharedViewModel: SharedViewModel) {

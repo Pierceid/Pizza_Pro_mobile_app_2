@@ -30,7 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.FeedbackFormEvent
+import com.example.pizza_pro_2.domain.feedback.FeedbackFormEvent
+import com.example.pizza_pro_2.domain.feedback.FeedbackViewModel
 import com.example.pizza_pro_2.options.Satisfaction
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
@@ -44,7 +45,6 @@ import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.Slate
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
-import com.example.pizza_pro_2.view_models.FeedbackViewModel
 
 @Composable
 fun FeedbackScreen(navController: NavController) {

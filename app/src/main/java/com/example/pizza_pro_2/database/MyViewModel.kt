@@ -2,71 +2,101 @@ package com.example.pizza_pro_2.database
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.example.pizza_pro_2.database.events.UserEvent
+import com.example.pizza_pro_2.database.states.AuthState
+import com.example.pizza_pro_2.domain.ValidationEvent
+import com.example.pizza_pro_2.use_cases.ValidateEmail
+import com.example.pizza_pro_2.use_cases.ValidateLocation
+import com.example.pizza_pro_2.use_cases.ValidateName
+import com.example.pizza_pro_2.use_cases.ValidatePassword
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MyViewModel(private val repository: MyRepository) : ViewModel() {
-    var users: Flow<MutableList<User>>
-    var orders: Flow<MutableList<Order>>
-    var user: Flow<User?>
-
-    init {
-        orders = repository.allOrders
-        users = repository.allUsers
-        user = flow { }
-    }
-
-    fun addUser(user: User) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.addUser(user)
+class MyViewModel(
+    private val validateName: ValidateName = ValidateName(),
+    private val validateEmail: ValidateEmail = ValidateEmail(),
+    private val validatePassword: ValidatePassword = ValidatePassword(),
+    private val validateLocation: ValidateLocation = ValidateLocation(),
+    private val dao: MyDao
+) : ViewModel() {
+    private val _state = MutableStateFlow(AuthState())
+    private val validationChannel = Channel<ValidationEvent>()
+    val validationEvents = validationChannel.receiveAsFlow()
+    val state = _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), AuthState())
+    fun onEvent(event: UserEvent) {
+        viewModelScope.launch {
+            when (event) {
+                is UserEvent.SetName -> {
+                    _state.update {
+                        it.copy(name = event.name)
+                    }
+                }
+                is UserEvent.SetEmail -> {
+                    _state.update {
+                        it.copy(email = event.email)
+                    }
+                }
+                is UserEvent.SetPassword -> {
+                    _state.update {
+                        it.copy(password = event.password)
+                    }
+                }
+                is UserEvent.SetLocation -> {
+                    _state.update {
+                        it.copy(location = event.location)
+                    }
+                }
+                is UserEvent.SetGender -> {
+                    _state.update {
+                        it.copy(gender = event.gender)
+                    }
+                }
+                UserEvent.Submit -> {
+                    submitData()
+                }
+            }
         }
     }
 
-    fun addOrder(order: Order) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.addOrder(order)
+    private fun submitData() {
+        val nameResult = validateName.execute(name = _state.value.name)
+        val emailResult = validateEmail.execute(email = _state.value.email)
+        val passwordResult = validatePassword.execute(password = _state.value.password)
+        val locationResult = validateLocation.execute(location = _state.value.location)
+
+        val hasError = listOf(nameResult, emailResult, passwordResult, locationResult)
+            .any { !it.successful }
+
+        if (hasError) {
+            _state.update {
+                it.copy(
+                    nameError = nameResult.errorMessage,
+                    emailError = emailResult.errorMessage,
+                    passwordError = passwordResult.errorMessage,
+                    locationError = locationResult.errorMessage
+                )
+            }
+            return
         }
-    }
 
-    fun removeUser(user: User) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.removeUser(user)
+        viewModelScope.launch {
+            val user = User(
+                name = _state.value.name,
+                email =_state.value. email,
+                password = _state.value.password,
+                location = _state.value.location,
+                gender = _state.value.gender
+            )
+
+            dao.insertUser(user)
+
+            validationChannel.send(ValidationEvent.Success)
         }
-    }
-
-    fun removeOrder(order: Order) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.removeOrder(order)
-        }
-    }
-
-    fun clearAllUsers() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.clearAllUsers()
-        }
-    }
-
-    fun clearAllOrders() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.clearAllOrders()
-        }
-    }
-
-    fun getUser(name: String, email: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            user = repository.getUser(name, email)
-        }
-    }
-
-    fun getFilteredUsers(regex: String) {
-        users = repository.getFilteredUsers(regex)
-    }
-
-    fun getFilteredOrders(regex: String) {
-        orders = repository.getFilteredOrders(regex)
     }
 }

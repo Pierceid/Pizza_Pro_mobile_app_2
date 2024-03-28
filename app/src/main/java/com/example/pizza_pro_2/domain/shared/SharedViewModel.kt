@@ -1,29 +1,16 @@
-package com.example.pizza_pro_2.view_models
+package com.example.pizza_pro_2.domain.shared
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.data.DataSource
-import com.example.pizza_pro_2.domain.SharedFormEvent
-import com.example.pizza_pro_2.domain.SharedFormState
 import com.example.pizza_pro_2.models.Pizza
 import kotlinx.coroutines.launch
 
-class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
-    var state by mutableStateOf(
-        SharedFormState(
-            searchQuery = savedStateHandle.get<String>("search_query") ?: "",
-            selectedPizza = savedStateHandle.get<Pizza>("selected_pizza"),
-            allPizzas = savedStateHandle.get<List<Pizza>>("all_pizzas") ?: DataSource().loadData(),
-            filteredPizzas = savedStateHandle.get<List<Pizza>>("filtered_pizzas") ?: emptyList(),
-            orderedPizzas = savedStateHandle.get<List<Pizza>>("ordered_pizzas") ?: emptyList(),
-            itemsCost = savedStateHandle.get<Double>("items_cost") ?: 0.0
-        )
-    )
-        private set
+class SharedViewModel : ViewModel() {
+    var state by mutableStateOf(SharedFormState(allPizzas = DataSource().loadData()))
 
     init {
         updateState(state.copy(filteredPizzas = state.allPizzas))
@@ -32,6 +19,10 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
     fun onEvent(event: SharedFormEvent) {
         viewModelScope.launch {
             when (event) {
+                is SharedFormEvent.CurrentUserChanged -> {
+                    updateState(state.copy(currentUser = event.user))
+                }
+
                 is SharedFormEvent.SearchQueryChanged -> {
                     filterPizzas(query = event.query)
                 }
@@ -41,7 +32,7 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
                 }
 
                 is SharedFormEvent.PizzaSelectionChanged -> {
-                    selectPizza(pizza = event.pizza)
+                    updateState(state.copy(selectedPizza = event.pizza))
                 }
 
                 is SharedFormEvent.Discard -> {
@@ -53,10 +44,6 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
                 }
             }
         }
-    }
-
-    private fun selectPizza(pizza: Pizza) {
-        updateState(state.copy(selectedPizza = pizza))
     }
 
     private fun updatePizzaCount(pizza: Pizza) {
@@ -85,11 +72,5 @@ class SharedViewModel(private val savedStateHandle: SavedStateHandle) : ViewMode
 
     private fun updateState(newState: SharedFormState) {
         state = newState
-        savedStateHandle["search_query"] = newState.searchQuery
-        savedStateHandle["selected_pizza"] = newState.selectedPizza
-        savedStateHandle["all_pizzas"] = newState.allPizzas
-        savedStateHandle["filtered_pizzas"] = newState.filteredPizzas
-        savedStateHandle["ordered_pizzas"] = newState.orderedPizzas
-        savedStateHandle["items_cost"] = newState.itemsCost
     }
 }

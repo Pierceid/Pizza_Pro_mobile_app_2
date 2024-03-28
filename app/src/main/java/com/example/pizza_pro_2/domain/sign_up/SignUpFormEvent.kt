@@ -1,4 +1,4 @@
-package com.example.pizza_pro_2.domain
+package com.example.pizza_pro_2.domain.sign_up
 
 import com.example.pizza_pro_2.options.Gender
 

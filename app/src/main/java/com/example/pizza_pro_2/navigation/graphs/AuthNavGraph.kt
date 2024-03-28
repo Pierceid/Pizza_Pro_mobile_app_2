@@ -9,7 +9,7 @@ import com.example.pizza_pro_2.presentation.screens.Screen
 import com.example.pizza_pro_2.presentation.screens.IntroScreen
 import com.example.pizza_pro_2.presentation.screens.SignInScreen
 import com.example.pizza_pro_2.presentation.screens.SignUpScreen
-import com.example.pizza_pro_2.view_models.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController, sharedViewModel: SharedViewModel) {
     navigation(

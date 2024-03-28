@@ -22,13 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.SharedFormEvent
+import com.example.pizza_pro_2.domain.shared.SharedFormEvent
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.ShopPizzaCard
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
-import com.example.pizza_pro_2.view_models.SharedViewModel
 
 @Composable
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
@@ -66,7 +66,7 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     onCountChanged = {
                         sharedViewModel.onEvent(SharedFormEvent.PizzaCountChanged(it))
                         val toastMessage =
-                            "( ${pizza.name!!.capitalizeText()} Pizza )\nwas added to your cart !"
+                            "${pizza.name!!.capitalizeText()} Pizza \nwas added to your cart !"
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {

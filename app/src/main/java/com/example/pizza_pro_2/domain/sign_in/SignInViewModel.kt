@@ -1,12 +1,10 @@
-package com.example.pizza_pro_2.view_models
+package com.example.pizza_pro_2.domain.sign_in
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pizza_pro_2.domain.SignInFormEvent
-import com.example.pizza_pro_2.domain.SignInFormState
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.use_cases.ValidateEmail
 import com.example.pizza_pro_2.use_cases.ValidateLocation

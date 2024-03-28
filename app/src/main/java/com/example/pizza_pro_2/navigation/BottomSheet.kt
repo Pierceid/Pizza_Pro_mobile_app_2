@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.example.pizza_pro_2.navigation
 
 import androidx.compose.foundation.Image
@@ -44,7 +42,7 @@ import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
-import com.example.pizza_pro_2.view_models.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

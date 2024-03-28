@@ -1,12 +1,12 @@
-package com.example.pizza_pro_2.view_models
+package com.example.pizza_pro_2.domain.feedback
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pizza_pro_2.domain.FeedbackFormEvent
-import com.example.pizza_pro_2.domain.FeedbackFormState
+import com.example.pizza_pro_2.domain.feedback.FeedbackFormEvent
+import com.example.pizza_pro_2.domain.feedback.FeedbackFormState
 import kotlinx.coroutines.launch
 
 class FeedbackViewModel : ViewModel() {

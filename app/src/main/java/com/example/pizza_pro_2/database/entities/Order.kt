@@ -1,13 +1,15 @@
 package com.example.pizza_pro_2.database.entities
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(tableName = "order_table")
+@Entity(tableName = "orders")
 data class Order(
-    @PrimaryKey(autoGenerate = true) var id: Long = 0L,
-    @ColumnInfo(name = "name") var name: String = "",
-    @ColumnInfo(name = "time") var time: String = "",
-    @ColumnInfo(name = "place") var place: String = "",
-    @ColumnInfo(name = "items") var items: Int = 0,
-    @ColumnInfo(name = "cost") var cost: String = ""
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "time") val time: String,
+    @ColumnInfo(name = "place") val place: String,
+    @ColumnInfo(name = "items") val items: Int,
+    @ColumnInfo(name = "cost") val cost: String,
+    @PrimaryKey(autoGenerate = true) val id: Int
 )

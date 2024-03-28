@@ -9,7 +9,7 @@ import com.example.pizza_pro_2.presentation.screens.AUTH_GRAPH_ROUTE
 import com.example.pizza_pro_2.presentation.screens.HOME_GRAPH_ROUTE
 import com.example.pizza_pro_2.navigation.HomeScreen
 import com.example.pizza_pro_2.presentation.screens.ROOT_GRAPH_ROUTE
-import com.example.pizza_pro_2.view_models.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController) {

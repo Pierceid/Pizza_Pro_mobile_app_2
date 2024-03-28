@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.SharedFormEvent
+import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.CartPizzaCard
@@ -32,7 +32,7 @@ import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
-import com.example.pizza_pro_2.view_models.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import java.text.NumberFormat
 
 @Composable
