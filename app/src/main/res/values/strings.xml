@@ -42,6 +42,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
+    <string name="visibility">Visibility</string>
     <!-- Shop -->
     <string name="search">Search</string>
     <!-- Cart -->

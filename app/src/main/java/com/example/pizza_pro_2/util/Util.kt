@@ -3,6 +3,7 @@ package com.example.pizza_pro_2.util
 import java.util.Locale
 
 class Util {
+
     companion object {
 
         fun String.capitalizeText(): String {

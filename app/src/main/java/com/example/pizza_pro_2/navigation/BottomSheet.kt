@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.navigation
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import com.example.pizza_pro_2.ui.theme.Lime
 import com.example.pizza_pro_2.ui.theme.Orange
 import com.example.pizza_pro_2.ui.theme.Pink
@@ -42,7 +44,6 @@ import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
-import com.example.pizza_pro_2.domain.shared.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,7 +131,9 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
 
             Column {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateContentSize(),
                     text = pizza.description!!,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = if (expanded) Int.MAX_VALUE else 5,
