@@ -45,7 +45,8 @@ fun HomeScreen(sharedViewModel: SharedViewModel) {
                 InfoDialog(
                     title = stringResource(id = R.string.pizza_info),
                     text = stringResource(id = R.string.pizza_card_info),
-                    onDismiss = { isVisible = it }
+                    onDismiss = { isVisible = it },
+                    dismissButton = R.string.cancel
                 )
             }
 

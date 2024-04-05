@@ -2,24 +2,13 @@
     <string name="app_name">Pizza Pro 2</string>
     <string name="example">example</string>
     <string name="background">background</string>
-    <!-- Top app bar -->
-    <string name="basic">Basic</string>
-    <string name="profile">Profile</string>
-    <string name="history">History</string>
-    <string name="about_app">About app</string>
-    <string name="account">Account</string>
-    <string name="log_out">Log out</string>
     <!-- Buttons -->
     <string name="cancel">Cancel</string>
-    <string name="next">Next</string>
-    <string name="apply">Apply</string>
-    <string name="close">Close</string>
+    <string name="ok">OK</string>
+    <string name="discard">Discard</string>
     <string name="order">Order</string>
     <string name="send">Send</string>
-    <string name="discard">Discard</string>
-    <string name="ok">OK</string>
     <string name="clear">Clear</string>
-    <string name="go_back">Go Back</string>
     <!-- App bar -->
     <string name="shop">Shop</string>
     <string name="cart">Cart</string>
@@ -64,6 +53,11 @@
     <string name="f_u_switch">Switch</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <!-- Settings -->
+    <string name="account">Account</string>
+    <string name="history">History</string>
+    <string name="about_app">About app</string>
+    <string name="log_out">Log out</string>
     <!-- Detail -->
     <string name="star">Star</string>
     <string name="time">Time</string>
@@ -83,27 +77,26 @@
     <string name="pizza_image">Pizza image</string>
     <string name="satisfaction_image">Satisfaction image</string>
     <string name="add_item">Add item</string>
-    <string name="plus_sign">+</string>
     <string name="plus">plus</string>
-    <string name="minus_sign">-</string>
     <string name="minus">minus</string>
-    <!-- Pop up window -->
-    <string name="processing">Processing…</string>
+    <string name="plus_sign">+</string>
+    <string name="minus_sign">-</string>
+    <!-- Alert Dialog -->
+    <string name="pizza_info">Pizza info</string>
+    <string name="place_order">Place order</string>
+    <string name="discard_order">Discard order</string>
+    <string name="share_feedback">Share feedback</string>
+    <string name="clear_history">Clear history</string>
+    <string name="pizza_card_info">1. Tap on a pizza image to see more details about it.\n\n2. To add a pizza to your cart, tap on the green plus button.\n\n3. You can adjust the quantity of the pizza using the plus and minus buttons.\n\n4. If you want to remove a pizza from your cart, just tap on the "x" button next to it.</string>
+    <string name="are_you_ready_to_proceed_and_place_your_order">Are you ready to proceed and place your order?</string>
+    <string name="are_you_sure_you_want_to_discard_this_order">Are you sure you want to discard this order?</string>
+    <string name="would_you_like_to_provide_us_with_your_feedback">Would you like to provide us with your feedback?</string>
+    <string name="are_you_sure_you_want_to_remove_all_previously_saved_data">Are you sure you want to remove all previously saved data?</string>
     <string name="ordered_successfully">Order has been\n placed successfully!</string>
-    <string name="cancelled_successfully">Order has been\n cancelled successfully!</string>
+    <string name="discarded_successfully">Order has been\n discarded successfully!</string>
     <string name="removed_successfully">User has been\n removed successfully!</string>
     <string name="sent_successfully">Feedback has been\n sent successfully!</string>
     <string name="cleared_successfully">History has been\n cleared successfully!</string>
-    <string name="check">Check</string>
-    <!-- Alert Dialog -->
-    <string name="place_order">Would you like to place your order?</string>
-    <string name="cancel_order">Would you like to cancel this order?</string>
-    <string name="remove_user">Would you like to remove this user?</string>
-    <string name="share_feedback">Would you like to share your feedback?</string>
-    <string name="clear_history">Would you like to clear the history?</string>
-    <string name="exit_app">Are you sure you want to exit?</string>
-    <string name="pizza_info">Pizza info</string>
-    <string name="pizza_card_info">1. Tap on a pizza image to see more details about it.\n\n2. To add a pizza to your cart, tap on the green plus button.\n\n3. You can adjust the quantity of the pizza using the plus and minus buttons.\n\n4. If you want to remove a pizza from your cart, just tap on the "x" button next to it.</string>
     <!-- Toast -->
     <string name="locked">Screen rotation is locked.</string>
     <string name="unlocked">Screen rotation is unlocked.</string>

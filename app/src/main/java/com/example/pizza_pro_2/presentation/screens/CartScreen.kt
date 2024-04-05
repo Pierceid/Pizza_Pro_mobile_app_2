@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -24,29 +25,54 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.CartPizzaCard
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
+import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
-import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import java.text.NumberFormat
 
 @Composable
 fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+    var isSheetOpened by rememberSaveable { mutableStateOf(false) }
+    var isDialogVisible by rememberSaveable { mutableStateOf(false) }
+    var option by rememberSaveable { mutableIntStateOf(0) }
+
     val state = sharedViewModel.state
     val context = LocalContext.current
-    val toastMessage = stringResource(id = R.string.ordered_successfully)
-    var openedDetail by rememberSaveable { mutableStateOf(false) }
+
+    val dialogTitle =
+        stringResource(id = if (option == 0) R.string.discard_order else R.string.place_order)
+    val dialogText =
+        stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_this_order else R.string.are_you_ready_to_proceed_and_place_your_order)
+    val toastMessage =
+        stringResource(id = if (option == 0) R.string.discarded_successfully else R.string.ordered_successfully)
+    val event = if (option == 0) SharedFormEvent.Discard else SharedFormEvent.Order
 
     val items = state.itemsCost
     val delivery = if (items == 0.0) 0 else 5
     val total = items + delivery
 
     DefaultColumn {
+        if (isDialogVisible) {
+            InfoDialog(
+                title = dialogTitle,
+                text = dialogText,
+                onDismiss = { isDialogVisible = it },
+                dismissButton = R.string.no,
+                onConfirm = {
+                    sharedViewModel.onEvent(event)
+                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                },
+                confirmButton = R.string.yes
+            )
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -61,7 +87,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     },
                     onClick = {
                         sharedViewModel.onEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
-                        openedDetail = true
+                        isSheetOpened = true
                     }
                 )
             }
@@ -130,7 +156,8 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             ActionButton(
                 text = stringResource(id = R.string.discard),
                 onClick = {
-                    sharedViewModel.onEvent(SharedFormEvent.Discard)
+                    option = 0
+                    isDialogVisible = true
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -138,15 +165,15 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             ActionButton(
                 text = stringResource(id = R.string.order),
                 onClick = {
-                    sharedViewModel.onEvent(SharedFormEvent.Order)
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                    option = 1
+                    isDialogVisible = true
                 },
                 modifier = Modifier.weight(1f)
             )
         }
     }
 
-    if (openedDetail) {
-        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { openedDetail = it })
+    if (isSheetOpened) {
+        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { isSheetOpened = it })
     }
 }
