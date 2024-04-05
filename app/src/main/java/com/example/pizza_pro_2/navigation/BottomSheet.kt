@@ -49,7 +49,7 @@ import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 @Composable
 fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) {
     val pizza = sharedViewModel.state.selectedPizza!!
-    var expanded by rememberSaveable { mutableStateOf(false) }
+    var isExpanded by rememberSaveable { mutableStateOf(false) }
 
     ModalBottomSheet(
         sheetState = rememberModalBottomSheetState(),
@@ -136,7 +136,7 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
                         .animateContentSize(),
                     text = pizza.description!!,
                     style = MaterialTheme.typography.bodyLarge,
-                    maxLines = if (expanded) Int.MAX_VALUE else 5,
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 5,
                     overflow = TextOverflow.Ellipsis
                 )
 
@@ -148,13 +148,13 @@ fun BottomSheet(sharedViewModel: SharedViewModel, onDismiss: (Boolean) -> Unit) 
                     Text(
                         modifier = Modifier
                             .background(
-                                color = if (expanded) Salmon else Lime,
+                                color = if (isExpanded) Salmon else Lime,
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(4.dp)
                             .align(Alignment.Center)
-                            .clickable { expanded = !expanded },
-                        text = stringResource(id = if (expanded) R.string.show_less else R.string.show_more)
+                            .clickable { isExpanded = !isExpanded },
+                        text = stringResource(id = if (isExpanded) R.string.show_less else R.string.show_more)
                     )
                 }
             }

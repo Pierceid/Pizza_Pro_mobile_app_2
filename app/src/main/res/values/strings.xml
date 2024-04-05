@@ -102,6 +102,8 @@
     <string name="share_feedback">Would you like to share your feedback?</string>
     <string name="clear_history">Would you like to clear the history?</string>
     <string name="exit_app">Are you sure you want to exit?</string>
+    <string name="pizza_info">Pizza info</string>
+    <string name="pizza_card_info">1. Tap on a pizza image to see more details about it.\n\n2. To add a pizza to your cart, tap on the green plus button.\n\n3. You can adjust the quantity of the pizza using the plus and minus buttons.\n\n4. If you want to remove a pizza from your cart, just tap on the "x" button next to it.</string>
     <!-- Toast -->
     <string name="locked">Screen rotation is locked.</string>
     <string name="unlocked">Screen rotation is unlocked.</string>

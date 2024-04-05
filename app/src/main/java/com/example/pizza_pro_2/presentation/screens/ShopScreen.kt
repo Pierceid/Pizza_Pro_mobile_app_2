@@ -66,7 +66,7 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     onCountChanged = {
                         sharedViewModel.onEvent(SharedFormEvent.PizzaCountChanged(it))
                         val toastMessage =
-                            "${pizza.name!!.capitalizeText()} Pizza \nwas added to your cart !"
+                            "${pizza.name!!.capitalizeText()} Pizza\nwas added to your cart!"
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
