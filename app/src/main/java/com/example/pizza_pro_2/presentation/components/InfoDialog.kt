@@ -9,8 +9,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
+import com.example.pizza_pro_2.ui.theme.Slate
 
 @Composable
 fun InfoDialog(
@@ -20,6 +22,7 @@ fun InfoDialog(
     dismissButton: Int? = null,
     onConfirm: () -> Unit = { },
     confirmButton: Int? = null,
+    color: Color = Slate
 ) {
     AlertDialog(
         onDismissRequest = { onDismiss(false) },
@@ -32,7 +35,7 @@ fun InfoDialog(
         text = {
             Text(
                 modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true),
-                text = text
+                text = text,
             )
         },
         confirmButton = {
@@ -45,7 +48,7 @@ fun InfoDialog(
                 ) {
                     Text(
                         text = stringResource(id = it),
-                        style = MaterialTheme.typography.titleSmall
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
@@ -55,10 +58,11 @@ fun InfoDialog(
                 OutlinedButton(onClick = { onDismiss(false) }) {
                     Text(
                         text = stringResource(id = it),
-                        style = MaterialTheme.typography.titleSmall
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
-        }
+        },
+        containerColor = color
     )
 }

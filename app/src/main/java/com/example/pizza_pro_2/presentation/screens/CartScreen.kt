@@ -32,7 +32,9 @@ import com.example.pizza_pro_2.presentation.components.CartPizzaCard
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InfoDialog
+import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Silver
+import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import java.text.NumberFormat
@@ -53,10 +55,11 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val dialogTitle =
         stringResource(id = if (option == 0) R.string.discard_order else R.string.place_order)
     val dialogText =
-        stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_this_order else R.string.are_you_ready_to_proceed_and_place_your_order)
+        stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_your_order else R.string.would_you_like_to_proceed_and_place_your_order)
     val toastMessage =
-        stringResource(id = if (option == 0) R.string.discarded_successfully else R.string.ordered_successfully)
+        stringResource(id = if (option == 0) R.string.order_discarded_successfully else R.string.order_placed_successfully)
     val event = if (option == 0) SharedFormEvent.Discard else SharedFormEvent.Order
+    val color = if (option == 0) Maroon else Teal
 
     DefaultColumn {
         if (isDialogVisible) {
@@ -69,7 +72,8 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     sharedViewModel.onEvent(event)
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
-                confirmButton = R.string.yes
+                confirmButton = R.string.yes,
+                color = color
             )
         }
 

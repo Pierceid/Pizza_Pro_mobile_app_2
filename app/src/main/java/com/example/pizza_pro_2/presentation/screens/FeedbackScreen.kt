@@ -21,6 +21,11 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -37,9 +42,11 @@ import com.example.pizza_pro_2.options.Satisfaction
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
+import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.Lime
+import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Sea
 import com.example.pizza_pro_2.ui.theme.Silver
@@ -52,7 +59,18 @@ fun FeedbackScreen(navController: NavController) {
     val viewModel = viewModel<FeedbackViewModel>()
     val state = viewModel.state
     val context = LocalContext.current
-    val toastMessage = stringResource(id = R.string.sent_successfully)
+
+    var isDialogVisible by rememberSaveable { mutableStateOf(false) }
+    var option by rememberSaveable { mutableIntStateOf(0) }
+
+    val dialogTitle =
+        stringResource(id = if (option == 0) R.string.discard_feedback else R.string.share_feedback)
+    val dialogText =
+        stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_your_feedback else R.string.would_you_like_to_proceed_and_provide_us_with_your_feedback)
+    val toastMessage =
+        stringResource(id = if (option == 0) R.string.feedback_discarded_successfully else R.string.feedback_sent_successfully)
+    val event = if (option == 0) FeedbackFormEvent.Discard else FeedbackFormEvent.Send
+    val color = if (option == 0) Maroon else Teal
 
     val options = listOf(
         Satisfaction.AWFUL,
@@ -71,6 +89,21 @@ fun FeedbackScreen(navController: NavController) {
     )
 
     DefaultColumn {
+        if (isDialogVisible) {
+            InfoDialog(
+                title = dialogTitle,
+                text = dialogText,
+                onDismiss = { isDialogVisible = it },
+                dismissButton = R.string.no,
+                onConfirm = {
+                    viewModel.onEvent(event)
+                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                },
+                confirmButton = R.string.yes,
+                color = color
+            )
+        }
+
         Column(
             modifier = Modifier.width(480.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -270,9 +303,9 @@ fun FeedbackScreen(navController: NavController) {
                         )
                     },
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = Sea,
+                        checkedThumbColor = Teal,
                         uncheckedThumbColor = Slate,
-                        checkedTrackColor = Teal,
+                        checkedTrackColor = Sea,
                         uncheckedTrackColor = Silver
                     ),
                 )
@@ -290,7 +323,8 @@ fun FeedbackScreen(navController: NavController) {
                 ActionButton(
                     text = stringResource(id = R.string.discard),
                     onClick = {
-                        viewModel.onEvent(FeedbackFormEvent.Discard)
+                        option = 0
+                        isDialogVisible = true
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -298,8 +332,8 @@ fun FeedbackScreen(navController: NavController) {
                 ActionButton(
                     text = stringResource(id = R.string.send),
                     onClick = {
-                        viewModel.onEvent(FeedbackFormEvent.Send)
-                        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                        option = 1
+                        isDialogVisible = true
                     },
                     modifier = Modifier.weight(1f)
                 )
