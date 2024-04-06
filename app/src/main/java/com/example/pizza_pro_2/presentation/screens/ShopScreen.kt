@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
@@ -47,7 +48,8 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             trailingIcon = Icons.Default.Clear,
             onTrailingIconClick = {
                 sharedViewModel.onEvent(SharedFormEvent.SearchQueryChanged(""))
-            }
+            },
+            imeAction = ImeAction.Done
         )
 
         Spacer(modifier = Modifier.height(12.dp))

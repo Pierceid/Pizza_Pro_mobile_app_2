@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -234,7 +235,8 @@ fun FeedbackScreen(navController: NavController) {
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
                     viewModel.onEvent(FeedbackFormEvent.CommentChanged(""))
-                }
+                },
+                imeAction = ImeAction.Done
             )
 
             Spacer(modifier = Modifier.height(30.dp))

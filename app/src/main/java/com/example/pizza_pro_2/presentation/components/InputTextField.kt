@@ -31,6 +31,7 @@ fun InputTextField(
     onLeadingIconClick: () -> Unit = { },
     onTrailingIconClick: () -> Unit = { },
     keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Next,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     OutlinedTextField(
@@ -59,7 +60,7 @@ fun InputTextField(
                 )
             }
         },
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = ImeAction.Next),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         visualTransformation = visualTransformation,
         shape = RoundedCornerShape(16.dp)
     )
