@@ -46,6 +46,10 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val state = sharedViewModel.state
     val context = LocalContext.current
 
+    val items = state.itemsCost
+    val delivery = if (items == 0.0) 0 else 5
+    val total = items + delivery
+
     val dialogTitle =
         stringResource(id = if (option == 0) R.string.discard_order else R.string.place_order)
     val dialogText =
@@ -53,10 +57,6 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     val toastMessage =
         stringResource(id = if (option == 0) R.string.discarded_successfully else R.string.ordered_successfully)
     val event = if (option == 0) SharedFormEvent.Discard else SharedFormEvent.Order
-
-    val items = state.itemsCost
-    val delivery = if (items == 0.0) 0 else 5
-    val total = items + delivery
 
     DefaultColumn {
         if (isDialogVisible) {

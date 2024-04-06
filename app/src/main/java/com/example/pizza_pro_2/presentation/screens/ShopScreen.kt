@@ -33,9 +33,10 @@ import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 
 @Composable
 fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+    var isSheetOpened by rememberSaveable { mutableStateOf(false) }
+
     val state = sharedViewModel.state
     val context = LocalContext.current
-    var openedDetail by rememberSaveable { mutableStateOf(false) }
 
     DefaultColumn {
         InputTextField(
@@ -73,13 +74,14 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     },
                     onClick = {
                         sharedViewModel.onEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
-                        openedDetail = true
+                        isSheetOpened = true
                     }
                 )
             }
         }
     }
-    if (openedDetail) {
-        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { openedDetail = it })
+
+    if (isSheetOpened) {
+        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { isSheetOpened = it })
     }
 }
