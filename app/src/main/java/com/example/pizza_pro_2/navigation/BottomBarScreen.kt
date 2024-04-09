@@ -1,6 +1,7 @@
 package com.example.pizza_pro_2.navigation
 
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.presentation.screens.SETTINGS_GRAPH_ROUTE
 import com.example.pizza_pro_2.presentation.screens.Screen
 
 sealed class BottomBarScreen(
@@ -29,7 +30,7 @@ sealed class BottomBarScreen(
     )
 
     data object Settings: BottomBarScreen(
-        route = Screen.Settings.route,
+        route = SETTINGS_GRAPH_ROUTE,
         title = "Settings",
         selectedIconId = R.drawable.filled_settings_24,
         unselectedIconId = R.drawable.outlined_settings_24

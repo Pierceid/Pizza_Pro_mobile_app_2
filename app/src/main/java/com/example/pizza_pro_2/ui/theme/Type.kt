@@ -16,12 +16,12 @@ val Typography = Typography(
     headlineMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 36.sp
+        fontSize = 40.sp
     ),
     headlineSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 28.sp
+        fontSize = 36.sp
     ),
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,

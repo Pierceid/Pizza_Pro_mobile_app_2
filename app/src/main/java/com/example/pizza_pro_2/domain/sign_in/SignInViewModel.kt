@@ -45,7 +45,6 @@ class SignInViewModel(
     private fun submitData() {
         val emailResult = validateEmail.execute(email = state.email)
         val passwordResult = validatePassword.execute(password = state.password)
-
         val hasError = listOf(emailResult, passwordResult).any { !it.successful }
 
         if (hasError) {

@@ -110,7 +110,7 @@ fun SignUpScreen(
                 ErrorText(message = state.nameError)
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             InputTextField(
                 value = state.email,
@@ -131,7 +131,7 @@ fun SignUpScreen(
                 ErrorText(message = state.emailError)
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -174,7 +174,7 @@ fun SignUpScreen(
                 ErrorText(message = state.passwordError)
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             RadioGroup(
                 selected = state.gender,
@@ -185,7 +185,7 @@ fun SignUpScreen(
                 modifier = Modifier.padding(end = 16.dp)
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             ActionButton(
                 text = stringResource(id = R.string.sign_up),

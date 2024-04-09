@@ -32,7 +32,8 @@ fun InputTextField(
     onTrailingIconClick: () -> Unit = { },
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    readOnly: Boolean = false
 ) {
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
@@ -62,6 +63,7 @@ fun InputTextField(
         },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         visualTransformation = visualTransformation,
-        shape = RoundedCornerShape(16.dp)
+        readOnly = readOnly,
+        shape = RoundedCornerShape(16.dp),
     )
 }

@@ -3,7 +3,9 @@ package com.example.pizza_pro_2.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -53,7 +56,11 @@ fun HomeScreen(sharedState: SharedFormState, onSharedEvent: (SharedFormEvent) ->
             }
 
             Box(modifier = Modifier.padding(innerPadding)) {
-                BottomNavGraph(navController = navController, sharedState = sharedState, onSharedEvent = onSharedEvent)
+                BottomNavGraph(
+                    navController = navController,
+                    sharedState = sharedState,
+                    onSharedEvent = onSharedEvent
+                )
             }
         }
     )
@@ -64,22 +71,37 @@ fun HomeScreen(sharedState: SharedFormState, onSharedEvent: (SharedFormEvent) ->
 fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
     val header = when (currentDestination?.route) {
         Screen.Shop.route -> stringResource(id = R.string.shop)
         Screen.Cart.route -> stringResource(id = R.string.cart)
         Screen.Feedback.route -> stringResource(id = R.string.feedback)
         Screen.Settings.route -> stringResource(id = R.string.settings)
+        Screen.Account.route -> stringResource(id = R.string.account)
+        Screen.History.route -> stringResource(id = R.string.history)
+        Screen.AboutApp.route -> stringResource(id = R.string.about_app)
         else -> ""
     }
+    val isChild = arrayOf(Screen.Account.route, Screen.History.route, Screen.AboutApp.route)
+        .contains(currentDestination?.route)
 
     TopAppBar(
         title = { Text(text = header) },
+        navigationIcon = {
+            if (isChild) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        modifier = Modifier.size(32.dp),
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.back)
+                    )
+                }
+            }
+        },
         actions = {
             IconButton(onClick = { onDialogShow(true) }) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    contentDescription = stringResource(id = R.string.star)
+                    contentDescription = stringResource(id = R.string.pizza_info)
                 )
             }
         }
@@ -88,14 +110,14 @@ fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
 
 @Composable
 fun BottomBar(navController: NavHostController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
     val screens = listOf(
         BottomBarScreen.Shop,
         BottomBarScreen.Cart,
         BottomBarScreen.Feedback,
         BottomBarScreen.Settings
     )
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
 
     NavigationBar {
         screens.forEach { screen ->

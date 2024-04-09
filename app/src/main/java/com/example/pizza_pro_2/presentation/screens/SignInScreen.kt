@@ -98,7 +98,7 @@ fun SignInScreen(
                 ErrorText(message = state.emailError)
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -141,7 +141,7 @@ fun SignInScreen(
                 ErrorText(message = state.passwordError)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             ActionButton(
                 text = stringResource(id = R.string.sign_in),

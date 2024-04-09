@@ -56,7 +56,6 @@ class SignUpViewModel(
         val nameResult = validateName.execute(name = state.name)
         val emailResult = validateEmail.execute(email = state.email)
         val passwordResult = validatePassword.execute(password = state.password)
-
         val hasError = listOf(nameResult, emailResult, passwordResult).any { !it.successful }
 
         if (hasError) {

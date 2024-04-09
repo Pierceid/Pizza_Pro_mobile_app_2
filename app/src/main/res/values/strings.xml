@@ -27,10 +27,11 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="location">Location</string>
+    <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
+    <string name="location">Location</string>
     <string name="visibility">Visibility</string>
     <!-- Shop -->
     <string name="search">Search</string>
@@ -67,7 +68,6 @@
     <string name="show_more">Show more</string>
     <!-- Profile -->
     <string name="profile_picture">Profile picture</string>
-    <string name="gender">Gender</string>
     <!-- History -->
     <string name="database_tables">Database tables</string>
     <string name="users">Users</string>
@@ -103,4 +103,5 @@
     <string name="feedback_sent_successfully">Feedback has been\n sent successfully!</string>
     <string name="feedback_discarded_successfully">Feedback has been\n discarded successfully!</string>
     <string name="history_cleared_successfully">History has been\n cleared successfully!</string>
+    <string name="back">back</string>
 </resources>

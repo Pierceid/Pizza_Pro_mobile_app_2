@@ -56,13 +56,12 @@ import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
 fun FeedbackScreen(navController: NavController) {
-    val viewModel = viewModel<FeedbackViewModel>()
-    val state = viewModel.state
-    val context = LocalContext.current
-
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
+    val viewModel = viewModel<FeedbackViewModel>()
+    val state = viewModel.state
+    val context = LocalContext.current
     val dialogTitle =
         stringResource(id = if (option == 0) R.string.discard_feedback else R.string.share_feedback)
     val dialogText =
@@ -71,7 +70,6 @@ fun FeedbackScreen(navController: NavController) {
         stringResource(id = if (option == 0) R.string.feedback_discarded_successfully else R.string.feedback_sent_successfully)
     val event = if (option == 0) FeedbackFormEvent.Discard else FeedbackFormEvent.Send
     val color = if (option == 0) Maroon else Teal
-
     val options = listOf(
         Satisfaction.AWFUL,
         Satisfaction.BAD,
@@ -79,7 +77,6 @@ fun FeedbackScreen(navController: NavController) {
         Satisfaction.GREAT,
         Satisfaction.AMAZING
     )
-
     val imagePainterIds = listOf(
         R.drawable.awful,
         R.drawable.bad,
@@ -125,7 +122,7 @@ fun FeedbackScreen(navController: NavController) {
                 imagePainterIds = imagePainterIds
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier)
 
             HeaderText(
                 text = stringResource(id = R.string.would_you_tell_us_a_little_more_about_your_experience),
@@ -250,7 +247,7 @@ fun FeedbackScreen(navController: NavController) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier)
 
             HeaderText(
                 text = stringResource(id = R.string.comment),
@@ -272,7 +269,7 @@ fun FeedbackScreen(navController: NavController) {
                 imeAction = ImeAction.Done
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             HeaderText(
                 text = stringResource(id = R.string.may_we_follow_you_up_on_your_feedback),
@@ -317,7 +314,7 @@ fun FeedbackScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 ActionButton(

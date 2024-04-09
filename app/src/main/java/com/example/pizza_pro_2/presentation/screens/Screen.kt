@@ -3,7 +3,7 @@ package com.example.pizza_pro_2.presentation.screens
 const val ROOT_GRAPH_ROUTE = "root"
 const val AUTH_GRAPH_ROUTE = "auth"
 const val HOME_GRAPH_ROUTE = "home"
-const val PROFILE_GRAPH_ROUTE = "profile"
+const val SETTINGS_GRAPH_ROUTE = "settings"
 
 sealed class Screen (val route: String) {
     data object Intro : Screen(route = "intro_screen")
@@ -13,5 +13,7 @@ sealed class Screen (val route: String) {
     data object Cart : Screen(route = "cart_screen")
     data object Feedback : Screen(route = "feedback_screen")
     data object Settings : Screen(route = "settings_screen")
-    data object Profile : Screen(route = "profile_screen")
+    data object Account : Screen(route = "account_screen")
+    data object History : Screen(route = "history_screen")
+    data object AboutApp : Screen(route = "about_aApp_screen")
 }

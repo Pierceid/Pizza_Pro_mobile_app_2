@@ -46,7 +46,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .border(border = BorderStroke(width = 1.dp, color = White))
                     .clickable {
-
+                        navController.navigate(Screen.Account.route)
                     },
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -82,7 +82,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .border(border = BorderStroke(width = 1.dp, color = White))
                     .clickable {
-
+                        navController.navigate(Screen.History.route)
                     },
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -118,7 +118,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .border(border = BorderStroke(width = 1.dp, color = White))
                     .clickable {
-
+                        navController.navigate(Screen.AboutApp.route)
                     },
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
