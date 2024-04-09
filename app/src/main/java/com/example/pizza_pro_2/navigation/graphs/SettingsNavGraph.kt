@@ -8,7 +8,7 @@ import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.presentation.screens.AboutAppScreen
 import com.example.pizza_pro_2.presentation.screens.HistoryScreen
-import com.example.pizza_pro_2.presentation.screens.ProfileScreen
+import com.example.pizza_pro_2.presentation.screens.AccountScreen
 import com.example.pizza_pro_2.presentation.screens.SETTINGS_GRAPH_ROUTE
 import com.example.pizza_pro_2.presentation.screens.Screen
 import com.example.pizza_pro_2.presentation.screens.SettingsScreen
@@ -26,7 +26,7 @@ fun NavGraphBuilder.settingsNavGraph(
             SettingsScreen(navController = navController, sharedState = sharedState, onSharedEvent = onSharedEvent)
         }
         composable(route = Screen.Account.route) {
-            ProfileScreen(navController = navController, sharedState = sharedState, onSharedEvent = onSharedEvent)
+            AccountScreen(navController = navController, sharedState = sharedState, onSharedEvent = onSharedEvent)
         }
         composable(route = Screen.History.route) {
             HistoryScreen(navController = navController, sharedState = sharedState, onSharedEvent = onSharedEvent)

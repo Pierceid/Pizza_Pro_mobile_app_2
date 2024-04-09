@@ -37,7 +37,7 @@ import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
-fun ProfileScreen(
+fun AccountScreen(
     navController: NavController,
     sharedState: SharedFormState,
     onSharedEvent: (SharedFormEvent) -> Unit
@@ -129,7 +129,7 @@ fun ProfileScreen(
             ActionButton(
                 text = stringResource(id = R.string.log_out),
                 onClick = {
-                    navController.navigate(AUTH_GRAPH_ROUTE)
+
                 },
                 modifier = Modifier.weight(1f)
             )
