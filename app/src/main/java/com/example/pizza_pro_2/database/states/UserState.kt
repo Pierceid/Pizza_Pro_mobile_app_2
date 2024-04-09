@@ -13,7 +13,5 @@ data class AuthState(
     val emailError: String? = null,
     val password: String = "",
     val passwordError: String? = null,
-    val location: String = "",
-    val locationError: String? = null,
     val gender: Gender = Gender.OTHER
 )

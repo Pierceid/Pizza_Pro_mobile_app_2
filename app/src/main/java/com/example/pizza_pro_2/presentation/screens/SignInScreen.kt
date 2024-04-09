@@ -13,15 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,39 +28,36 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.domain.sign_in.SignInFormEvent
-import com.example.pizza_pro_2.domain.sign_in.SignInFormState
 import com.example.pizza_pro_2.domain.sign_in.SignInViewModel
-import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.FooterText
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
-import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
-fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+fun SignInScreen(
+    navController: NavHostController,
+    sharedState: SharedFormState,
+    onSharedEvent: (SharedFormEvent) -> Unit
+) {
     val viewModel = viewModel<SignInViewModel>()
     val state = viewModel.state
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_in_successfully)
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    setCurrentUser(state, sharedViewModel)
-
                     navController.navigate(HOME_GRAPH_ROUTE) {
                         popUpTo(Screen.Intro.route) {
                             inclusive = true
@@ -126,7 +118,8 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
                         viewModel.onEvent(SignInFormEvent.PasswordChanged(""))
                     },
                     keyboardType = KeyboardType.Password,
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+                    imeAction = ImeAction.Done,
+                    visualTransformation = if (state.passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -135,8 +128,10 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
                     modifier = Modifier
                         .size(40.dp)
                         .padding(top = 4.dp)
-                        .clickable { passwordVisible = !passwordVisible },
-                    painter = painterResource(id = if (passwordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
+                        .clickable {
+                            viewModel.onEvent(SignInFormEvent.OnPasswordVisibilityChanged(!state.passwordVisible))
+                        },
+                    painter = painterResource(id = if (state.passwordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
                     contentDescription = stringResource(id = R.string.visibility),
                     tint = White
                 )
@@ -145,38 +140,6 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
             if (state.passwordError != null) {
                 ErrorText(message = state.passwordError)
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            InputTextField(
-                value = state.location,
-                onValueChange = {
-                    viewModel.onEvent(SignInFormEvent.LocationChanged(it))
-                },
-                label = stringResource(id = R.string.location),
-                isError = state.locationError != null,
-                leadingIcon = Icons.Default.LocationOn,
-                trailingIcon = Icons.Default.Clear,
-                onTrailingIconClick = {
-                    viewModel.onEvent(SignInFormEvent.LocationChanged(""))
-                },
-                imeAction = ImeAction.Done
-            )
-
-            if (state.locationError != null) {
-                ErrorText(message = state.locationError)
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            RadioGroup(
-                selected = state.gender,
-                onSelectionChange = {
-                    viewModel.onEvent(SignInFormEvent.GenderChanged(it))
-                },
-                options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE),
-                modifier = Modifier.padding(end = 16.dp)
-            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -205,16 +168,4 @@ fun SignInScreen(navController: NavController, sharedViewModel: SharedViewModel)
             )
         }
     }
-}
-
-private fun setCurrentUser(state: SignInFormState, sharedViewModel: SharedViewModel) {
-    val user = User(
-        name = "Jozef Potato",
-        email = state.email,
-        password = state.password,
-        location = state.location,
-        gender = state.gender
-    )
-
-    sharedViewModel.onEvent(SharedFormEvent.CurrentUserChanged(user))
 }

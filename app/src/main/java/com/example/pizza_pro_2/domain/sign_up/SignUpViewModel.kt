@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.use_cases.ValidateEmail
-import com.example.pizza_pro_2.use_cases.ValidateLocation
 import com.example.pizza_pro_2.use_cases.ValidateName
 import com.example.pizza_pro_2.use_cases.ValidatePassword
 import kotlinx.coroutines.channels.Channel
@@ -17,8 +16,7 @@ import kotlinx.coroutines.launch
 class SignUpViewModel(
     private val validateName: ValidateName = ValidateName(),
     private val validateEmail: ValidateEmail = ValidateEmail(),
-    private val validatePassword: ValidatePassword = ValidatePassword(),
-    private val validateLocation: ValidateLocation = ValidateLocation()
+    private val validatePassword: ValidatePassword = ValidatePassword()
 ) : ViewModel() {
     var state: SignUpFormState by mutableStateOf(SignUpFormState())
     private val validationChannel = Channel<ValidationEvent>()
@@ -39,8 +37,8 @@ class SignUpViewModel(
                     state = state.copy(password = event.password)
                 }
 
-                is SignUpFormEvent.LocationChanged -> {
-                    state = state.copy(location = event.location)
+                is SignUpFormEvent.OnPasswordVisibilityChanged -> {
+                    state = state.copy(passwordVisible = event.isVisible)
                 }
 
                 is SignUpFormEvent.GenderChanged -> {
@@ -58,17 +56,14 @@ class SignUpViewModel(
         val nameResult = validateName.execute(name = state.name)
         val emailResult = validateEmail.execute(email = state.email)
         val passwordResult = validatePassword.execute(password = state.password)
-        val locationResult = validateLocation.execute(location = state.location)
 
-        val hasError = listOf(nameResult, emailResult, passwordResult, locationResult)
-            .any { !it.successful }
+        val hasError = listOf(nameResult, emailResult, passwordResult).any { !it.successful }
 
         if (hasError) {
             state = state.copy(
                 nameError = nameResult.errorMessage,
                 emailError = emailResult.errorMessage,
-                passwordError = passwordResult.errorMessage,
-                locationError = locationResult.errorMessage
+                passwordError = passwordResult.errorMessage
             )
             return
         }

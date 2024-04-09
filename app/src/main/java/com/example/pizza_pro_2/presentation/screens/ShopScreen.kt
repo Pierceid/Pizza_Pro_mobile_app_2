@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.InputTextField
@@ -32,23 +32,26 @@ import com.example.pizza_pro_2.presentation.components.ShopPizzaCard
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 
 @Composable
-fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+fun ShopScreen(
+    navController: NavController,
+    sharedState: SharedFormState,
+    onSharedEvent: (SharedFormEvent) -> Unit
+) {
     var isSheetOpened by rememberSaveable { mutableStateOf(false) }
 
-    val state = sharedViewModel.state
     val context = LocalContext.current
 
     DefaultColumn {
         InputTextField(
-            value = state.searchQuery,
+            value = sharedState.searchQuery,
             onValueChange = {
-                sharedViewModel.onEvent(SharedFormEvent.SearchQueryChanged(it))
+                onSharedEvent(SharedFormEvent.SearchQueryChanged(it))
             },
             label = stringResource(id = R.string.search),
             leadingIcon = Icons.Default.Search,
             trailingIcon = Icons.Default.Clear,
             onTrailingIconClick = {
-                sharedViewModel.onEvent(SharedFormEvent.SearchQueryChanged(""))
+                onSharedEvent(SharedFormEvent.SearchQueryChanged(""))
             },
             imeAction = ImeAction.Done
         )
@@ -63,17 +66,17 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = state.filteredPizzas, key = { it.id!! }) { pizza ->
+            items(items = sharedState.filteredPizzas, key = { it.id!! }) { pizza ->
                 ShopPizzaCard(
                     pizza = pizza,
                     onCountChanged = {
-                        sharedViewModel.onEvent(SharedFormEvent.PizzaCountChanged(it))
+                        onSharedEvent(SharedFormEvent.PizzaCountChanged(it))
                         val toastMessage =
                             "${pizza.name!!.capitalizeText()} Pizza\nwas added to your cart!"
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
-                        sharedViewModel.onEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
+                        onSharedEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
                         isSheetOpened = true
                     }
                 )
@@ -82,6 +85,6 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     }
 
     if (isSheetOpened) {
-        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { isSheetOpened = it })
+        BottomSheet(sharedState = sharedState, onDismiss = { isSheetOpened = it })
     }
 }

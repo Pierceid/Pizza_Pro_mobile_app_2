@@ -7,7 +7,6 @@ import com.example.pizza_pro_2.database.events.UserEvent
 import com.example.pizza_pro_2.database.states.AuthState
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.use_cases.ValidateEmail
-import com.example.pizza_pro_2.use_cases.ValidateLocation
 import com.example.pizza_pro_2.use_cases.ValidateName
 import com.example.pizza_pro_2.use_cases.ValidatePassword
 import kotlinx.coroutines.channels.Channel
@@ -22,7 +21,6 @@ class MyViewModel(
     private val validateName: ValidateName = ValidateName(),
     private val validateEmail: ValidateEmail = ValidateEmail(),
     private val validatePassword: ValidatePassword = ValidatePassword(),
-    private val validateLocation: ValidateLocation = ValidateLocation(),
     private val dao: MyDao
 ) : ViewModel() {
     private val _state = MutableStateFlow(AuthState())
@@ -37,26 +35,25 @@ class MyViewModel(
                         it.copy(name = event.name)
                     }
                 }
+
                 is UserEvent.SetEmail -> {
                     _state.update {
                         it.copy(email = event.email)
                     }
                 }
+
                 is UserEvent.SetPassword -> {
                     _state.update {
                         it.copy(password = event.password)
                     }
                 }
-                is UserEvent.SetLocation -> {
-                    _state.update {
-                        it.copy(location = event.location)
-                    }
-                }
+
                 is UserEvent.SetGender -> {
                     _state.update {
                         it.copy(gender = event.gender)
                     }
                 }
+
                 UserEvent.Submit -> {
                     submitData()
                 }
@@ -68,18 +65,15 @@ class MyViewModel(
         val nameResult = validateName.execute(name = _state.value.name)
         val emailResult = validateEmail.execute(email = _state.value.email)
         val passwordResult = validatePassword.execute(password = _state.value.password)
-        val locationResult = validateLocation.execute(location = _state.value.location)
 
-        val hasError = listOf(nameResult, emailResult, passwordResult, locationResult)
-            .any { !it.successful }
+        val hasError = listOf(nameResult, emailResult, passwordResult).any { !it.successful }
 
         if (hasError) {
             _state.update {
                 it.copy(
                     nameError = nameResult.errorMessage,
                     emailError = emailResult.errorMessage,
-                    passwordError = passwordResult.errorMessage,
-                    locationError = locationResult.errorMessage
+                    passwordError = passwordResult.errorMessage
                 )
             }
             return
@@ -88,9 +82,8 @@ class MyViewModel(
         viewModelScope.launch {
             val user = User(
                 name = _state.value.name,
-                email =_state.value. email,
+                email = _state.value.email,
                 password = _state.value.password,
-                location = _state.value.location,
                 gender = _state.value.gender
             )
 

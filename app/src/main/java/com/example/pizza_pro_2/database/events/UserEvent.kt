@@ -6,7 +6,6 @@ sealed interface UserEvent {
     data class SetName(val name: String): UserEvent
     data class SetEmail(val email: String): UserEvent
     data class SetPassword(val password: String): UserEvent
-    data class SetLocation(val location: String): UserEvent
     data class SetGender(val gender: Gender): UserEvent
     data object Submit: UserEvent
 }

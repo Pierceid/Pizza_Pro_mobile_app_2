@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.CartPizzaCard
@@ -40,18 +40,19 @@ import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 import java.text.NumberFormat
 
 @Composable
-fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
+fun CartScreen(
+    navController: NavController,
+    sharedState: SharedFormState,
+    onSharedEvent: (SharedFormEvent) -> Unit
+) {
     var isSheetOpened by rememberSaveable { mutableStateOf(false) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
-    val state = sharedViewModel.state
     val context = LocalContext.current
-
-    val items = state.itemsCost
+    val items = sharedState.itemsCost
     val delivery = if (items == 0.0) 0 else 5
     val total = items + delivery
-
     val dialogTitle =
         stringResource(id = if (option == 0) R.string.discard_order else R.string.place_order)
     val dialogText =
@@ -69,7 +70,7 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 onDismiss = { isDialogVisible = it },
                 dismissButton = R.string.no,
                 onConfirm = {
-                    sharedViewModel.onEvent(event)
+                    onSharedEvent(event)
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
@@ -83,14 +84,14 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = state.orderedPizzas, key = { it.id!! }) { pizza ->
+            items(items = sharedState.orderedPizzas, key = { it.id!! }) { pizza ->
                 CartPizzaCard(
                     pizza = pizza,
                     onCountChanged = {
-                        sharedViewModel.onEvent(SharedFormEvent.PizzaCountChanged(it))
+                        onSharedEvent(SharedFormEvent.PizzaCountChanged(it))
                     },
                     onClick = {
-                        sharedViewModel.onEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
+                        onSharedEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
                         isSheetOpened = true
                     }
                 )
@@ -178,6 +179,6 @@ fun CartScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     }
 
     if (isSheetOpened) {
-        BottomSheet(sharedViewModel = sharedViewModel, onDismiss = { isSheetOpened = it })
+        BottomSheet(sharedState = sharedState, onDismiss = { isSheetOpened = it })
     }
 }

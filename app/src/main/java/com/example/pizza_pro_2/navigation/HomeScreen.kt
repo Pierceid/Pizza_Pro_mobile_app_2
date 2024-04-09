@@ -27,15 +27,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.shared.SharedViewModel
+import com.example.pizza_pro_2.domain.shared.SharedFormEvent
+import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.navigation.graphs.BottomNavGraph
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.screens.Screen
 
 @Composable
-fun HomeScreen(sharedViewModel: SharedViewModel) {
-    val navController = rememberNavController()
+fun HomeScreen(sharedState: SharedFormState, onSharedEvent: (SharedFormEvent) -> Unit) {
     var isVisible by rememberSaveable { mutableStateOf(false) }
+
+    val navController = rememberNavController()
 
     Scaffold(
         topBar = { TopBar(navController = navController, onDialogShow = { isVisible = it }) },
@@ -51,7 +53,7 @@ fun HomeScreen(sharedViewModel: SharedViewModel) {
             }
 
             Box(modifier = Modifier.padding(innerPadding)) {
-                BottomNavGraph(navController = navController, sharedViewModel = sharedViewModel)
+                BottomNavGraph(navController = navController, sharedState = sharedState, onSharedEvent = onSharedEvent)
             }
         }
     )

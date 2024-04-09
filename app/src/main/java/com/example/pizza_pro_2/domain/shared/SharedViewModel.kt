@@ -1,26 +1,31 @@
 package com.example.pizza_pro_2.domain.shared
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.data.DataSource
 import com.example.pizza_pro_2.models.Pizza
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SharedViewModel : ViewModel() {
-    var state by mutableStateOf(SharedFormState(allPizzas = DataSource().loadData()))
+    private val _state = MutableStateFlow(SharedFormState(allPizzas = DataSource().loadData()))
+    val state = _state.asStateFlow()
 
     init {
-        updateState(state.copy(filteredPizzas = state.allPizzas))
+        _state.update { currentState ->
+            currentState.copy(filteredPizzas = currentState.allPizzas)
+        }
     }
 
     fun onEvent(event: SharedFormEvent) {
         viewModelScope.launch {
             when (event) {
                 is SharedFormEvent.CurrentUserChanged -> {
-                    updateState(state.copy(currentUser = event.user))
+                    _state.update { currentState ->
+                        currentState.copy(currentUser = event.user)
+                    }
                 }
 
                 is SharedFormEvent.SearchQueryChanged -> {
@@ -32,7 +37,9 @@ class SharedViewModel : ViewModel() {
                 }
 
                 is SharedFormEvent.PizzaSelectionChanged -> {
-                    updateState(state.copy(selectedPizza = event.pizza))
+                    _state.update { currentState ->
+                        currentState.copy(selectedPizza = event.pizza)
+                    }
                 }
 
                 is SharedFormEvent.Discard -> {
@@ -47,30 +54,34 @@ class SharedViewModel : ViewModel() {
     }
 
     private fun updatePizzaCount(pizza: Pizza) {
-        val updatedList = state.allPizzas
+        val updatedList = _state.value.allPizzas
         updatedList.first { it.id == pizza.id }.count = pizza.count
         val orderedList = updatedList.filter { it.count > 0 }
-        updateState(state.copy(allPizzas = updatedList, orderedPizzas = orderedList))
+        _state.update { currentState ->
+            currentState.copy(allPizzas = updatedList, orderedPizzas = orderedList)
+        }
+        updateCost()
+    }
+
+    private fun filterPizzas(query: String = _state.value.searchQuery.lowercase()) {
+        val filteredList = _state.value.allPizzas.filter { it.name!!.lowercase().contains(query) }
+        _state.update { currentState ->
+            currentState.copy(searchQuery = query, filteredPizzas = filteredList)
+        }
+    }
+
+    private fun clearPizzas() {
+        val clearedList = _state.value.allPizzas.map { it.copy(count = 0) }
+        _state.update { currentState ->
+            currentState.copy(allPizzas = clearedList, orderedPizzas = emptyList())
+        }
         updateCost()
     }
 
     private fun updateCost() {
-        val sum = state.orderedPizzas.sumOf { it.count * it.cost }
-        updateState(state.copy(itemsCost = sum))
-    }
-
-    private fun filterPizzas(query: String = state.searchQuery.lowercase()) {
-        val filteredList = state.allPizzas.filter { it.name!!.lowercase().contains(query) }
-        updateState(state.copy(searchQuery = query, filteredPizzas = filteredList))
-    }
-
-    private fun clearPizzas() {
-        val clearedList = state.allPizzas.map { it.copy(count = 0) }
-        updateState(state.copy(allPizzas = clearedList, orderedPizzas = emptyList()))
-        updateCost()
-    }
-
-    private fun updateState(newState: SharedFormState) {
-        state = newState
+        val sum = _state.value.orderedPizzas.sumOf { it.count * it.cost }
+        _state.update { currentState ->
+            currentState.copy(itemsCost = sum)
+        }
     }
 }
