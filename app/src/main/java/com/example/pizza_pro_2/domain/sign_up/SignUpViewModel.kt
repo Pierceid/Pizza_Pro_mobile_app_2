@@ -1,8 +1,5 @@
 package com.example.pizza_pro_2.domain.sign_up
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.domain.ValidationEvent
@@ -10,7 +7,10 @@ import com.example.pizza_pro_2.use_cases.ValidateEmail
 import com.example.pizza_pro_2.use_cases.ValidateName
 import com.example.pizza_pro_2.use_cases.ValidatePassword
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
@@ -18,7 +18,9 @@ class SignUpViewModel(
     private val validateEmail: ValidateEmail = ValidateEmail(),
     private val validatePassword: ValidatePassword = ValidatePassword()
 ) : ViewModel() {
-    var state: SignUpFormState by mutableStateOf(SignUpFormState())
+    private val _state = MutableStateFlow(SignUpFormState())
+    val state = _state.asStateFlow()
+
     private val validationChannel = Channel<ValidationEvent>()
     val validationEvents = validationChannel.receiveAsFlow()
 
@@ -26,23 +28,33 @@ class SignUpViewModel(
         viewModelScope.launch {
             when (event) {
                 is SignUpFormEvent.NameChanged -> {
-                    state = state.copy(name = event.name)
+                    _state.update { currentState ->
+                        currentState.copy(name = event.name)
+                    }
                 }
 
                 is SignUpFormEvent.EmailChanged -> {
-                    state = state.copy(email = event.email)
+                    _state.update { currentState ->
+                        currentState.copy(email = event.email)
+                    }
                 }
 
                 is SignUpFormEvent.PasswordChanged -> {
-                    state = state.copy(password = event.password)
+                    _state.update { currentState ->
+                        currentState.copy(password = event.password)
+                    }
                 }
 
                 is SignUpFormEvent.OnPasswordVisibilityChanged -> {
-                    state = state.copy(passwordVisible = event.isVisible)
+                    _state.update { currentState ->
+                        currentState.copy(passwordVisible = event.isVisible)
+                    }
                 }
 
                 is SignUpFormEvent.GenderChanged -> {
-                    state = state.copy(gender = event.gender)
+                    _state.update { currentState ->
+                        currentState.copy(gender = event.gender)
+                    }
                 }
 
                 is SignUpFormEvent.Submit -> {
@@ -53,17 +65,19 @@ class SignUpViewModel(
     }
 
     private fun submitData() {
-        val nameResult = validateName.execute(name = state.name)
-        val emailResult = validateEmail.execute(email = state.email)
-        val passwordResult = validatePassword.execute(password = state.password)
+        val nameResult = validateName.execute(name = _state.value.name)
+        val emailResult = validateEmail.execute(email = _state.value.email)
+        val passwordResult = validatePassword.execute(password = _state.value.password)
         val hasError = listOf(nameResult, emailResult, passwordResult).any { !it.successful }
 
         if (hasError) {
-            state = state.copy(
-                nameError = nameResult.errorMessage,
-                emailError = emailResult.errorMessage,
-                passwordError = passwordResult.errorMessage
-            )
+            _state.update { currentState ->
+                currentState.copy(
+                    nameError = nameResult.errorMessage,
+                    emailError = emailResult.errorMessage,
+                    passwordError = passwordResult.errorMessage
+                )
+            }
             return
         }
 

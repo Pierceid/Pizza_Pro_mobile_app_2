@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.presentation.screens
 
+import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.MyDao
+import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.navigation.BottomSheet
@@ -38,6 +40,9 @@ import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatDouble
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.NumberFormat
 
 @Composable
@@ -72,6 +77,22 @@ fun CartScreen(
                 onDismiss = { isDialogVisible = it },
                 dismissButton = R.string.no,
                 onConfirm = {
+                    if (option == 1) {
+                        val order = Order(
+                            name = sharedState.currentUser!!.name,
+                            time = DateFormat.format(
+                                "d.M.yyyy (h:mm a)",
+                                System.currentTimeMillis()
+                            ).toString(),
+                            place = "xxx",
+                            items = sharedState.orderedPizzas.sumOf { it.count },
+                            cost = NumberFormat.getCurrencyInstance().format(total).formatDouble()
+                        )
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            myDao.insertOrder(order)
+                        }
+                    }
                     onSharedEvent(event)
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },

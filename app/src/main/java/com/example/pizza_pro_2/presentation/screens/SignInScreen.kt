@@ -17,6 +17,8 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -52,8 +54,7 @@ fun SignInScreen(
     myDao: MyDao
 ) {
     val viewModel = viewModel<SignInViewModel>()
-    // val state by viewModel.state.collectAsStateWithLifecycle()
-    val state = viewModel.state
+    val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_in_successfully)
 
@@ -97,8 +98,8 @@ fun SignInScreen(
                 keyboardType = KeyboardType.Email
             )
 
-            if (state.emailError != null) {
-                ErrorText(message = state.emailError)
+            state.emailError?.let {
+                ErrorText(message = it)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -140,8 +141,8 @@ fun SignInScreen(
                 )
             }
 
-            if (state.passwordError != null) {
-                ErrorText(message = state.passwordError)
+            state.passwordError?.let {
+                ErrorText(message = it)
             }
 
             Spacer(modifier = Modifier.height(24.dp))

@@ -18,6 +18,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -47,6 +49,9 @@ import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.White
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
@@ -56,7 +61,7 @@ fun SignUpScreen(
     myDao: MyDao
 ) {
     val viewModel = viewModel<SignUpViewModel>()
-    val state = viewModel.state
+    val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_up_successfully)
 
@@ -71,7 +76,9 @@ fun SignUpScreen(
                         gender = state.gender
                     )
 
-                    myDao.insertUser(user)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        myDao.insertUser(user)
+                    }
 
                     onSharedEvent(SharedFormEvent.CurrentUserChanged(user))
 
@@ -110,8 +117,8 @@ fun SignUpScreen(
                 }
             )
 
-            if (state.nameError != null) {
-                ErrorText(message = state.nameError)
+            state.nameError?.let {
+                ErrorText(message = it)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -131,8 +138,8 @@ fun SignUpScreen(
                 keyboardType = KeyboardType.Email
             )
 
-            if (state.emailError != null) {
-                ErrorText(message = state.emailError)
+            state.emailError?.let {
+                ErrorText(message = it)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -174,8 +181,8 @@ fun SignUpScreen(
                 )
             }
 
-            if (state.passwordError != null) {
-                ErrorText(message = state.passwordError)
+            state.passwordError?.let {
+                ErrorText(message = it)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

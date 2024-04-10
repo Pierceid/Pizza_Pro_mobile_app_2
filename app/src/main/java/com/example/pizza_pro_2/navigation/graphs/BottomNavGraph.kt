@@ -29,8 +29,7 @@ fun BottomNavGraph(
             ShopScreen(
                 navController = navController,
                 sharedState = sharedState,
-                onSharedEvent = onSharedEvent,
-                myDao = myDao
+                onSharedEvent = onSharedEvent
             )
         }
         composable(route = Screen.Cart.route) {
