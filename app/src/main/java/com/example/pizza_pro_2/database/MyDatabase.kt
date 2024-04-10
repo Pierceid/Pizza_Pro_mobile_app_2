@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.User
 
-@Database(entities = [User::class, Order::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Order::class], version = 2, exportSchema = false)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract val myDao: MyDao
@@ -16,7 +16,7 @@ abstract class MyDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: MyDatabase? = null
 
-        fun getDatabase(context: Context): MyDatabase {
+        fun getInstance(context: Context): MyDatabase {
             return INSTANCE ?: synchronized(this) {
                 Room.databaseBuilder(
                     context = context.applicationContext,

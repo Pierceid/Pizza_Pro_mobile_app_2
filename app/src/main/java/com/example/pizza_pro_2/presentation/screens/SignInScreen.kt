@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
@@ -47,9 +48,11 @@ import com.example.pizza_pro_2.ui.theme.White
 fun SignInScreen(
     navController: NavHostController,
     sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit
+    onSharedEvent: (SharedFormEvent) -> Unit,
+    myDao: MyDao
 ) {
     val viewModel = viewModel<SignInViewModel>()
+    // val state by viewModel.state.collectAsStateWithLifecycle()
     val state = viewModel.state
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_in_successfully)

@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.navigation.BottomSheet
@@ -35,7 +36,8 @@ import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 fun ShopScreen(
     navController: NavController,
     sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit
+    onSharedEvent: (SharedFormEvent) -> Unit,
+    myDao: MyDao
 ) {
     var isSheetOpened by rememberSaveable { mutableStateOf(false) }
 

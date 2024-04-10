@@ -35,6 +35,7 @@ import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.ui.theme.White
+import kotlin.system.exitProcess
 
 @Composable
 fun AccountScreen(
@@ -129,7 +130,7 @@ fun AccountScreen(
             ActionButton(
                 text = stringResource(id = R.string.log_out),
                 onClick = {
-
+                    exitProcess(0)
                 },
                 modifier = Modifier.weight(1f)
             )

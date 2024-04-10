@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.navigation.BottomSheet
@@ -43,7 +44,8 @@ import java.text.NumberFormat
 fun CartScreen(
     navController: NavController,
     sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit
+    onSharedEvent: (SharedFormEvent) -> Unit,
+    myDao: MyDao
 ) {
     var isSheetOpened by rememberSaveable { mutableStateOf(false) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }

@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.User
@@ -30,24 +31,23 @@ interface MyDao {
     @Delete
     suspend fun deleteOrder(order: Order)
 
-    @Query("DELETE FROM users")
-    suspend fun dropTableUsers()
-
-    @Query("DELETE FROM orders")
-    suspend fun dropTableOrders()
-
+    @Transaction
     @Query("SELECT * FROM users WHERE name = :name OR email = :email LIMIT 1")
     fun getUser(name: String, email: String): Flow<User?>
 
+    @Transaction
     @Query("SELECT * FROM users WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
     fun getFilteredUsers(regex: String): Flow<List<User>>
 
+    @Transaction
     @Query("SELECT * FROM orders WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
     fun getFilteredOrders(regex: String): Flow<List<Order>>
 
+    @Transaction
     @Query("SELECT * FROM users ORDER BY id DESC")
     fun getAllUsers(): Flow<List<User>>
 
+    @Transaction
     @Query("SELECT * FROM orders ORDER BY id DESC")
     fun getAllOrders(): Flow<List<Order>>
 }

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
@@ -51,7 +52,8 @@ import com.example.pizza_pro_2.ui.theme.White
 fun SignUpScreen(
     navController: NavHostController,
     sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit
+    onSharedEvent: (SharedFormEvent) -> Unit,
+    myDao: MyDao
 ) {
     val viewModel = viewModel<SignUpViewModel>()
     val state = viewModel.state
@@ -68,6 +70,8 @@ fun SignUpScreen(
                         password = state.password,
                         gender = state.gender
                     )
+
+                    myDao.insertUser(user)
 
                     onSharedEvent(SharedFormEvent.CurrentUserChanged(user))
 
