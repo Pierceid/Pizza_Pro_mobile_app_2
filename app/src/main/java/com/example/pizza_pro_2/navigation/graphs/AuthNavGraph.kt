@@ -7,7 +7,7 @@ import androidx.navigation.compose.navigation
 import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
-import com.example.pizza_pro_2.presentation.screens.AUTH_GRAPH_ROUTE
+import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.screens.IntroScreen
 import com.example.pizza_pro_2.presentation.screens.Screen
 import com.example.pizza_pro_2.presentation.screens.SignInScreen
@@ -21,7 +21,7 @@ fun NavGraphBuilder.authNavGraph(
 ) {
     navigation(
         startDestination = Screen.Intro.route,
-        route = AUTH_GRAPH_ROUTE
+        route = GraphRoute.AuthGraph.name
     ) {
         composable(route = Screen.Intro.route) {
             IntroScreen(navController = navController)

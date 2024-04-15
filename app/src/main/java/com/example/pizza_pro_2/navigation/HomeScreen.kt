@@ -77,16 +77,18 @@ fun HomeScreen(
 fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val header = when (currentDestination?.route) {
-        Screen.Shop.route -> stringResource(id = R.string.shop)
-        Screen.Cart.route -> stringResource(id = R.string.cart)
-        Screen.Feedback.route -> stringResource(id = R.string.feedback)
-        Screen.Settings.route -> stringResource(id = R.string.settings)
-        Screen.Account.route -> stringResource(id = R.string.account)
-        Screen.History.route -> stringResource(id = R.string.history)
-        Screen.AboutApp.route -> stringResource(id = R.string.about_app)
-        else -> ""
-    }
+    val header = stringResource(
+        id = when (currentDestination?.route) {
+            Screen.Shop.route -> R.string.shop
+            Screen.Cart.route -> R.string.cart
+            Screen.Feedback.route -> R.string.feedback
+            Screen.Settings.route -> R.string.settings
+            Screen.Account.route -> R.string.account
+            Screen.History.route -> R.string.history
+            Screen.AboutApp.route -> R.string.about_app
+            else -> R.string.shop
+        }
+    )
     val isChild = arrayOf(Screen.Account.route, Screen.History.route, Screen.AboutApp.route)
         .contains(currentDestination?.route)
 

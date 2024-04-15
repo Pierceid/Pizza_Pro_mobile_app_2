@@ -10,9 +10,7 @@ import androidx.navigation.compose.composable
 import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import com.example.pizza_pro_2.navigation.HomeScreen
-import com.example.pizza_pro_2.presentation.screens.AUTH_GRAPH_ROUTE
-import com.example.pizza_pro_2.presentation.screens.HOME_GRAPH_ROUTE
-import com.example.pizza_pro_2.presentation.screens.ROOT_GRAPH_ROUTE
+import com.example.pizza_pro_2.options.GraphRoute
 
 @Composable
 fun NavGraph(navController: NavHostController, myDao: MyDao) {
@@ -22,8 +20,8 @@ fun NavGraph(navController: NavHostController, myDao: MyDao) {
 
     NavHost(
         navController = navController,
-        startDestination = AUTH_GRAPH_ROUTE,
-        route = ROOT_GRAPH_ROUTE
+        startDestination = GraphRoute.AuthGraph.name,
+        route = GraphRoute.RootGraph.name
     ) {
         authNavGraph(
             navController = navController,
@@ -31,7 +29,7 @@ fun NavGraph(navController: NavHostController, myDao: MyDao) {
             onSharedEvent = onSharedEvent,
             myDao = myDao
         )
-        composable(HOME_GRAPH_ROUTE) {
+        composable(GraphRoute.HomeGraph.name) {
             HomeScreen(
                 sharedState = sharedState,
                 onSharedEvent = onSharedEvent,

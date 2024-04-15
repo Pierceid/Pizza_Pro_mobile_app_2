@@ -38,7 +38,7 @@ fun IntroScreen(navController: NavController) {
         ActionButton(
             text = stringResource(id = R.string.let_s_get_started),
             onClick = {
-                /*navController.navigate(HOME_GRAPH_ROUTE) {
+                /*navController.navigate(GraphRoute.HomeGraph.name) {
                     popUpTo(Screen.Intro.route) {
                         inclusive = true
                     }

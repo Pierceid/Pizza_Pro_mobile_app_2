@@ -38,6 +38,7 @@ import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.domain.sign_in.SignInFormEvent
 import com.example.pizza_pro_2.domain.sign_in.SignInViewModel
+import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
@@ -62,8 +63,8 @@ fun SignInScreen(
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    navController.navigate(HOME_GRAPH_ROUTE) {
-                        popUpTo(Screen.Intro.route) {
+                    navController.navigate(GraphRoute.HomeGraph.name) {
+                        popUpTo(GraphRoute.AuthGraph.name) {
                             inclusive = true
                         }
                     }

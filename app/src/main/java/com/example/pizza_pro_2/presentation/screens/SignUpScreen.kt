@@ -41,6 +41,7 @@ import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.domain.sign_up.SignUpFormEvent
 import com.example.pizza_pro_2.domain.sign_up.SignUpViewModel
 import com.example.pizza_pro_2.options.Gender
+import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
@@ -82,8 +83,8 @@ fun SignUpScreen(
 
                     onSharedEvent(SharedFormEvent.CurrentUserChanged(user))
 
-                    navController.navigate(HOME_GRAPH_ROUTE) {
-                        popUpTo(Screen.Intro.route) {
+                    navController.navigate(route = GraphRoute.HomeGraph.name) {
+                        popUpTo(GraphRoute.AuthGraph.name) {
                             inclusive = true
                         }
                     }

@@ -7,10 +7,10 @@ import androidx.navigation.navigation
 import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
+import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.screens.AboutAppScreen
 import com.example.pizza_pro_2.presentation.screens.AccountScreen
 import com.example.pizza_pro_2.presentation.screens.HistoryScreen
-import com.example.pizza_pro_2.presentation.screens.SETTINGS_GRAPH_ROUTE
 import com.example.pizza_pro_2.presentation.screens.Screen
 import com.example.pizza_pro_2.presentation.screens.SettingsScreen
 
@@ -22,7 +22,7 @@ fun NavGraphBuilder.settingsNavGraph(
 ) {
     navigation(
         startDestination = Screen.Settings.route,
-        route = SETTINGS_GRAPH_ROUTE
+        route = GraphRoute.SettingsGraph.name
     ) {
         composable(route = Screen.Settings.route) {
             SettingsScreen(navController = navController, sharedState = sharedState, onSharedEvent = onSharedEvent)
