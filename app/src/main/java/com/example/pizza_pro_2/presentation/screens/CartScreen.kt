@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyDao
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
@@ -49,8 +48,7 @@ import java.text.NumberFormat
 fun CartScreen(
     navController: NavController,
     sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit,
-    myDao: MyDao
+    onSharedEvent: (SharedFormEvent) -> Unit
 ) {
     var isSheetOpened by rememberSaveable { mutableStateOf(false) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
@@ -66,7 +64,6 @@ fun CartScreen(
         stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_your_order else R.string.would_you_like_to_proceed_and_place_your_order)
     val toastMessage =
         stringResource(id = if (option == 0) R.string.order_discarded_successfully else R.string.order_placed_successfully)
-    val event = if (option == 0) SharedFormEvent.Discard else SharedFormEvent.Order
     val color = if (option == 0) Maroon else Teal
 
     DefaultColumn {
@@ -90,10 +87,11 @@ fun CartScreen(
                         )
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            myDao.insertOrder(order)
+                            onSharedEvent(SharedFormEvent.InsertOrder(order))
                         }
+                    } else {
+                        onSharedEvent(SharedFormEvent.Discard)
                     }
-                    onSharedEvent(event)
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,

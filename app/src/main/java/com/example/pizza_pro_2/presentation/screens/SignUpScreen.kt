@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyDao
+import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
@@ -50,16 +50,14 @@ import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.White
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun SignUpScreen(
     navController: NavHostController,
     sharedState: SharedFormState,
     onSharedEvent: (SharedFormEvent) -> Unit,
-    myDao: MyDao
+    myRepository: MyRepository
 ) {
     val viewModel = viewModel<SignUpViewModel>()
     val state by viewModel.state.collectAsState()
@@ -77,8 +75,8 @@ fun SignUpScreen(
                         gender = state.gender
                     )
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        myDao.insertUser(user)
+                    coroutineScope {
+                        myRepository.insertUser(user)
                     }
 
                     onSharedEvent(SharedFormEvent.CurrentUserChanged(user))

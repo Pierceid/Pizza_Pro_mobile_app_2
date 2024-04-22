@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.pizza_pro_2.database.MyDao
+import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.options.GraphRoute
@@ -18,7 +18,7 @@ fun NavGraphBuilder.settingsNavGraph(
     navController: NavHostController,
     sharedState: SharedFormState,
     onSharedEvent: (SharedFormEvent) -> Unit,
-    myDao: MyDao
+    myRepository: MyRepository
 ) {
     navigation(
         startDestination = Screen.Settings.route,

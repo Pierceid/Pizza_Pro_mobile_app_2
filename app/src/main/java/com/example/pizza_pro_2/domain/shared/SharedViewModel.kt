@@ -3,19 +3,33 @@ package com.example.pizza_pro_2.domain.shared
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.data.DataSource
+import com.example.pizza_pro_2.database.MyRepository
+import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.models.Pizza
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SharedViewModel : ViewModel() {
+class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
     private val _state = MutableStateFlow(SharedFormState(allPizzas = DataSource().loadData()))
     val state = _state.asStateFlow()
 
+    /*
+    TODO: this is for history screen => State(listOfUsers, listOfOrders)
+    val _state: StateFlow<SharedFormState> = myRepository.getAllUsers().map { SharedFormState(it) }.
+        stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = SharedFormState()
+        )
+     */
+
     init {
-        _state.update { currentState ->
-            currentState.copy(filteredPizzas = currentState.allPizzas)
+        viewModelScope.launch {
+            _state.update { currentState ->
+                currentState.copy(filteredPizzas = currentState.allPizzas)
+            }
         }
     }
 
@@ -46,7 +60,8 @@ class SharedViewModel : ViewModel() {
                     clearPizzas()
                 }
 
-                is SharedFormEvent.Order -> {
+                is SharedFormEvent.InsertOrder -> {
+                    insertOrder(event.order!!)
                     clearPizzas()
                 }
             }
@@ -83,5 +98,10 @@ class SharedViewModel : ViewModel() {
         _state.update { currentState ->
             currentState.copy(itemsCost = sum)
         }
+    }
+
+    private suspend fun insertOrder(order: Order) {
+        // TODO mapovacia trieda rovnaka ako entita => state.order
+        myRepository.insertOrder(order)
     }
 }
