@@ -75,23 +75,16 @@ fun CartScreen(
                 dismissButton = R.string.no,
                 onConfirm = {
                     if (option == 1) {
-                        val order = Order(
-                            name = sharedState.currentUser!!.name,
-                            time = DateFormat.format(
-                                "d.M.yyyy (h:mm a)",
-                                System.currentTimeMillis()
-                            ).toString(),
-                            place = "xxx",
-                            items = sharedState.orderedPizzas.sumOf { it.count },
-                            cost = NumberFormat.getCurrencyInstance().format(total).formatDouble()
-                        )
-
                         CoroutineScope(Dispatchers.IO).launch {
-                            onSharedEvent(SharedFormEvent.InsertOrder(order))
+                            onSharedEvent(
+                                SharedFormEvent.PlaceOrder(
+                                    createOrder(sharedState = sharedState, total = total)
+                                )
+                            )
                         }
-                    } else {
-                        onSharedEvent(SharedFormEvent.Discard)
                     }
+                    onSharedEvent(SharedFormEvent.DiscardOrder)
+
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
@@ -202,4 +195,14 @@ fun CartScreen(
     if (isSheetOpened) {
         BottomSheet(sharedState = sharedState, onDismiss = { isSheetOpened = it })
     }
+}
+
+private fun createOrder(sharedState: SharedFormState, total: Double): Order {
+    return Order(
+        name = sharedState.currentUser!!.name,
+        time = DateFormat.format("d.M.yyyy (h:mm a)", System.currentTimeMillis()).toString(),
+        place = "none",
+        items = sharedState.orderedPizzas.sumOf { it.count },
+        cost = NumberFormat.getCurrencyInstance().format(total).formatDouble()
+    )
 }

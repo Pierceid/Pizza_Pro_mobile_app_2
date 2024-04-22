@@ -9,6 +9,9 @@ sealed class SharedFormEvent {
     data class SearchQueryChanged(val query: String): SharedFormEvent()
     data class PizzaCountChanged(val pizza: Pizza): SharedFormEvent()
     data class PizzaSelectionChanged(val pizza: Pizza): SharedFormEvent()
-    data class InsertOrder(val order: Order?): SharedFormEvent()
-    data object Discard: SharedFormEvent()
+    data class SignUp(val user: User): SharedFormEvent()
+    data class SignIn(val user: User): SharedFormEvent()
+    data class PlaceOrder(val order: Order): SharedFormEvent()
+    data class CancelOrder(val order: Order): SharedFormEvent()
+    data object DiscardOrder: SharedFormEvent()
 }

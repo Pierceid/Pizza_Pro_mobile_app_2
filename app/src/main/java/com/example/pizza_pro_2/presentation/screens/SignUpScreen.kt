@@ -34,11 +34,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.MyRepository
+import com.example.pizza_pro_2.database.MyViewModelProvider
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.domain.sign_up.SignUpFormEvent
+import com.example.pizza_pro_2.domain.sign_up.SignUpFormState
 import com.example.pizza_pro_2.domain.sign_up.SignUpViewModel
 import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.options.GraphRoute
@@ -50,7 +52,9 @@ import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.White
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
@@ -59,7 +63,7 @@ fun SignUpScreen(
     onSharedEvent: (SharedFormEvent) -> Unit,
     myRepository: MyRepository
 ) {
-    val viewModel = viewModel<SignUpViewModel>()
+    val viewModel: SignUpViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_up_successfully)
@@ -68,18 +72,9 @@ fun SignUpScreen(
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    val user = User(
-                        name = state.name,
-                        email = state.email,
-                        password = state.password,
-                        gender = state.gender
-                    )
-
-                    coroutineScope {
-                        myRepository.insertUser(user)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        onSharedEvent(SharedFormEvent.SignUp(createUser(state = state)))
                     }
-
-                    onSharedEvent(SharedFormEvent.CurrentUserChanged(user))
 
                     navController.navigate(route = GraphRoute.HomeGraph.name) {
                         popUpTo(GraphRoute.AuthGraph.name) {
@@ -222,4 +217,13 @@ fun SignUpScreen(
             )
         }
     }
+}
+
+private fun createUser(state: SignUpFormState): User {
+    return User(
+        name = state.name,
+        email = state.email,
+        password = state.password,
+        gender = state.gender
+    )
 }

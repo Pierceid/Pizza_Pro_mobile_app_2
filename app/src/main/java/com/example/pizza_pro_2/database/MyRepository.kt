@@ -17,11 +17,11 @@ class MyRepository(private val myDao: MyDao) {
 
     suspend fun deleteOrder(order: Order) = myDao.deleteOrder(order)
 
-    fun getUser(name: String, email: String): Flow<User?> = myDao.getUser(name, email)
+    fun getUser(name: String = "", email: String = ""): Flow<User?> = myDao.getUser(name, email)
 
-    fun getFilteredUsers(regex: String): Flow<List<User>> = myDao.getFilteredUsers(regex)
+    fun getFilteredUsers(regex: String = ""): Flow<List<User>> = myDao.getFilteredUsers(regex)
 
-    fun getFilteredOrders(regex: String): Flow<List<Order>> = myDao.getFilteredOrders(regex)
+    fun getFilteredOrders(regex: String = ""): Flow<List<Order>> = myDao.getFilteredOrders(regex)
 
     fun getAllUsers(): Flow<List<User>> = myDao.getAllUsers()
 

@@ -4,14 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.data.DataSource
 import com.example.pizza_pro_2.database.MyRepository
-import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.models.Pizza
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
+class SharedViewModel(val myRepository: MyRepository) : ViewModel() {
     private val _state = MutableStateFlow(SharedFormState(allPizzas = DataSource().loadData()))
     val state = _state.asStateFlow()
 
@@ -56,12 +55,28 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                     }
                 }
 
-                is SharedFormEvent.Discard -> {
-                    clearPizzas()
+                is SharedFormEvent.SignUp -> {
+                    _state.update { currentState ->
+                        currentState.copy(currentUser = event.user)
+                    }
+                    myRepository.insertUser(user = event.user)
                 }
 
-                is SharedFormEvent.InsertOrder -> {
-                    insertOrder(event.order!!)
+                is SharedFormEvent.SignIn -> {
+                    _state.update { currentState ->
+                        currentState.copy(currentUser = event.user)
+                    }
+                }
+
+                is SharedFormEvent.PlaceOrder -> {
+                    myRepository.insertOrder(order = event.order)
+                }
+
+                is SharedFormEvent.CancelOrder -> {
+                    myRepository.deleteOrder(order = event.order)
+                }
+
+                is SharedFormEvent.DiscardOrder -> {
                     clearPizzas()
                 }
             }
@@ -98,10 +113,5 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
         _state.update { currentState ->
             currentState.copy(itemsCost = sum)
         }
-    }
-
-    private suspend fun insertOrder(order: Order) {
-        // TODO mapovacia trieda rovnaka ako entita => state.order
-        myRepository.insertOrder(order)
     }
 }

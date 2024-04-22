@@ -33,10 +33,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.MyRepository
+import com.example.pizza_pro_2.database.MyViewModelProvider
+import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormEvent
 import com.example.pizza_pro_2.domain.shared.SharedFormState
 import com.example.pizza_pro_2.domain.sign_in.SignInFormEvent
+import com.example.pizza_pro_2.domain.sign_in.SignInFormState
 import com.example.pizza_pro_2.domain.sign_in.SignInViewModel
 import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.components.ActionButton
@@ -54,7 +57,7 @@ fun SignInScreen(
     onSharedEvent: (SharedFormEvent) -> Unit,
     myRepository: MyRepository
 ) {
-    val viewModel = viewModel<SignInViewModel>()
+    val viewModel: SignInViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_in_successfully)
@@ -63,6 +66,8 @@ fun SignInScreen(
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
+                    onSharedEvent(SharedFormEvent.SignIn(createUser(state = state)))
+
                     navController.navigate(GraphRoute.HomeGraph.name) {
                         popUpTo(GraphRoute.AuthGraph.name) {
                             inclusive = true
@@ -173,4 +178,13 @@ fun SignInScreen(
             )
         }
     }
+}
+
+private fun createUser(state: SignInFormState): User {
+    return User(
+        name = state.name,
+        email = state.email,
+        password = state.password,
+        gender = state.gender
+    )
 }

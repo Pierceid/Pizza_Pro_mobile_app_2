@@ -1,13 +1,13 @@
 package com.example.pizza_pro_2.use_cases
 
 class ValidateName {
-    fun execute(name: String): ValidationResult {
-        if (name.isBlank()) {
+    fun execute(name: String, metCondition: Boolean): ValidationResult {
+        if (name.isBlank() || !metCondition) {
             return ValidationResult(
-                false,
-                "Name must be unique and not blank."
+                successful = false,
+                errorMessage = "Name must be unique and not blank."
             )
         }
-        return ValidationResult(true)
+        return ValidationResult(successful = true)
     }
 }

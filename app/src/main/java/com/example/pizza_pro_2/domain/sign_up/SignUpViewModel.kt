@@ -2,13 +2,13 @@ package com.example.pizza_pro_2.domain.sign_up
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.use_cases.ValidateEmail
 import com.example.pizza_pro_2.use_cases.ValidateName
 import com.example.pizza_pro_2.use_cases.ValidatePassword
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -16,13 +16,24 @@ import kotlinx.coroutines.launch
 class SignUpViewModel(
     private val validateName: ValidateName = ValidateName(),
     private val validateEmail: ValidateEmail = ValidateEmail(),
-    private val validatePassword: ValidatePassword = ValidatePassword()
+    private val validatePassword: ValidatePassword = ValidatePassword(),
+    private val myRepository: MyRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(SignUpFormState())
-    val state = _state.asStateFlow()
+    val state = _state
 
     private val validationChannel = Channel<ValidationEvent>()
     val validationEvents = validationChannel.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            myRepository.getAllUsers().collect { users ->
+                _state.update { currentState ->
+                    currentState.copy(users = users)
+                }
+            }
+        }
+    }
 
     fun onEvent(event: SignUpFormEvent) {
         viewModelScope.launch {
@@ -65,9 +76,14 @@ class SignUpViewModel(
     }
 
     private fun submitData() {
-        val nameResult = validateName.execute(name = _state.value.name)
-        val emailResult = validateEmail.execute(email = _state.value.email)
-        val passwordResult = validatePassword.execute(password = _state.value.password)
+        val metNameCondition = !_state.value.users.any { it.name == _state.value.name }
+        val metEmailCondition = !_state.value.users.any { it.email == _state.value.email }
+        val metPasswordCondition =
+            _state.value.password.any { it.isDigit() } && _state.value.password.any { it.isLetter() }
+        val nameResult = validateName.execute(_state.value.name, metNameCondition)
+        val emailResult = validateEmail.execute(_state.value.email, metEmailCondition, true)
+        val passwordResult =
+            validatePassword.execute(_state.value.password, metPasswordCondition, true)
         val hasError = listOf(nameResult, emailResult, passwordResult).any { !it.successful }
 
         if (hasError) {

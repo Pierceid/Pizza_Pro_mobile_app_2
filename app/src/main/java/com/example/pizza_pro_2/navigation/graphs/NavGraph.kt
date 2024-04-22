@@ -7,16 +7,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.pizza_pro_2.database.MyRepository
+import com.example.pizza_pro_2.database.MyViewModelProvider
 import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import com.example.pizza_pro_2.navigation.HomeScreen
 import com.example.pizza_pro_2.options.GraphRoute
 
 @Composable
-fun NavGraph(navController: NavHostController, myRepository: MyRepository) {
-    val sharedViewModel: SharedViewModel = viewModel()
+fun NavGraph(navController: NavHostController) {
+    val sharedViewModel: SharedViewModel = viewModel(factory = MyViewModelProvider.factory)
     val sharedState by sharedViewModel.state.collectAsState()
     val onSharedEvent = sharedViewModel::onEvent
+    val myRepository = sharedViewModel.myRepository
 
     NavHost(
         navController = navController,

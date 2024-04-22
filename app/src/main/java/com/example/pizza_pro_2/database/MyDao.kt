@@ -33,15 +33,15 @@ interface MyDao {
 
     @Transaction
     @Query("SELECT * FROM users WHERE name = :name OR email = :email LIMIT 1")
-    fun getUser(name: String, email: String): Flow<User?>
+    fun getUser(name: String = "", email: String = ""): Flow<User?>
 
     @Transaction
     @Query("SELECT * FROM users WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
-    fun getFilteredUsers(regex: String): Flow<List<User>>
+    fun getFilteredUsers(regex: String = ""): Flow<List<User>>
 
     @Transaction
     @Query("SELECT * FROM orders WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
-    fun getFilteredOrders(regex: String): Flow<List<Order>>
+    fun getFilteredOrders(regex: String = ""): Flow<List<Order>>
 
     @Transaction
     @Query("SELECT * FROM users ORDER BY id DESC")
