@@ -33,15 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.database.MyViewModelProvider
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormState
-import com.example.pizza_pro_2.domain.sign_up.SignUpFormEvent
-import com.example.pizza_pro_2.domain.sign_up.SignUpFormState
-import com.example.pizza_pro_2.domain.sign_up.SignUpViewModel
+import com.example.pizza_pro_2.domain.auth.AuthEvent
+import com.example.pizza_pro_2.domain.auth.AuthState
+import com.example.pizza_pro_2.domain.auth.AuthViewModel
+import com.example.pizza_pro_2.domain.shared.SharedEvent
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.components.ActionButton
@@ -59,11 +58,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignUpScreen(
     navController: NavHostController,
-    sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit,
-    myRepository: MyRepository
+    sharedState: SharedState,
+    onSharedEvent: (SharedEvent) -> Unit
 ) {
-    val viewModel: SignUpViewModel = viewModel(factory = MyViewModelProvider.factory)
+    val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_up_successfully)
@@ -73,7 +71,7 @@ fun SignUpScreen(
             when (event) {
                 is ValidationEvent.Success -> {
                     CoroutineScope(Dispatchers.IO).launch {
-                        onSharedEvent(SharedFormEvent.SignUp(createUser(state = state)))
+                        onSharedEvent(SharedEvent.SignUp(createUser(state = state)))
                     }
 
                     navController.navigate(route = GraphRoute.HomeGraph.name) {
@@ -100,14 +98,14 @@ fun SignUpScreen(
             InputTextField(
                 value = state.name,
                 onValueChange = {
-                    viewModel.onEvent(SignUpFormEvent.NameChanged(it))
+                    viewModel.onEvent(AuthEvent.NameChanged(it))
                 },
                 label = stringResource(id = R.string.name),
                 isError = state.nameError != null,
                 leadingIcon = Icons.Default.Person,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
-                    viewModel.onEvent(SignUpFormEvent.NameChanged(""))
+                    viewModel.onEvent(AuthEvent.NameChanged(""))
                 }
             )
 
@@ -120,14 +118,14 @@ fun SignUpScreen(
             InputTextField(
                 value = state.email,
                 onValueChange = {
-                    viewModel.onEvent(SignUpFormEvent.EmailChanged(it))
+                    viewModel.onEvent(AuthEvent.EmailChanged(it))
                 },
                 label = stringResource(id = R.string.email),
                 isError = state.emailError != null,
                 leadingIcon = Icons.Default.Email,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
-                    viewModel.onEvent(SignUpFormEvent.EmailChanged(""))
+                    viewModel.onEvent(AuthEvent.EmailChanged(""))
                 },
                 keyboardType = KeyboardType.Email
             )
@@ -146,14 +144,14 @@ fun SignUpScreen(
                     modifier = Modifier.weight(1f),
                     value = state.password,
                     onValueChange = {
-                        viewModel.onEvent(SignUpFormEvent.PasswordChanged(it))
+                        viewModel.onEvent(AuthEvent.PasswordChanged(it))
                     },
                     label = stringResource(id = R.string.password),
                     isError = state.passwordError != null,
                     leadingIcon = Icons.Default.Lock,
                     trailingIcon = Icons.Default.Clear,
                     onTrailingIconClick = {
-                        viewModel.onEvent(SignUpFormEvent.PasswordChanged(""))
+                        viewModel.onEvent(AuthEvent.PasswordChanged(""))
                     },
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
@@ -167,7 +165,7 @@ fun SignUpScreen(
                         .size(40.dp)
                         .padding(top = 4.dp)
                         .clickable {
-                            viewModel.onEvent(SignUpFormEvent.OnPasswordVisibilityChanged(!state.passwordVisible))
+                            viewModel.onEvent(AuthEvent.OnPasswordVisibilityChanged(!state.passwordVisible))
                         },
                     painter = painterResource(id = if (state.passwordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
                     contentDescription = stringResource(id = R.string.visibility),
@@ -184,7 +182,7 @@ fun SignUpScreen(
             RadioGroup(
                 selected = state.gender,
                 onSelectionChange = {
-                    viewModel.onEvent(SignUpFormEvent.GenderChanged(it))
+                    viewModel.onEvent(AuthEvent.GenderChanged(it))
                 },
                 options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE),
                 modifier = Modifier.padding(end = 16.dp)
@@ -195,7 +193,7 @@ fun SignUpScreen(
             ActionButton(
                 text = stringResource(id = R.string.sign_up),
                 onClick = {
-                    viewModel.onEvent(SignUpFormEvent.Submit)
+                    viewModel.onEvent(AuthEvent.Submit(type = 0))
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -219,7 +217,7 @@ fun SignUpScreen(
     }
 }
 
-private fun createUser(state: SignUpFormState): User {
+private fun createUser(state: AuthState): User {
     return User(
         name = state.name,
         email = state.email,

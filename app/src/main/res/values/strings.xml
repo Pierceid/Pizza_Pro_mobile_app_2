@@ -3,12 +3,23 @@
     <string name="example">example</string>
     <string name="background">background</string>
     <!-- Buttons -->
-    <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
+    <string name="let_s_get_started">Let\'s get started</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
     <string name="discard">Discard</string>
     <string name="order">Order</string>
     <string name="send">Send</string>
+    <string name="save">Save changes</string>
+    <string name="delete">Delete</string>
+    <string name="log_out">Log out</string>
     <string name="clear">Clear</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="back">Back</string>
     <!-- App bar -->
     <string name="shop">Shop</string>
     <string name="cart">Cart</string>
@@ -18,12 +29,9 @@
     <!-- Intro -->
     <string name="logo">Logo</string>
     <string name="motto">Motto</string>
-    <string name="let_s_get_started">Let\'s get started</string>
     <!-- Auth -->
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="already_have_an_account">Already have an account?</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_up">Sign up</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -52,27 +60,21 @@
     <string name="comment">3. Comment (optional)</string>
     <string name="may_we_follow_you_up_on_your_feedback">4. May we follow you up on your feedback?</string>
     <string name="f_u_switch">Switch</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
     <!-- Settings -->
     <string name="account">Account</string>
     <string name="history">History</string>
     <string name="about_app">About app</string>
-    <string name="log_out">Log out</string>
     <!-- Detail -->
     <string name="star">Star</string>
     <string name="time">Time</string>
     <string name="flame">Flame</string>
     <string name="description">Description:</string>
-    <string name="show_less">Show less</string>
-    <string name="show_more">Show more</string>
-    <!-- Profile -->
+    <!-- Account -->
     <string name="profile_picture">Profile picture</string>
     <!-- History -->
     <string name="database_tables">Database tables</string>
     <string name="users">Users</string>
     <string name="orders">Orders</string>
-    <string name="delete">Delete</string>
     <!-- Items -->
     <string name="pizza_image">Pizza image</string>
     <string name="satisfaction_image">Satisfaction image</string>
@@ -87,12 +89,16 @@
     <string name="discard_order">Discard order</string>
     <string name="share_feedback">Share feedback</string>
     <string name="discard_feedback">Discard feedback</string>
+    <string name="delete_account">Delete account</string>
+    <string name="cancel_order">Cancel order</string>
     <string name="clear_history">Clear history</string>
     <string name="pizza_card_info">1. Tap on a pizza image to see more details about it.\n\n2. To add a pizza to your cart, tap on the green plus button.\n\n3. You can adjust the quantity of the pizza using the plus and minus buttons.\n\n4. If you want to remove a pizza from your cart, just tap on the "x" button next to it.</string>
     <string name="would_you_like_to_proceed_and_place_your_order">Would you like to proceed and place your order?</string>
     <string name="are_you_sure_you_want_to_discard_your_order">Are you sure you want to discard your order?</string>
     <string name="would_you_like_to_proceed_and_provide_us_with_your_feedback">Would you like to proceed and provide us with your feedback?</string>
     <string name="are_you_sure_you_want_to_discard_your_feedback">Are you sure you want to discard your feedback?</string>
+    <string name="are_you_certain_you_want_to_proceed_with_deleting_your_account">Are you certain you want to proceed with deleting your account?</string>
+    <string name="are_you_certain_you_want_to_log_out_of_your_account">"Are you certain you want to log out of your account?"</string>
     <string name="are_you_sure_you_want_to_remove_all_previously_saved_data">Are you sure you want to remove all previously saved data?</string>
     <!-- Toast -->
     <string name="signed_up_successfully">Signed up successfully!</string>
@@ -103,5 +109,5 @@
     <string name="feedback_sent_successfully">Feedback has been\n sent successfully!</string>
     <string name="feedback_discarded_successfully">Feedback has been\n discarded successfully!</string>
     <string name="history_cleared_successfully">History has been\n cleared successfully!</string>
-    <string name="back">back</string>
+    <string name="update_account">Update account</string>
 </resources>

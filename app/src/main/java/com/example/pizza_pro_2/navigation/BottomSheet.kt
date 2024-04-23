@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.shared.SharedFormState
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.ui.theme.Lime
 import com.example.pizza_pro_2.ui.theme.Orange
 import com.example.pizza_pro_2.ui.theme.Pink
@@ -47,7 +47,7 @@ import com.example.pizza_pro_2.util.Util.Companion.formatDouble
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(sharedState: SharedFormState, onDismiss: (Boolean) -> Unit) {
+fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
 
     val pizza = sharedState.selectedPizza!!

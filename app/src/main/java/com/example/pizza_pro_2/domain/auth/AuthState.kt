@@ -1,11 +1,11 @@
-package com.example.pizza_pro_2.domain.sign_up
+package com.example.pizza_pro_2.domain.auth
 
 import androidx.compose.runtime.Stable
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.options.Gender
 
 @Stable
-data class SignUpFormState(
+data class AuthState(
     val name: String = "",
     val nameError: String? = null,
     val email: String = "",

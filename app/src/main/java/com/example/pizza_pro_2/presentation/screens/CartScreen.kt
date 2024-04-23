@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.entities.Order
-import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormState
+import com.example.pizza_pro_2.domain.shared.SharedEvent
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.CartPizzaCard
@@ -47,8 +47,8 @@ import java.text.NumberFormat
 @Composable
 fun CartScreen(
     navController: NavController,
-    sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit
+    sharedState: SharedState,
+    onSharedEvent: (SharedEvent) -> Unit
 ) {
     var isSheetOpened by rememberSaveable { mutableStateOf(false) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
@@ -77,14 +77,13 @@ fun CartScreen(
                     if (option == 1) {
                         CoroutineScope(Dispatchers.IO).launch {
                             onSharedEvent(
-                                SharedFormEvent.PlaceOrder(
+                                SharedEvent.PlaceOrder(
                                     createOrder(sharedState = sharedState, total = total)
                                 )
                             )
                         }
                     }
-                    onSharedEvent(SharedFormEvent.DiscardOrder)
-
+                    onSharedEvent(SharedEvent.DiscardOrder)
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
@@ -102,10 +101,10 @@ fun CartScreen(
                 CartPizzaCard(
                     pizza = pizza,
                     onCountChanged = {
-                        onSharedEvent(SharedFormEvent.PizzaCountChanged(it))
+                        onSharedEvent(SharedEvent.PizzaCountChanged(it))
                     },
                     onClick = {
-                        onSharedEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
+                        onSharedEvent(SharedEvent.PizzaSelectionChanged(pizza))
                         isSheetOpened = true
                     }
                 )
@@ -197,7 +196,7 @@ fun CartScreen(
     }
 }
 
-private fun createOrder(sharedState: SharedFormState, total: Double): Order {
+private fun createOrder(sharedState: SharedState, total: Double): Order {
     return Order(
         name = sharedState.currentUser!!.name,
         time = DateFormat.format("d.M.yyyy (h:mm a)", System.currentTimeMillis()).toString(),

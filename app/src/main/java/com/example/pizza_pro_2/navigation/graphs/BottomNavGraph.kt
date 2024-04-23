@@ -4,9 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.pizza_pro_2.database.MyRepository
-import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormState
+import com.example.pizza_pro_2.domain.shared.SharedEvent
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.screens.CartScreen
 import com.example.pizza_pro_2.presentation.screens.FeedbackScreen
@@ -16,9 +15,8 @@ import com.example.pizza_pro_2.presentation.screens.ShopScreen
 @Composable
 fun BottomNavGraph(
     navController: NavHostController,
-    sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit,
-    myRepository: MyRepository
+    sharedState: SharedState,
+    onSharedEvent: (SharedEvent) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -45,8 +43,7 @@ fun BottomNavGraph(
         settingsNavGraph(
             navController = navController,
             sharedState = sharedState,
-            onSharedEvent = onSharedEvent,
-            myRepository = myRepository
+            onSharedEvent = onSharedEvent
         )
     }
 }

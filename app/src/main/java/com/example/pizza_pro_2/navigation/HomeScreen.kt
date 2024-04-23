@@ -30,18 +30,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyRepository
-import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormState
+import com.example.pizza_pro_2.domain.shared.SharedEvent
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.navigation.graphs.BottomNavGraph
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.screens.Screen
 
 @Composable
 fun HomeScreen(
-    sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit,
-    myRepository: MyRepository
+    sharedState: SharedState,
+    onSharedEvent: (SharedEvent) -> Unit
 ) {
     var isVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -64,8 +62,7 @@ fun HomeScreen(
                 BottomNavGraph(
                     navController = navController,
                     sharedState = sharedState,
-                    onSharedEvent = onSharedEvent,
-                    myRepository = myRepository
+                    onSharedEvent = onSharedEvent
                 )
             }
         }

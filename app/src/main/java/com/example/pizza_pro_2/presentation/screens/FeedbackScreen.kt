@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.feedback.FeedbackFormEvent
+import com.example.pizza_pro_2.domain.feedback.FeedbackEvent
 import com.example.pizza_pro_2.domain.feedback.FeedbackViewModel
 import com.example.pizza_pro_2.options.Satisfaction
 import com.example.pizza_pro_2.presentation.components.ActionButton
@@ -68,7 +68,7 @@ fun FeedbackScreen(navController: NavController) {
         stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_your_feedback else R.string.would_you_like_to_proceed_and_provide_us_with_your_feedback)
     val toastMessage =
         stringResource(id = if (option == 0) R.string.feedback_discarded_successfully else R.string.feedback_sent_successfully)
-    val event = if (option == 0) FeedbackFormEvent.Discard else FeedbackFormEvent.Send
+    val event = if (option == 0) FeedbackEvent.Discard else FeedbackEvent.Send
     val color = if (option == 0) Maroon else Teal
     val options = listOf(
         Satisfaction.AWFUL,
@@ -115,7 +115,7 @@ fun FeedbackScreen(navController: NavController) {
             RadioGroup(
                 selected = state.satisfaction,
                 onSelectionChange = {
-                    viewModel.onEvent(FeedbackFormEvent.SatisfactionChanged(it))
+                    viewModel.onEvent(FeedbackEvent.SatisfactionChanged(it))
                 },
                 options = options,
                 modifier = Modifier.padding(horizontal = 8.dp),
@@ -144,7 +144,7 @@ fun FeedbackScreen(navController: NavController) {
                 Row {
                     IconButton(
                         onClick = {
-                            viewModel.onEvent(FeedbackFormEvent.DeliveryTimeChanged(true))
+                            viewModel.onEvent(FeedbackEvent.DeliveryTimeChanged(true))
                         }
                     ) {
                         Icon(
@@ -156,7 +156,7 @@ fun FeedbackScreen(navController: NavController) {
 
                     IconButton(
                         onClick = {
-                            viewModel.onEvent(FeedbackFormEvent.DeliveryTimeChanged(false))
+                            viewModel.onEvent(FeedbackEvent.DeliveryTimeChanged(false))
                         }
                     ) {
                         Icon(
@@ -183,7 +183,7 @@ fun FeedbackScreen(navController: NavController) {
                 Row {
                     IconButton(
                         onClick = {
-                            viewModel.onEvent(FeedbackFormEvent.ProductQualityChanged(true))
+                            viewModel.onEvent(FeedbackEvent.ProductQualityChanged(true))
                         }
                     ) {
                         Icon(
@@ -195,7 +195,7 @@ fun FeedbackScreen(navController: NavController) {
 
                     IconButton(
                         onClick = {
-                            viewModel.onEvent(FeedbackFormEvent.ProductQualityChanged(false))
+                            viewModel.onEvent(FeedbackEvent.ProductQualityChanged(false))
                         }
                     ) {
                         Icon(
@@ -222,7 +222,7 @@ fun FeedbackScreen(navController: NavController) {
                 Row {
                     IconButton(
                         onClick = {
-                            viewModel.onEvent(FeedbackFormEvent.CustomerServiceChanged(true))
+                            viewModel.onEvent(FeedbackEvent.CustomerServiceChanged(true))
                         }
                     ) {
                         Icon(
@@ -234,7 +234,7 @@ fun FeedbackScreen(navController: NavController) {
 
                     IconButton(
                         onClick = {
-                            viewModel.onEvent(FeedbackFormEvent.CustomerServiceChanged(false))
+                            viewModel.onEvent(FeedbackEvent.CustomerServiceChanged(false))
                         }
                     ) {
                         Icon(
@@ -258,13 +258,13 @@ fun FeedbackScreen(navController: NavController) {
             InputTextField(
                 value = state.comment,
                 onValueChange = {
-                    viewModel.onEvent(FeedbackFormEvent.CommentChanged(it))
+                    viewModel.onEvent(FeedbackEvent.CommentChanged(it))
                 },
                 label = "",
                 leadingIcon = Icons.Default.Create,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
-                    viewModel.onEvent(FeedbackFormEvent.CommentChanged(""))
+                    viewModel.onEvent(FeedbackEvent.CommentChanged(""))
                 },
                 imeAction = ImeAction.Done
             )
@@ -290,7 +290,7 @@ fun FeedbackScreen(navController: NavController) {
                 Switch(
                     checked = state.followUp,
                     onCheckedChange = {
-                        viewModel.onEvent(FeedbackFormEvent.FollowUpChanged(it))
+                        viewModel.onEvent(FeedbackEvent.FollowUpChanged(it))
                     },
                     thumbContent = {
                         Icon(

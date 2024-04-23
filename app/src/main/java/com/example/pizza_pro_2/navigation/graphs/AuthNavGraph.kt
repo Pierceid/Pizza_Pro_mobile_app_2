@@ -4,9 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.pizza_pro_2.database.MyRepository
-import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormState
+import com.example.pizza_pro_2.domain.shared.SharedEvent
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.screens.IntroScreen
 import com.example.pizza_pro_2.presentation.screens.Screen
@@ -15,9 +14,8 @@ import com.example.pizza_pro_2.presentation.screens.SignUpScreen
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
-    sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit,
-    myRepository: MyRepository
+    sharedState: SharedState,
+    onSharedEvent: (SharedEvent) -> Unit
 ) {
     navigation(
         startDestination = Screen.Intro.route,
@@ -30,16 +28,14 @@ fun NavGraphBuilder.authNavGraph(
             SignUpScreen(
                 navController = navController,
                 sharedState = sharedState,
-                onSharedEvent = onSharedEvent,
-                myRepository = myRepository
+                onSharedEvent = onSharedEvent
             )
         }
         composable(route = Screen.SignIn.route) {
             SignInScreen(
                 navController = navController,
                 sharedState = sharedState,
-                onSharedEvent = onSharedEvent,
-                myRepository = myRepository
+                onSharedEvent = onSharedEvent
             )
         }
     }

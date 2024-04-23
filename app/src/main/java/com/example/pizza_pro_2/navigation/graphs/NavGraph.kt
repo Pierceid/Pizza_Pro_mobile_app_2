@@ -17,7 +17,6 @@ fun NavGraph(navController: NavHostController) {
     val sharedViewModel: SharedViewModel = viewModel(factory = MyViewModelProvider.factory)
     val sharedState by sharedViewModel.state.collectAsState()
     val onSharedEvent = sharedViewModel::onEvent
-    val myRepository = sharedViewModel.myRepository
 
     NavHost(
         navController = navController,
@@ -27,14 +26,12 @@ fun NavGraph(navController: NavHostController) {
         authNavGraph(
             navController = navController,
             sharedState = sharedState,
-            onSharedEvent = onSharedEvent,
-            myRepository = myRepository
+            onSharedEvent = onSharedEvent
         )
         composable(GraphRoute.HomeGraph.name) {
             HomeScreen(
                 sharedState = sharedState,
-                onSharedEvent = onSharedEvent,
-                myRepository = myRepository
+                onSharedEvent = onSharedEvent
             )
         }
     }

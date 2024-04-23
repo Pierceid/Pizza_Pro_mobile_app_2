@@ -23,8 +23,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormState
+import com.example.pizza_pro_2.domain.shared.SharedEvent
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.navigation.BottomSheet
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.InputTextField
@@ -34,8 +34,8 @@ import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 @Composable
 fun ShopScreen(
     navController: NavController,
-    sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit
+    sharedState: SharedState,
+    onSharedEvent: (SharedEvent) -> Unit
 ) {
     var isSheetOpened by rememberSaveable { mutableStateOf(false) }
 
@@ -45,13 +45,13 @@ fun ShopScreen(
         InputTextField(
             value = sharedState.searchQuery,
             onValueChange = {
-                onSharedEvent(SharedFormEvent.SearchQueryChanged(it))
+                onSharedEvent(SharedEvent.SearchQueryChanged(it))
             },
             label = stringResource(id = R.string.search),
             leadingIcon = Icons.Default.Search,
             trailingIcon = Icons.Default.Clear,
             onTrailingIconClick = {
-                onSharedEvent(SharedFormEvent.SearchQueryChanged(""))
+                onSharedEvent(SharedEvent.SearchQueryChanged(""))
             },
             imeAction = ImeAction.Done
         )
@@ -70,13 +70,13 @@ fun ShopScreen(
                 ShopPizzaCard(
                     pizza = pizza,
                     onCountChanged = {
-                        onSharedEvent(SharedFormEvent.PizzaCountChanged(it))
+                        onSharedEvent(SharedEvent.PizzaCountChanged(it))
                         val toastMessage =
                             "${pizza.name!!.capitalizeText()} Pizza\nwas added to your cart!"
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
-                        onSharedEvent(SharedFormEvent.PizzaSelectionChanged(pizza))
+                        onSharedEvent(SharedEvent.PizzaSelectionChanged(pizza))
                         isSheetOpened = true
                     }
                 )

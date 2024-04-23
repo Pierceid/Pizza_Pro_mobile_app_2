@@ -32,15 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.database.MyViewModelProvider
-import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormEvent
-import com.example.pizza_pro_2.domain.shared.SharedFormState
-import com.example.pizza_pro_2.domain.sign_in.SignInFormEvent
-import com.example.pizza_pro_2.domain.sign_in.SignInFormState
-import com.example.pizza_pro_2.domain.sign_in.SignInViewModel
+import com.example.pizza_pro_2.domain.auth.AuthEvent
+import com.example.pizza_pro_2.domain.auth.AuthViewModel
+import com.example.pizza_pro_2.domain.shared.SharedEvent
+import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.GraphRoute
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
@@ -53,11 +50,10 @@ import com.example.pizza_pro_2.ui.theme.White
 @Composable
 fun SignInScreen(
     navController: NavHostController,
-    sharedState: SharedFormState,
-    onSharedEvent: (SharedFormEvent) -> Unit,
-    myRepository: MyRepository
+    sharedState: SharedState,
+    onSharedEvent: (SharedEvent) -> Unit
 ) {
-    val viewModel: SignInViewModel = viewModel(factory = MyViewModelProvider.factory)
+    val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.signed_in_successfully)
@@ -66,7 +62,7 @@ fun SignInScreen(
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    onSharedEvent(SharedFormEvent.SignIn(createUser(state = state)))
+                    onSharedEvent(SharedEvent.SignIn(name = state.name, email = state.email))
 
                     navController.navigate(GraphRoute.HomeGraph.name) {
                         popUpTo(GraphRoute.AuthGraph.name) {
@@ -92,14 +88,14 @@ fun SignInScreen(
             InputTextField(
                 value = state.email,
                 onValueChange = {
-                    viewModel.onEvent(SignInFormEvent.EmailChanged(it))
+                    viewModel.onEvent(AuthEvent.EmailChanged(it))
                 },
                 label = stringResource(id = R.string.email),
                 isError = state.emailError != null,
                 leadingIcon = Icons.Default.Email,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
-                    viewModel.onEvent(SignInFormEvent.EmailChanged(""))
+                    viewModel.onEvent(AuthEvent.EmailChanged(""))
                 },
                 keyboardType = KeyboardType.Email
             )
@@ -118,14 +114,14 @@ fun SignInScreen(
                     modifier = Modifier.weight(1f),
                     value = state.password,
                     onValueChange = {
-                        viewModel.onEvent(SignInFormEvent.PasswordChanged(it))
+                        viewModel.onEvent(AuthEvent.PasswordChanged(it))
                     },
                     label = stringResource(id = R.string.password),
                     isError = state.passwordError != null,
                     leadingIcon = Icons.Default.Lock,
                     trailingIcon = Icons.Default.Clear,
                     onTrailingIconClick = {
-                        viewModel.onEvent(SignInFormEvent.PasswordChanged(""))
+                        viewModel.onEvent(AuthEvent.PasswordChanged(""))
                     },
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
@@ -139,7 +135,7 @@ fun SignInScreen(
                         .size(40.dp)
                         .padding(top = 4.dp)
                         .clickable {
-                            viewModel.onEvent(SignInFormEvent.OnPasswordVisibilityChanged(!state.passwordVisible))
+                            viewModel.onEvent(AuthEvent.OnPasswordVisibilityChanged(!state.passwordVisible))
                         },
                     painter = painterResource(id = if (state.passwordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
                     contentDescription = stringResource(id = R.string.visibility),
@@ -156,7 +152,7 @@ fun SignInScreen(
             ActionButton(
                 text = stringResource(id = R.string.sign_in),
                 onClick = {
-                    viewModel.onEvent(SignInFormEvent.Submit)
+                    viewModel.onEvent(AuthEvent.Submit(type = 1))
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -178,13 +174,4 @@ fun SignInScreen(
             )
         }
     }
-}
-
-private fun createUser(state: SignInFormState): User {
-    return User(
-        name = state.name,
-        email = state.email,
-        password = state.password,
-        gender = state.gender
-    )
 }

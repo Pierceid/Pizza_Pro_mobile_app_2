@@ -8,41 +8,41 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class FeedbackViewModel : ViewModel() {
-    var state: FeedbackFormState by mutableStateOf(FeedbackFormState())
+    var state: FeedbackState by mutableStateOf(FeedbackState())
 
-    fun onEvent(event: FeedbackFormEvent) {
+    fun onEvent(event: FeedbackEvent) {
         viewModelScope.launch {
             when (event) {
-                is FeedbackFormEvent.SatisfactionChanged -> {
+                is FeedbackEvent.SatisfactionChanged -> {
                     state = state.copy(satisfaction = event.satisfaction)
                 }
 
-                is FeedbackFormEvent.DeliveryTimeChanged -> {
+                is FeedbackEvent.DeliveryTimeChanged -> {
                     state = state.copy(deliveryTime = event.deliveryTime)
                 }
 
-                is FeedbackFormEvent.ProductQualityChanged -> {
+                is FeedbackEvent.ProductQualityChanged -> {
                     state = state.copy(productQuality = event.productQuality)
                 }
 
-                is FeedbackFormEvent.CustomerServiceChanged -> {
+                is FeedbackEvent.CustomerServiceChanged -> {
                     state = state.copy(customerService = event.customerService)
                 }
 
-                is FeedbackFormEvent.CommentChanged -> {
+                is FeedbackEvent.CommentChanged -> {
                     state = state.copy(comment = event.comment)
                 }
 
-                is FeedbackFormEvent.FollowUpChanged -> {
+                is FeedbackEvent.FollowUpChanged -> {
                     state = state.copy(followUp = event.followUp)
                 }
 
-                is FeedbackFormEvent.Discard -> {
-                    state = FeedbackFormState()
+                is FeedbackEvent.Discard -> {
+                    state = FeedbackState()
                 }
 
-                is FeedbackFormEvent.Send -> {
-                    state = FeedbackFormState()
+                is FeedbackEvent.Send -> {
+                    state = FeedbackState()
                 }
             }
         }

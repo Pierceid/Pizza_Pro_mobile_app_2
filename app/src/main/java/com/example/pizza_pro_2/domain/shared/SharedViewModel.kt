@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SharedViewModel(val myRepository: MyRepository) : ViewModel() {
-    private val _state = MutableStateFlow(SharedFormState(allPizzas = DataSource().loadData()))
+class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
+    private val _state = MutableStateFlow(SharedState(allPizzas = DataSource().loadData()))
     val state = _state.asStateFlow()
 
     /*
@@ -32,51 +32,82 @@ class SharedViewModel(val myRepository: MyRepository) : ViewModel() {
         }
     }
 
-    fun onEvent(event: SharedFormEvent) {
+    fun onEvent(event: SharedEvent) {
         viewModelScope.launch {
             when (event) {
-                is SharedFormEvent.CurrentUserChanged -> {
+                is SharedEvent.CurrentUserChanged -> {
                     _state.update { currentState ->
                         currentState.copy(currentUser = event.user)
                     }
                 }
 
-                is SharedFormEvent.SearchQueryChanged -> {
+                is SharedEvent.SearchQueryChanged -> {
                     filterPizzas(query = event.query)
                 }
 
-                is SharedFormEvent.PizzaCountChanged -> {
+                is SharedEvent.PizzaCountChanged -> {
                     updatePizzaCount(pizza = event.pizza)
                 }
 
-                is SharedFormEvent.PizzaSelectionChanged -> {
+                is SharedEvent.PizzaSelectionChanged -> {
                     _state.update { currentState ->
                         currentState.copy(selectedPizza = event.pizza)
                     }
                 }
 
-                is SharedFormEvent.SignUp -> {
-                    _state.update { currentState ->
-                        currentState.copy(currentUser = event.user)
-                    }
+                is SharedEvent.SignUp -> {
                     myRepository.insertUser(user = event.user)
-                }
-
-                is SharedFormEvent.SignIn -> {
                     _state.update { currentState ->
                         currentState.copy(currentUser = event.user)
                     }
                 }
 
-                is SharedFormEvent.PlaceOrder -> {
+                is SharedEvent.SignIn -> {
+                    myRepository.getUser(name = event.name, email = event.email).collect { user ->
+                        _state.update { currentState ->
+                            currentState.copy(currentUser = user)
+                        }
+                    }
+                }
+
+                is SharedEvent.UpdateAccount -> {
+                    var userToUpdate = _state.value.currentUser!!
+                    myRepository.getUser(name = userToUpdate.name, email = userToUpdate.email)
+                        .collect { user ->
+                            if (user != null) {
+                                userToUpdate = user.copy(
+                                    name = event.name,
+                                    email = event.email,
+                                    password = event.password,
+                                    gender = event.gender,
+                                    id = user.id
+                                )
+                                myRepository.updateUser(user = userToUpdate)
+
+                                _state.update { currentState ->
+                                    currentState.copy(currentUser = userToUpdate)
+                                }
+                            }
+                        }
+                }
+
+                is SharedEvent.DeleteAccount -> {
+                    val userToDelete = _state.value.currentUser!!
+                    myRepository.getUser(name = userToDelete.name, email = userToDelete.email)
+                        .collect { user ->
+                            myRepository.deleteUser(user = user!!)
+                        }
+                }
+
+                is SharedEvent.PlaceOrder -> {
                     myRepository.insertOrder(order = event.order)
                 }
 
-                is SharedFormEvent.CancelOrder -> {
+                is SharedEvent.CancelOrder -> {
                     myRepository.deleteOrder(order = event.order)
                 }
 
-                is SharedFormEvent.DiscardOrder -> {
+                is SharedEvent.DiscardOrder -> {
                     clearPizzas()
                 }
             }
