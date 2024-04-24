@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
@@ -44,7 +45,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.MyViewModelProvider
-import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
 import com.example.pizza_pro_2.domain.auth.AuthState
@@ -78,6 +78,7 @@ fun AccountScreen(
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.update_account)
 
+    var isInitial by rememberSaveable { mutableStateOf(true) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
@@ -89,6 +90,18 @@ fun AccountScreen(
         else R.string.are_you_certain_you_want_to_log_out_of_your_account
     )
     val color = if (option == 1) Maroon else Teal
+
+    if (isInitial) {
+        sharedState.currentUser!!.let {
+            viewModel.state.value = AuthState(
+                name = it.name,
+                email = it.email,
+                password = it.password,
+                gender = it.gender
+            )
+        }
+        isInitial = false
+    }
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
@@ -110,17 +123,6 @@ fun AccountScreen(
         }
     }
 
-    val user = sharedState.currentUser ?: User("", "", "", Gender.OTHER)
-
-    user.let {
-        viewModel.state.value = AuthState(
-            name = it.name,
-            email = it.email,
-            password = it.password,
-            gender = it.gender
-        )
-    }
-
     DefaultColumn {
         if (isDialogVisible) {
             InfoDialog(
@@ -132,10 +134,7 @@ fun AccountScreen(
                     if (option == 1) {
                         CoroutineScope(Dispatchers.IO).launch {
                             onSharedEvent(
-                                SharedEvent.DeleteAccount(
-                                    name = user.name,
-                                    email = user.email
-                                )
+                                SharedEvent.DeleteAccount(name = state.name, email = state.email)
                             )
                             delay(200)
                             exitProcess(0)
@@ -180,9 +179,13 @@ fun AccountScreen(
                 label = stringResource(id = R.string.name),
                 isError = state.nameError != null,
                 leadingIcon = Icons.Default.Person,
-                trailingIcon = Icons.Default.Create,
+                trailingIcon = if (state.isNameEdited) Icons.Default.Clear else Icons.Default.Create,
                 onTrailingIconClick = {
-                    viewModel.onEvent(AuthEvent.NameEdited(!state.isNameEdited))
+                    if (state.isNameEdited) {
+                        viewModel.onEvent(AuthEvent.NameChanged(""))
+                    } else {
+                        viewModel.onEvent(AuthEvent.NameEdited(true))
+                    }
                 },
                 imeAction = ImeAction.Done,
                 readOnly = !state.isNameEdited
@@ -202,9 +205,13 @@ fun AccountScreen(
                 label = stringResource(id = R.string.email),
                 isError = state.emailError != null,
                 leadingIcon = Icons.Default.Email,
-                trailingIcon = Icons.Default.Create,
+                trailingIcon = if (state.isEmailEdited) Icons.Default.Clear else Icons.Default.Create,
                 onTrailingIconClick = {
-                    viewModel.onEvent(AuthEvent.EmailEdited(!state.isEmailEdited))
+                    if (state.isEmailEdited) {
+                        viewModel.onEvent(AuthEvent.EmailChanged(""))
+                    } else {
+                        viewModel.onEvent(AuthEvent.EmailEdited(true))
+                    }
                 },
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done,
@@ -218,16 +225,21 @@ fun AccountScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             InputTextField(
-                value = if (state.isPasswordEdited) state.password else state.password.map { '*' }.joinToString(separator = ""),
+                value = if (state.isPasswordEdited) state.password else state.password.map { '*' }
+                    .joinToString(separator = ""),
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.PasswordChanged(it))
                 },
                 label = stringResource(id = R.string.password),
                 isError = state.passwordError != null,
                 leadingIcon = Icons.Default.Lock,
-                trailingIcon = Icons.Default.Create,
+                trailingIcon = if (state.isPasswordEdited) Icons.Default.Clear else Icons.Default.Create,
                 onTrailingIconClick = {
-                    viewModel.onEvent(AuthEvent.PasswordEdited(!state.isPasswordEdited))
+                    if (state.isPasswordEdited) {
+                        viewModel.onEvent(AuthEvent.PasswordChanged(""))
+                    } else {
+                        viewModel.onEvent(AuthEvent.PasswordEdited(true))
+                    }
                 },
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done,
@@ -272,7 +284,7 @@ fun AccountScreen(
             text = stringResource(id = R.string.save),
             onClick = {
                 option = 0
-                viewModel.onEvent(AuthEvent.Submit(type = 2, currentUser = user))
+                viewModel.onEvent(AuthEvent.Submit(type = 2, currentUser = sharedState.currentUser))
             },
             modifier = Modifier.fillMaxWidth()
         )

@@ -5,9 +5,8 @@ import android.util.Patterns
 class ValidateEmail {
     fun execute(email: String, metCondition: Boolean, type: Int): ValidationResult {
         val message = when (type) {
-            0 -> "Email must be unique and in valid form."
             1 -> "No match found for such email."
-            else -> ""
+            else -> "Email must be unique and in valid form."
         }
 
         if (email.isBlank() || !metCondition || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

@@ -94,7 +94,6 @@ class AuthViewModel(
                 }
 
                 is AuthEvent.Submit -> {
-                    refresh()
                     submitData(type = event.type, currentUser = event.currentUser)
                 }
             }
@@ -190,6 +189,17 @@ class AuthViewModel(
                         }
                         return
                     }
+
+                    _state.update { currentState ->
+                        currentState.copy(
+                            name = _state.value.name,
+                            email = _state.value.email,
+                            password = _state.value.password,
+                            gender = _state.value.gender
+                        )
+                    }
+
+                    refresh()
                 }
             }
         }
