@@ -7,6 +7,7 @@ import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.models.Pizza
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -63,17 +64,18 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                 }
 
                 is SharedEvent.SignIn -> {
-                    myRepository.getUser(name = event.name, email = event.email).collect { user ->
-                        _state.update { currentState ->
-                            currentState.copy(currentUser = user)
+                    myRepository.getUser(event.name, event.email)
+                        .collectLatest { user ->
+                            _state.update { currentState ->
+                                currentState.copy(currentUser = user)
+                            }
                         }
-                    }
                 }
 
                 is SharedEvent.UpdateAccount -> {
                     var userToUpdate = _state.value.currentUser!!
-                    myRepository.getUser(name = userToUpdate.name, email = userToUpdate.email)
-                        .collect { user ->
+                    myRepository.getUser(userToUpdate.name, userToUpdate.email)
+                        .collectLatest { user ->
                             if (user != null) {
                                 userToUpdate = user.copy(
                                     name = event.name,
@@ -93,8 +95,8 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
 
                 is SharedEvent.DeleteAccount -> {
                     val userToDelete = _state.value.currentUser!!
-                    myRepository.getUser(name = userToDelete.name, email = userToDelete.email)
-                        .collect { user ->
+                    myRepository.getUser(userToDelete.name, userToDelete.email)
+                        .collectLatest { user ->
                             myRepository.deleteUser(user!!)
                         }
                 }

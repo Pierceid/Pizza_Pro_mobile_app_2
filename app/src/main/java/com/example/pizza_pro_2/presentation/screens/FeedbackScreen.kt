@@ -62,12 +62,14 @@ fun FeedbackScreen(navController: NavController) {
     val viewModel = viewModel<FeedbackViewModel>()
     val state = viewModel.state
     val context = LocalContext.current
-    val dialogTitle =
-        stringResource(id = if (option == 0) R.string.discard_feedback else R.string.share_feedback)
-    val dialogText =
-        stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_your_feedback else R.string.would_you_like_to_proceed_and_provide_us_with_your_feedback)
-    val toastMessage =
-        stringResource(id = if (option == 0) R.string.feedback_discarded_successfully else R.string.feedback_sent_successfully)
+    val dialogTitleId = if (option == 0) R.string.discard_feedback else R.string.share_feedback
+    val dialogTextId =
+        if (option == 0) R.string.are_you_sure_you_want_to_discard_your_feedback
+        else R.string.would_you_like_to_proceed_and_provide_us_with_your_feedback
+    val toastMessage = stringResource(
+        if (option == 0) R.string.feedback_discarded_successfully
+        else R.string.feedback_sent_successfully
+    )
     val event = if (option == 0) FeedbackEvent.Discard else FeedbackEvent.Send
     val color = if (option == 0) Maroon else Teal
     val options = listOf(
@@ -88,8 +90,8 @@ fun FeedbackScreen(navController: NavController) {
     DefaultColumn {
         if (isDialogVisible) {
             InfoDialog(
-                title = dialogTitle,
-                text = dialogText,
+                titleId = dialogTitleId,
+                textId = dialogTextId,
                 onDismiss = { isDialogVisible = it },
                 dismissButton = R.string.no,
                 onConfirm = {
@@ -107,7 +109,7 @@ fun FeedbackScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeaderText(
-                text = stringResource(id = R.string.how_would_you_rate_your_experience),
+                textId = R.string.how_would_you_rate_your_experience,
                 textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -122,10 +124,10 @@ fun FeedbackScreen(navController: NavController) {
                 imagePainterIds = imagePainterIds
             )
 
-            Spacer(modifier = Modifier)
+            Spacer(Modifier)
 
             HeaderText(
-                text = stringResource(id = R.string.would_you_tell_us_a_little_more_about_your_experience),
+                textId = R.string.would_you_tell_us_a_little_more_about_your_experience,
                 textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -136,7 +138,7 @@ fun FeedbackScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = R.string.delivery_time),
+                    text = stringResource(R.string.delivery_time),
                     style = MaterialTheme.typography.titleSmall,
                     color = White
                 )
@@ -149,7 +151,7 @@ fun FeedbackScreen(navController: NavController) {
                     ) {
                         Icon(
                             imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(id = R.string.delivery_time),
+                            contentDescription = stringResource(R.string.delivery_time),
                             tint = if (state.deliveryTime) Lime else Silver
                         )
                     }
@@ -162,7 +164,7 @@ fun FeedbackScreen(navController: NavController) {
                         Icon(
                             modifier = Modifier.rotate(180f),
                             imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(id = R.string.delivery_time),
+                            contentDescription = stringResource(R.string.delivery_time),
                             tint = if (!state.deliveryTime) Salmon else Silver
                         )
                     }
@@ -175,7 +177,7 @@ fun FeedbackScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = R.string.product_quality),
+                    text = stringResource(R.string.product_quality),
                     style = MaterialTheme.typography.titleSmall,
                     color = White
                 )
@@ -188,7 +190,7 @@ fun FeedbackScreen(navController: NavController) {
                     ) {
                         Icon(
                             imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(id = R.string.product_quality),
+                            contentDescription = stringResource(R.string.product_quality),
                             tint = if (state.productQuality) Lime else Silver
                         )
                     }
@@ -201,7 +203,7 @@ fun FeedbackScreen(navController: NavController) {
                         Icon(
                             modifier = Modifier.rotate(180f),
                             imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(id = R.string.product_quality),
+                            contentDescription = stringResource(R.string.product_quality),
                             tint = if (!state.productQuality) Salmon else Silver
                         )
                     }
@@ -214,7 +216,7 @@ fun FeedbackScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = R.string.customer_service),
+                    text = stringResource(R.string.customer_service),
                     style = MaterialTheme.typography.titleSmall,
                     color = White
                 )
@@ -227,7 +229,7 @@ fun FeedbackScreen(navController: NavController) {
                     ) {
                         Icon(
                             imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(id = R.string.customer_service),
+                            contentDescription = stringResource(R.string.customer_service),
                             tint = if (state.customerService) Lime else Silver
                         )
                     }
@@ -240,17 +242,17 @@ fun FeedbackScreen(navController: NavController) {
                         Icon(
                             modifier = Modifier.rotate(180f),
                             imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(id = R.string.customer_service),
+                            contentDescription = stringResource(R.string.customer_service),
                             tint = if (!state.customerService) Salmon else Silver
                         )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier)
+            Spacer(Modifier)
 
             HeaderText(
-                text = stringResource(id = R.string.comment),
+                textId = R.string.comment,
                 textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -260,7 +262,7 @@ fun FeedbackScreen(navController: NavController) {
                 onValueChange = {
                     viewModel.onEvent(FeedbackEvent.CommentChanged(it))
                 },
-                label = "",
+                labelId = R.string.empty,
                 leadingIcon = Icons.Default.Create,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
@@ -269,10 +271,10 @@ fun FeedbackScreen(navController: NavController) {
                 imeAction = ImeAction.Done
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
             HeaderText(
-                text = stringResource(id = R.string.may_we_follow_you_up_on_your_feedback),
+                textId = R.string.may_we_follow_you_up_on_your_feedback,
                 textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -282,7 +284,7 @@ fun FeedbackScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = R.string.no),
+                    text = stringResource(R.string.no),
                     style = MaterialTheme.typography.titleMedium,
                     color = White
                 )
@@ -296,7 +298,7 @@ fun FeedbackScreen(navController: NavController) {
                         Icon(
                             imageVector = if (state.followUp) Icons.Default.Check else Icons.Default.Clear,
                             tint = White,
-                            contentDescription = stringResource(id = R.string.f_u_switch)
+                            contentDescription = stringResource(R.string.f_u_switch)
                         )
                     },
                     colors = SwitchDefaults.colors(
@@ -308,17 +310,17 @@ fun FeedbackScreen(navController: NavController) {
                 )
 
                 Text(
-                    text = stringResource(id = R.string.yes),
+                    text = stringResource(R.string.yes),
                     style = MaterialTheme.typography.titleMedium,
                     color = White
                 )
             }
 
-            Spacer(modifier = Modifier)
+            Spacer(Modifier)
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 ActionButton(
-                    text = stringResource(id = R.string.discard),
+                    textId = R.string.discard,
                     onClick = {
                         option = 0
                         isDialogVisible = true
@@ -327,7 +329,7 @@ fun FeedbackScreen(navController: NavController) {
                 )
 
                 ActionButton(
-                    text = stringResource(id = R.string.send),
+                    textId = R.string.send,
                     onClick = {
                         option = 1
                         isDialogVisible = true

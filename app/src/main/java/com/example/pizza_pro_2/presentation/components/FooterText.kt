@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.presentation.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import com.example.pizza_pro_2.ui.theme.Pink
 import com.example.pizza_pro_2.ui.theme.White
@@ -17,8 +19,8 @@ import com.example.pizza_pro_2.ui.theme.White
 @Stable
 @Composable
 fun FooterText(
-    text: String,
-    hyperText: String,
+    @StringRes textId: Int,
+    @StringRes hypertextId: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -28,13 +30,13 @@ fun FooterText(
         verticalArrangement = Arrangement.Bottom
     ) {
         Text(
-            text = text,
+            text = stringResource(textId),
             style = MaterialTheme.typography.titleSmall,
             color = White
         )
         TextButton(onClick = onClick) {
             Text(
-                text = hyperText,
+                text = stringResource(hypertextId),
                 style = MaterialTheme.typography.titleSmall,
                 color = Pink,
                 textDecoration = TextDecoration.Underline

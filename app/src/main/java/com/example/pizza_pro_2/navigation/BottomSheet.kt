@@ -43,7 +43,7 @@ import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
-import com.example.pizza_pro_2.util.Util.Companion.formatDouble
+import com.example.pizza_pro_2.util.Util.Companion.formatPrice
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,8 +70,8 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
             ) {
                 Image(
                     modifier = Modifier.aspectRatio(3f / 2f),
-                    painter = painterResource(id = pizza.imageSource),
-                    contentDescription = stringResource(id = R.string.pizza_image),
+                    painter = painterResource(pizza.imageSource),
+                    contentDescription = stringResource(R.string.pizza_image),
                     contentScale = ContentScale.FillBounds
                 )
             }
@@ -85,21 +85,21 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        painter = painterResource(id = R.drawable.star_24),
-                        contentDescription = stringResource(id = R.string.star),
+                        painter = painterResource(R.drawable.star_24),
+                        contentDescription = stringResource(R.string.star),
                         tint = Yellow
                     )
 
                     Text(
-                        text = " ${pizza.rating.toString().formatDouble()}",
+                        text = " ${pizza.rating.formatPrice()}",
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        painter = painterResource(id = R.drawable.time_24),
-                        contentDescription = stringResource(id = R.string.time),
+                        painter = painterResource(R.drawable.time_24),
+                        contentDescription = stringResource(R.string.time),
                         tint = Orange
                     )
 
@@ -111,8 +111,8 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        painter = painterResource(id = R.drawable.flame_24),
-                        contentDescription = stringResource(id = R.string.flame),
+                        painter = painterResource(R.drawable.flame_24),
+                        contentDescription = stringResource(R.string.flame),
                         tint = Red
                     )
 
@@ -148,14 +148,11 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
                 ) {
                     Text(
                         modifier = Modifier
-                            .background(
-                                color = if (isExpanded) Salmon else Lime,
-                                shape = RoundedCornerShape(4.dp)
-                            )
+                            .background(if (isExpanded) Salmon else Lime, RoundedCornerShape(4.dp))
                             .padding(4.dp)
                             .align(Alignment.Center)
                             .clickable { isExpanded = !isExpanded },
-                        text = stringResource(id = if (isExpanded) R.string.show_less else R.string.show_more)
+                        text = stringResource(if (isExpanded) R.string.show_less else R.string.show_more)
                     )
                 }
             }

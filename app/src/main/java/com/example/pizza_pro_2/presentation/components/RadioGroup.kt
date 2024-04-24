@@ -53,8 +53,8 @@ fun <T> RadioGroup(
                     ) {
                         Image(
                             modifier = Modifier.size(44.dp),
-                            painter = painterResource(id = imagePainterIds.getOrElse(index) { -1 }),
-                            contentDescription = stringResource(id = R.string.satisfaction_image)
+                            painter = painterResource(imagePainterIds.getOrElse(index) { -1 }),
+                            contentDescription = stringResource(R.string.satisfaction_image)
                         )
                     }
 

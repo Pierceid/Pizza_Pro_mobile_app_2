@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.presentation.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
@@ -9,13 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.ui.theme.Purple
 import com.example.pizza_pro_2.ui.theme.White
 
 @Stable
 @Composable
-fun ActionButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun ActionButton(@StringRes textId: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
         modifier = modifier.height(60.dp),
         border = BorderStroke(2.dp, White),
@@ -25,6 +27,6 @@ fun ActionButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifie
         ),
         onClick = onClick
     ) {
-        Text(text = text, style = MaterialTheme.typography.titleMedium)
+        Text(text = stringResource(textId), style = MaterialTheme.typography.titleMedium)
     }
 }

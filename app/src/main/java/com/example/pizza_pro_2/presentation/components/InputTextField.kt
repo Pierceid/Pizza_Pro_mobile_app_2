@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.presentation.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +24,7 @@ import com.example.pizza_pro_2.ui.theme.White
 fun InputTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    label: String,
+    @StringRes labelId: Int,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
     leadingIcon: ImageVector? = null,
@@ -39,13 +40,13 @@ fun InputTextField(
         modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
-        label = { Text(text = label) },
+        label = { Text(text = stringResource(labelId)) },
         isError = isError,
         leadingIcon = {
             leadingIcon?.let {
                 Icon(
                     imageVector = it,
-                    contentDescription = stringResource(id = R.string.search),
+                    contentDescription = stringResource(R.string.search),
                     tint = if (isError) MaterialTheme.colorScheme.error else White,
                     modifier = Modifier.clickable { onLeadingIconClick() }
                 )
@@ -55,7 +56,7 @@ fun InputTextField(
             trailingIcon?.let {
                 Icon(
                     imageVector = it,
-                    contentDescription = stringResource(id = R.string.clear),
+                    contentDescription = stringResource(R.string.clear),
                     tint = if (isError) MaterialTheme.colorScheme.error else White,
                     modifier = Modifier.clickable { onTrailingIconClick() }
                 )

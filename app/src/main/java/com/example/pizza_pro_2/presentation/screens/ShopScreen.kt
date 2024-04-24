@@ -18,7 +18,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -47,7 +46,7 @@ fun ShopScreen(
             onValueChange = {
                 onSharedEvent(SharedEvent.SearchQueryChanged(it))
             },
-            label = stringResource(id = R.string.search),
+            labelId = R.string.search,
             leadingIcon = Icons.Default.Search,
             trailingIcon = Icons.Default.Clear,
             onTrailingIconClick = {
@@ -56,7 +55,7 @@ fun ShopScreen(
             imeAction = ImeAction.Done
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(Modifier.height(12.dp))
 
         LazyVerticalGrid(
             modifier = Modifier
@@ -85,6 +84,6 @@ fun ShopScreen(
     }
 
     if (isSheetOpened) {
-        BottomSheet(sharedState = sharedState, onDismiss = { isSheetOpened = it })
+        BottomSheet(sharedState) { isSheetOpened = it }
     }
 }

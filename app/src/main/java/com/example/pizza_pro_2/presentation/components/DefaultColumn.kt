@@ -39,9 +39,8 @@ fun DefaultColumn(
                 .padding(8.dp)
                 .verticalScroll(state = rememberScrollState(), enabled = true),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = verticalArrangement
-        ) {
-            content()
-        }
+            verticalArrangement = verticalArrangement,
+            content = content
+        )
     }
 }

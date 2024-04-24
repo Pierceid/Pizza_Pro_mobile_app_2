@@ -1,6 +1,5 @@
 package com.example.pizza_pro_2.presentation.screens
 
-import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,11 +38,11 @@ import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
-import com.example.pizza_pro_2.util.Util.Companion.formatDouble
+import com.example.pizza_pro_2.util.Util.Companion.formatPrice
+import com.example.pizza_pro_2.util.Util.Companion.formatTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
 
 @Composable
 fun CartScreen(
@@ -56,31 +56,29 @@ fun CartScreen(
 
     val context = LocalContext.current
     val items = sharedState.itemsCost
-    val delivery = if (items == 0.0) 0 else 5
+    val delivery = if (items == 0.0) 0.0 else 5.0
     val total = items + delivery
-    val dialogTitle =
-        stringResource(id = if (option == 0) R.string.discard_order else R.string.place_order)
-    val dialogText =
-        stringResource(id = if (option == 0) R.string.are_you_sure_you_want_to_discard_your_order else R.string.would_you_like_to_proceed_and_place_your_order)
-    val toastMessage =
-        stringResource(id = if (option == 0) R.string.order_discarded_successfully else R.string.order_placed_successfully)
+    val dialogTitleId = if (option == 0) R.string.discard_order else R.string.place_order
+    val dialogTextId =
+        if (option == 0) R.string.are_you_sure_you_want_to_discard_your_order
+        else R.string.would_you_like_to_proceed_and_place_your_order
+    val toastMessage = stringResource(
+        if (option == 0) R.string.order_discarded_successfully
+        else R.string.order_placed_successfully
+    )
     val color = if (option == 0) Maroon else Teal
 
     DefaultColumn {
         if (isDialogVisible) {
             InfoDialog(
-                title = dialogTitle,
-                text = dialogText,
+                titleId = dialogTitleId,
+                textId = dialogTextId,
                 onDismiss = { isDialogVisible = it },
                 dismissButton = R.string.no,
                 onConfirm = {
                     if (option == 1) {
                         CoroutineScope(Dispatchers.IO).launch {
-                            onSharedEvent(
-                                SharedEvent.PlaceOrder(
-                                    createOrder(sharedState = sharedState, total = total)
-                                )
-                            )
+                            onSharedEvent(SharedEvent.PlaceOrder(createOrder(sharedState, total)))
                         }
                     }
                     onSharedEvent(SharedEvent.DiscardOrder)
@@ -111,20 +109,20 @@ fun CartScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HeaderText(
-                text = stringResource(id = R.string.items),
+                textId = R.string.items,
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
-            HeaderText(
-                text = NumberFormat.getCurrencyInstance().format(items).toString().formatDouble(),
-                textStyle = MaterialTheme.typography.titleMedium,
+            Text(
+                text = items.formatPrice(),
+                style = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
         }
@@ -134,14 +132,13 @@ fun CartScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HeaderText(
-                text = stringResource(id = R.string.delivery),
+                textId = R.string.delivery,
                 textStyle = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
-            HeaderText(
-                text = NumberFormat.getCurrencyInstance().format(delivery).toString()
-                    .formatDouble(),
-                textStyle = MaterialTheme.typography.titleMedium,
+            Text(
+                text = delivery.formatPrice(),
+                style = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
         }
@@ -159,20 +156,21 @@ fun CartScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HeaderText(
-                text = stringResource(id = R.string.total),
+                textId = R.string.total,
                 color = White
             )
-            HeaderText(
-                text = NumberFormat.getCurrencyInstance().format(total).formatDouble(),
+            Text(
+                text = total.formatPrice(),
+                style = MaterialTheme.typography.headlineLarge,
                 color = White
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             ActionButton(
-                text = stringResource(id = R.string.discard),
+                textId = R.string.discard,
                 onClick = {
                     option = 0
                     isDialogVisible = true
@@ -181,7 +179,7 @@ fun CartScreen(
             )
 
             ActionButton(
-                text = stringResource(id = R.string.order),
+                textId = R.string.order,
                 onClick = {
                     option = 1
                     isDialogVisible = true
@@ -192,16 +190,16 @@ fun CartScreen(
     }
 
     if (isSheetOpened) {
-        BottomSheet(sharedState = sharedState, onDismiss = { isSheetOpened = it })
+        BottomSheet(sharedState) { isSheetOpened = it }
     }
 }
 
 private fun createOrder(sharedState: SharedState, total: Double): Order {
     return Order(
         name = sharedState.currentUser!!.name,
-        time = DateFormat.format("d.M.yyyy (h:mm a)", System.currentTimeMillis()).toString(),
+        time = System.currentTimeMillis().formatTime(),
         place = "none",
         items = sharedState.orderedPizzas.sumOf { it.count },
-        cost = NumberFormat.getCurrencyInstance().format(total).formatDouble()
+        cost = total.formatPrice()
     )
 }

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyViewModelProvider
+import com.example.pizza_pro_2.presentation.MyViewModelProvider
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
 import com.example.pizza_pro_2.domain.auth.AuthViewModel
@@ -56,13 +56,13 @@ fun SignInScreen(
     val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val toastMessage = stringResource(id = R.string.signed_in_successfully)
+    val toastMessage = stringResource(R.string.signed_in_successfully)
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    onSharedEvent(SharedEvent.SignIn(name = state.name, email = state.email))
+                    onSharedEvent(SharedEvent.SignIn(state.name, state.email))
 
                     navController.navigate(GraphRoute.HomeGraph.name) {
                         popUpTo(GraphRoute.AuthGraph.name) {
@@ -81,17 +81,17 @@ fun SignInScreen(
             modifier = Modifier.width(480.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderText(text = stringResource(id = R.string.sign_in))
+            HeaderText(textId = R.string.sign_in)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             InputTextField(
                 value = state.email,
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.EmailChanged(it))
                 },
-                label = stringResource(id = R.string.email),
-                isError = state.emailError != null,
+                labelId = R.string.email,
+                isError = state.emailErrorId != null,
                 leadingIcon = Icons.Default.Email,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
@@ -100,11 +100,11 @@ fun SignInScreen(
                 keyboardType = KeyboardType.Email
             )
 
-            state.emailError?.let {
-                ErrorText(message = it)
+            state.emailErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -116,8 +116,8 @@ fun SignInScreen(
                     onValueChange = {
                         viewModel.onEvent(AuthEvent.PasswordChanged(it))
                     },
-                    label = stringResource(id = R.string.password),
-                    isError = state.passwordError != null,
+                    labelId = R.string.password,
+                    isError = state.passwordErrorId != null,
                     leadingIcon = Icons.Default.Lock,
                     trailingIcon = Icons.Default.Clear,
                     onTrailingIconClick = {
@@ -128,7 +128,7 @@ fun SignInScreen(
                     visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(Modifier.width(8.dp))
 
                 Icon(
                     modifier = Modifier
@@ -137,31 +137,31 @@ fun SignInScreen(
                         .clickable {
                             viewModel.onEvent(AuthEvent.PasswordVisibilityChanged(!state.isPasswordVisible))
                         },
-                    painter = painterResource(id = if (state.isPasswordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
-                    contentDescription = stringResource(id = R.string.visibility),
+                    painter = painterResource(if (state.isPasswordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
+                    contentDescription = stringResource(R.string.visibility),
                     tint = White
                 )
             }
 
-            state.passwordError?.let {
-                ErrorText(message = it)
+            state.passwordErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(Modifier.height(24.dp))
 
             ActionButton(
-                text = stringResource(id = R.string.sign_in),
+                textId = R.string.sign_in,
                 onClick = {
                     viewModel.onEvent(AuthEvent.Submit(1))
                 },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             FooterText(
-                text = stringResource(id = R.string.don_t_have_an_account),
-                hyperText = stringResource(id = R.string.sign_up),
+                textId = R.string.don_t_have_an_account,
+                hypertextId = R.string.sign_up,
                 onClick = {
                     navController.navigate(Screen.SignUp.route) {
                         popUpTo(Screen.SignIn.route) {

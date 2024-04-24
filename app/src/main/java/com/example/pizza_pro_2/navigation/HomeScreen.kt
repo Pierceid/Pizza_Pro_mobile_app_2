@@ -46,24 +46,24 @@ fun HomeScreen(
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = { TopBar(navController = navController, onDialogShow = { isVisible = it }) },
-        bottomBar = { BottomBar(navController = navController) },
+        topBar = {
+            TopBar(navController) { isVisible = it }
+        },
+        bottomBar = {
+            BottomBar(navController)
+        },
         content = { innerPadding ->
             if (isVisible) {
                 InfoDialog(
-                    title = stringResource(id = R.string.pizza_info),
-                    text = stringResource(id = R.string.pizza_card_info),
+                    titleId = R.string.pizza_info,
+                    textId = R.string.pizza_card_info,
                     onDismiss = { isVisible = it },
                     dismissButton = R.string.cancel
                 )
             }
 
             Box(modifier = Modifier.padding(innerPadding)) {
-                BottomNavGraph(
-                    navController = navController,
-                    sharedState = sharedState,
-                    onSharedEvent = onSharedEvent
-                )
+                BottomNavGraph(navController, sharedState, onSharedEvent)
             }
         }
     )
@@ -75,8 +75,7 @@ fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val header = stringResource(
-        id = when (currentDestination?.route) {
-            Screen.Shop.route -> R.string.shop
+        when (currentDestination?.route) {
             Screen.Cart.route -> R.string.cart
             Screen.Feedback.route -> R.string.feedback
             Screen.Settings.route -> R.string.settings
@@ -97,7 +96,7 @@ fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
                     Icon(
                         modifier = Modifier.size(32.dp),
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.back)
+                        contentDescription = stringResource(R.string.back)
                     )
                 }
             }
@@ -106,7 +105,7 @@ fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
             IconButton(onClick = { onDialogShow(true) }) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    contentDescription = stringResource(id = R.string.pizza_info)
+                    contentDescription = stringResource(R.string.pizza_info)
                 )
             }
         }
@@ -126,11 +125,7 @@ fun BottomBar(navController: NavHostController) {
 
     NavigationBar {
         screens.forEach { screen ->
-            AddItem(
-                screen = screen,
-                currentDestination = currentDestination,
-                navController = navController
-            )
+            AddItem(screen, currentDestination, navController)
         }
     }
 }
@@ -147,8 +142,8 @@ fun RowScope.AddItem(
         label = { if (!isSelected) Text(text = screen.title) },
         icon = {
             Icon(
-                painter = painterResource(id = if (isSelected) screen.selectedIconId else screen.unselectedIconId),
-                contentDescription = stringResource(id = R.string.app_bar_icon)
+                painter = painterResource(if (isSelected) screen.selectedIconId else screen.unselectedIconId),
+                contentDescription = stringResource(R.string.app_bar_icon)
             )
         },
         selected = isSelected,

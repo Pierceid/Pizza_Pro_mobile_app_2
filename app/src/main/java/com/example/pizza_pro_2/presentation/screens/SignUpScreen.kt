@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyViewModelProvider
+import com.example.pizza_pro_2.presentation.MyViewModelProvider
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
@@ -64,14 +64,14 @@ fun SignUpScreen(
     val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val toastMessage = stringResource(id = R.string.signed_up_successfully)
+    val toastMessage = stringResource(R.string.signed_up_successfully)
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
                     CoroutineScope(Dispatchers.IO).launch {
-                        onSharedEvent(SharedEvent.SignUp(createUser(state = state)))
+                        onSharedEvent(SharedEvent.SignUp(createUser(state)))
                     }
 
                     navController.navigate(route = GraphRoute.HomeGraph.name) {
@@ -91,17 +91,17 @@ fun SignUpScreen(
             modifier = Modifier.width(480.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderText(text = stringResource(id = R.string.sign_up))
+            HeaderText(textId = R.string.sign_up)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             InputTextField(
                 value = state.name,
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.NameChanged(it))
                 },
-                label = stringResource(id = R.string.name),
-                isError = state.nameError != null,
+                labelId = R.string.name,
+                isError = state.nameErrorId != null,
                 leadingIcon = Icons.Default.Person,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
@@ -109,19 +109,19 @@ fun SignUpScreen(
                 }
             )
 
-            state.nameError?.let {
-                ErrorText(message = it)
+            state.nameErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             InputTextField(
                 value = state.email,
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.EmailChanged(it))
                 },
-                label = stringResource(id = R.string.email),
-                isError = state.emailError != null,
+                labelId = R.string.email,
+                isError = state.emailErrorId != null,
                 leadingIcon = Icons.Default.Email,
                 trailingIcon = Icons.Default.Clear,
                 onTrailingIconClick = {
@@ -130,11 +130,11 @@ fun SignUpScreen(
                 keyboardType = KeyboardType.Email
             )
 
-            state.emailError?.let {
-                ErrorText(message = it)
+            state.emailErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -146,8 +146,8 @@ fun SignUpScreen(
                     onValueChange = {
                         viewModel.onEvent(AuthEvent.PasswordChanged(it))
                     },
-                    label = stringResource(id = R.string.password),
-                    isError = state.passwordError != null,
+                    labelId = R.string.password,
+                    isError = state.passwordErrorId != null,
                     leadingIcon = Icons.Default.Lock,
                     trailingIcon = Icons.Default.Clear,
                     onTrailingIconClick = {
@@ -158,7 +158,7 @@ fun SignUpScreen(
                     visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(Modifier.width(8.dp))
 
                 Icon(
                     modifier = Modifier
@@ -167,17 +167,17 @@ fun SignUpScreen(
                         .clickable {
                             viewModel.onEvent(AuthEvent.PasswordVisibilityChanged(!state.isPasswordVisible))
                         },
-                    painter = painterResource(id = if (state.isPasswordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
-                    contentDescription = stringResource(id = R.string.visibility),
+                    painter = painterResource(if (state.isPasswordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
+                    contentDescription = stringResource(R.string.visibility),
                     tint = White
                 )
             }
 
-            state.passwordError?.let {
-                ErrorText(message = it)
+            state.passwordErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             RadioGroup(
                 selected = state.gender,
@@ -188,21 +188,21 @@ fun SignUpScreen(
                 modifier = Modifier.padding(end = 16.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             ActionButton(
-                text = stringResource(id = R.string.sign_up),
+                textId = R.string.sign_up,
                 onClick = {
                     viewModel.onEvent(AuthEvent.Submit(0))
                 },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             FooterText(
-                text = stringResource(id = R.string.already_have_an_account),
-                hyperText = stringResource(id = R.string.sign_in),
+                textId = R.string.already_have_an_account,
+                hypertextId = R.string.sign_in,
                 onClick = {
                     navController.navigate(Screen.SignIn.route) {
                         popUpTo(Screen.SignUp.route) {

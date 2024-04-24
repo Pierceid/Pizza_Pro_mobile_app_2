@@ -45,8 +45,7 @@ import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
-import com.example.pizza_pro_2.util.Util.Companion.formatDouble
-import java.text.NumberFormat
+import com.example.pizza_pro_2.util.Util.Companion.formatPrice
 import kotlin.math.roundToInt
 
 @Composable
@@ -57,7 +56,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
         modifier = Modifier
             .height(92.dp)
             .drawBehind { RoundedCornerShape(8.dp) },
-        border = BorderStroke(width = 1.dp, color = White)
+        border = BorderStroke(1.dp, White)
     ) {
         Row(
             modifier = Modifier
@@ -71,8 +70,8 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             ) {
                 Image(
                     modifier = Modifier.aspectRatio(5f / 4f),
-                    painter = painterResource(id = pizza.imageSource),
-                    contentDescription = stringResource(id = R.string.pizza_image),
+                    painter = painterResource(pizza.imageSource),
+                    contentDescription = stringResource(R.string.pizza_image),
                     contentScale = ContentScale.FillBounds
                 )
             }
@@ -104,7 +103,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                     ) {
                         Icon(
                             imageVector = Icons.Default.Clear,
-                            contentDescription = stringResource(id = R.string.clear),
+                            contentDescription = stringResource(R.string.clear),
                             tint = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
@@ -123,7 +122,7 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                                 Icon(
                                     modifier = Modifier.size(20.dp),
                                     imageVector = Icons.Default.Star,
-                                    contentDescription = stringResource(id = R.string.star),
+                                    contentDescription = stringResource(R.string.star),
                                     tint = Yellow
                                 )
                             }
@@ -134,16 +133,15 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                painter = painterResource(id = R.drawable.price_24),
-                                contentDescription = stringResource(id = R.string.add_item),
+                                painter = painterResource(R.drawable.price_24),
+                                contentDescription = stringResource(R.string.add_item),
                                 tint = Red
                             )
 
                             Spacer(modifier = Modifier.width(4.dp))
 
                             Text(
-                                text = NumberFormat.getCurrencyInstance().format(pizza.cost)
-                                    .toString().formatDouble(),
+                                text = pizza.cost.formatPrice(),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = Red
                             )
@@ -169,8 +167,8 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                             }
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.plus),
-                                contentDescription = stringResource(id = R.string.plus),
+                                painter = painterResource(R.drawable.plus),
+                                contentDescription = stringResource(R.string.plus),
                                 tint = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }
@@ -198,8 +196,8 @@ fun CartPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                             }
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.minus),
-                                contentDescription = stringResource(id = R.string.minus),
+                                painter = painterResource(R.drawable.minus),
+                                contentDescription = stringResource(R.string.minus),
                                 tint = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }

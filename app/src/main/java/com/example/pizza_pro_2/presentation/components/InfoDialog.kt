@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.presentation.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -16,8 +17,8 @@ import com.example.pizza_pro_2.ui.theme.Slate
 
 @Composable
 fun InfoDialog(
-    title: String,
-    text: String,
+    @StringRes titleId: Int,
+    @StringRes textId: Int,
     onDismiss: (Boolean) -> Unit,
     dismissButton: Int? = null,
     onConfirm: () -> Unit = { },
@@ -28,14 +29,14 @@ fun InfoDialog(
         onDismissRequest = { onDismiss(false) },
         title = {
             Text(
-                text = title,
+                text = stringResource(titleId),
                 textDecoration = TextDecoration.Underline
             )
         },
         text = {
             Text(
                 modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true),
-                text = text,
+                text = stringResource(textId),
             )
         },
         confirmButton = {
@@ -47,7 +48,7 @@ fun InfoDialog(
                     }
                 ) {
                     Text(
-                        text = stringResource(id = it),
+                        text = stringResource(it),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -57,7 +58,7 @@ fun InfoDialog(
             dismissButton?.let {
                 OutlinedButton(onClick = { onDismiss(false) }) {
                     Text(
-                        text = stringResource(id = it),
+                        text = stringResource(it),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }

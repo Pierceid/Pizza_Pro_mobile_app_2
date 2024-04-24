@@ -44,7 +44,7 @@ fun SettingsScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(border = BorderStroke(width = 1.dp, color = White))
+                    .border(border = BorderStroke(1.dp, White))
                     .clickable {
                         navController.navigate(Screen.Account.route)
                     },
@@ -56,12 +56,12 @@ fun SettingsScreen(
                             .size(56.dp)
                             .padding(12.dp),
                         imageVector = Icons.Default.AccountCircle,
-                        contentDescription = stringResource(id = R.string.account),
+                        contentDescription = stringResource(R.string.account),
                         tint = Lilac
                     )
 
                     Text(
-                        text = stringResource(id = R.string.account),
+                        text = stringResource(R.string.account),
                         style = MaterialTheme.typography.titleLarge,
                         color = Lilac
                     )
@@ -72,7 +72,7 @@ fun SettingsScreen(
                         .size(56.dp)
                         .padding(12.dp),
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = stringResource(id = R.string.account),
+                    contentDescription = stringResource(R.string.account),
                     tint = Lilac
                 )
             }
@@ -80,7 +80,7 @@ fun SettingsScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(border = BorderStroke(width = 1.dp, color = White))
+                    .border(border = BorderStroke(1.dp, White))
                     .clickable {
                         navController.navigate(Screen.History.route)
                     },
@@ -91,13 +91,13 @@ fun SettingsScreen(
                         modifier = Modifier
                             .size(56.dp)
                             .padding(12.dp),
-                        painter = painterResource(id = R.drawable.history_24),
-                        contentDescription = stringResource(id = R.string.history),
+                        painter = painterResource(R.drawable.history_24),
+                        contentDescription = stringResource(R.string.history),
                         tint = Lilac
                     )
 
                     Text(
-                        text = stringResource(id = R.string.history),
+                        text = stringResource(R.string.history),
                         style = MaterialTheme.typography.titleLarge,
                         color = Lilac
                     )
@@ -108,7 +108,7 @@ fun SettingsScreen(
                         .size(56.dp)
                         .padding(12.dp),
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = stringResource(id = R.string.history),
+                    contentDescription = stringResource(R.string.history),
                     tint = Lilac
                 )
             }
@@ -116,7 +116,7 @@ fun SettingsScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(border = BorderStroke(width = 1.dp, color = White))
+                    .border(border = BorderStroke(1.dp, White))
                     .clickable {
                         navController.navigate(Screen.AboutApp.route)
                     },
@@ -128,12 +128,12 @@ fun SettingsScreen(
                             .size(56.dp)
                             .padding(12.dp),
                         imageVector = Icons.Default.Info,
-                        contentDescription = stringResource(id = R.string.about_app),
+                        contentDescription = stringResource(R.string.about_app),
                         tint = Lilac
                     )
 
                     Text(
-                        text = stringResource(id = R.string.about_app),
+                        text = stringResource(R.string.about_app),
                         style = MaterialTheme.typography.titleLarge,
                         color = Lilac
                     )
@@ -144,7 +144,7 @@ fun SettingsScreen(
                         .size(56.dp)
                         .padding(12.dp),
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = stringResource(id = R.string.about_app),
+                    contentDescription = stringResource(R.string.about_app),
                     tint = Lilac
                 )
             }

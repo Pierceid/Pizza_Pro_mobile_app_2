@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.domain.auth
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Stable
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.options.Gender
@@ -10,9 +11,9 @@ data class AuthState(
     val email: String = "",
     val password: String = "",
     val gender: Gender = Gender.OTHER,
-    val nameError: String? = null,
-    val emailError: String? = null,
-    val passwordError: String? = null,
+    @StringRes val nameErrorId: Int? = null,
+    @StringRes val emailErrorId: Int? = null,
+    @StringRes val passwordErrorId: Int? = null,
     val isPasswordVisible: Boolean = false,
     val isEmailEdited: Boolean = false,
     val isNameEdited: Boolean = false,

@@ -46,8 +46,7 @@ import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
-import com.example.pizza_pro_2.util.Util.Companion.formatDouble
-import java.text.NumberFormat
+import com.example.pizza_pro_2.util.Util.Companion.formatPrice
 import kotlin.math.roundToInt
 
 @Composable
@@ -56,7 +55,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
 
     Card(
         modifier = Modifier.drawBehind { RoundedCornerShape(8.dp) },
-        border = BorderStroke(width = 1.dp, color = White),
+        border = BorderStroke(1.dp, White),
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -70,8 +69,8 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
             ) {
                 Image(
                     modifier = Modifier.aspectRatio(3f / 2f),
-                    painter = painterResource(id = pizza.imageSource),
-                    contentDescription = stringResource(id = R.string.pizza_image),
+                    painter = painterResource(pizza.imageSource),
+                    contentDescription = stringResource(R.string.pizza_image),
                     contentScale = ContentScale.FillBounds
                 )
             }
@@ -97,27 +96,26 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                             Icon(
                                 modifier = Modifier.size(20.dp),
                                 imageVector = Icons.Default.Star,
-                                contentDescription = stringResource(id = R.string.star),
+                                contentDescription = stringResource(R.string.star),
                                 tint = Yellow
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(Modifier.height(6.dp))
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             modifier = Modifier.size(20.dp),
-                            painter = painterResource(id = R.drawable.price_24),
-                            contentDescription = stringResource(id = R.string.add_item),
+                            painter = painterResource(R.drawable.price_24),
+                            contentDescription = stringResource(R.string.add_item),
                             tint = Red
                         )
 
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(Modifier.width(4.dp))
 
                         Text(
-                            text = NumberFormat.getCurrencyInstance().format(pizza.cost)
-                                .toString().formatDouble(),
+                            text = pizza.cost.formatPrice(),
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red
                         )
@@ -139,7 +137,7 @@ fun ShopPizzaCard(pizza: Pizza, onCountChanged: (Pizza) -> Unit, onClick: () -> 
                         Icon(
                             modifier = Modifier.fillMaxSize(0.8f),
                             imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(id = R.string.add_item)
+                            contentDescription = stringResource(R.string.add_item)
                         )
                     }
                 }

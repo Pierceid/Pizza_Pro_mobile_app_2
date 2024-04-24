@@ -44,14 +44,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.MyViewModelProvider
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
-import com.example.pizza_pro_2.domain.auth.AuthState
 import com.example.pizza_pro_2.domain.auth.AuthViewModel
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.Gender
+import com.example.pizza_pro_2.presentation.MyViewModelProvider
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
@@ -73,34 +72,23 @@ fun AccountScreen(
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
 ) {
-    val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
-    val state by viewModel.state.collectAsState()
-    val context = LocalContext.current
-    val toastMessage = stringResource(id = R.string.update_account)
-
-    var isInitial by rememberSaveable { mutableStateOf(true) }
+    var isInitialized by rememberSaveable { mutableStateOf(false) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
-    val dialogTitle = stringResource(
-        id = if (option == 1) R.string.delete_account else R.string.log_out
-    )
-    val dialogText = stringResource(
-        id = if (option == 1) R.string.are_you_certain_you_want_to_proceed_with_deleting_your_account
+    val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
+    val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    val dialogTitleId = if (option == 1) R.string.delete_account else R.string.log_out
+    val dialogTextId =
+        if (option == 1) R.string.are_you_certain_you_want_to_proceed_with_deleting_your_account
         else R.string.are_you_certain_you_want_to_log_out_of_your_account
-    )
+    val toastMessage = stringResource(R.string.account_updated_successfully)
     val color = if (option == 1) Maroon else Teal
 
-    if (isInitial) {
-        sharedState.currentUser!!.let {
-            viewModel.state.value = AuthState(
-                name = it.name,
-                email = it.email,
-                password = it.password,
-                gender = it.gender
-            )
-        }
-        isInitial = false
+    if (!isInitialized) {
+        viewModel.refresh(sharedState.currentUser)
+        isInitialized = true
     }
 
     LaunchedEffect(key1 = context) {
@@ -116,6 +104,7 @@ fun AccountScreen(
                                 gender = state.gender
                             )
                         )
+                        delay(200)
                     }
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 }
@@ -126,16 +115,14 @@ fun AccountScreen(
     DefaultColumn {
         if (isDialogVisible) {
             InfoDialog(
-                title = dialogTitle,
-                text = dialogText,
+                titleId = dialogTitleId,
+                textId = dialogTextId,
                 onDismiss = { isDialogVisible = it },
                 dismissButton = R.string.no,
                 onConfirm = {
                     if (option == 1) {
                         CoroutineScope(Dispatchers.IO).launch {
-                            onSharedEvent(
-                                SharedEvent.DeleteAccount(name = state.name, email = state.email)
-                            )
+                            onSharedEvent(SharedEvent.DeleteAccount(state.name, state.email))
                             delay(200)
                             exitProcess(0)
                         }
@@ -156,28 +143,22 @@ fun AccountScreen(
                 modifier = Modifier
                     .size(160.dp)
                     .padding(top = 8.dp)
-                    .background(
-                        color = White,
-                        shape = RoundedCornerShape(80.dp)
-                    )
-                    .border(
-                        border = BorderStroke(width = 1.dp, color = White),
-                        shape = RoundedCornerShape(80.dp)
-                    ),
-                painter = painterResource(id = R.drawable.profile_male),
-                contentDescription = stringResource(id = R.string.profile_picture),
+                    .background(White, RoundedCornerShape(80.dp))
+                    .border(BorderStroke(1.dp, White), RoundedCornerShape(80.dp)),
+                painter = painterResource(R.drawable.profile_male),
+                contentDescription = stringResource(R.string.profile_picture),
                 contentScale = ContentScale.Fit
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             InputTextField(
                 value = state.name,
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.NameChanged(it))
                 },
-                label = stringResource(id = R.string.name),
-                isError = state.nameError != null,
+                labelId = R.string.name,
+                isError = state.nameErrorId != null,
                 leadingIcon = Icons.Default.Person,
                 trailingIcon = if (state.isNameEdited) Icons.Default.Clear else Icons.Default.Create,
                 onTrailingIconClick = {
@@ -185,32 +166,38 @@ fun AccountScreen(
                         viewModel.onEvent(AuthEvent.NameChanged(""))
                     } else {
                         viewModel.onEvent(AuthEvent.NameEdited(true))
+                        viewModel.onEvent(AuthEvent.EmailEdited(false))
+                        viewModel.onEvent(AuthEvent.PasswordEdited(false))
+                        viewModel.onEvent(AuthEvent.GenderEdited(false))
                     }
                 },
                 imeAction = ImeAction.Done,
                 readOnly = !state.isNameEdited
             )
 
-            state.nameError?.let {
-                ErrorText(message = it)
+            state.nameErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             InputTextField(
                 value = state.email,
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.EmailChanged(it))
                 },
-                label = stringResource(id = R.string.email),
-                isError = state.emailError != null,
+                labelId = R.string.email,
+                isError = state.emailErrorId != null,
                 leadingIcon = Icons.Default.Email,
                 trailingIcon = if (state.isEmailEdited) Icons.Default.Clear else Icons.Default.Create,
                 onTrailingIconClick = {
                     if (state.isEmailEdited) {
                         viewModel.onEvent(AuthEvent.EmailChanged(""))
                     } else {
+                        viewModel.onEvent(AuthEvent.NameEdited(false))
                         viewModel.onEvent(AuthEvent.EmailEdited(true))
+                        viewModel.onEvent(AuthEvent.PasswordEdited(false))
+                        viewModel.onEvent(AuthEvent.GenderEdited(false))
                     }
                 },
                 keyboardType = KeyboardType.Email,
@@ -218,11 +205,11 @@ fun AccountScreen(
                 readOnly = !state.isEmailEdited
             )
 
-            state.emailError?.let {
-                ErrorText(message = it)
+            state.emailErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             InputTextField(
                 value = if (state.isPasswordEdited) state.password else state.password.map { '*' }
@@ -230,15 +217,18 @@ fun AccountScreen(
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.PasswordChanged(it))
                 },
-                label = stringResource(id = R.string.password),
-                isError = state.passwordError != null,
+                labelId = R.string.password,
+                isError = state.passwordErrorId != null,
                 leadingIcon = Icons.Default.Lock,
                 trailingIcon = if (state.isPasswordEdited) Icons.Default.Clear else Icons.Default.Create,
                 onTrailingIconClick = {
                     if (state.isPasswordEdited) {
                         viewModel.onEvent(AuthEvent.PasswordChanged(""))
                     } else {
+                        viewModel.onEvent(AuthEvent.NameEdited(false))
+                        viewModel.onEvent(AuthEvent.EmailEdited(false))
                         viewModel.onEvent(AuthEvent.PasswordEdited(true))
+                        viewModel.onEvent(AuthEvent.GenderEdited(false))
                     }
                 },
                 keyboardType = KeyboardType.Password,
@@ -247,20 +237,23 @@ fun AccountScreen(
                 readOnly = !state.isPasswordEdited
             )
 
-            state.passwordError?.let {
-                ErrorText(message = it)
+            state.passwordErrorId?.let {
+                ErrorText(messageId = it)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             if (!state.isGenderEdited) {
                 InputTextField(
                     value = state.gender.toString(),
                     onValueChange = { },
-                    label = stringResource(id = R.string.gender),
+                    labelId = R.string.gender,
                     leadingIcon = Icons.Default.Face,
                     trailingIcon = Icons.Default.Create,
                     onTrailingIconClick = {
+                        viewModel.onEvent(AuthEvent.NameEdited(false))
+                        viewModel.onEvent(AuthEvent.EmailEdited(false))
+                        viewModel.onEvent(AuthEvent.PasswordEdited(false))
                         viewModel.onEvent(AuthEvent.GenderEdited(true))
                     },
                     readOnly = true
@@ -278,25 +271,25 @@ fun AccountScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(Modifier.height(24.dp))
 
         ActionButton(
-            text = stringResource(id = R.string.save),
+            textId = R.string.save,
             onClick = {
                 option = 0
-                viewModel.onEvent(AuthEvent.Submit(type = 2, currentUser = sharedState.currentUser))
+                viewModel.onEvent(AuthEvent.Submit(2, sharedState.currentUser))
             },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
         Row(
             modifier = Modifier.width(480.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ActionButton(
-                text = stringResource(id = R.string.delete),
+                textId = R.string.delete,
                 onClick = {
                     option = 1
                     isDialogVisible = true
@@ -305,7 +298,7 @@ fun AccountScreen(
             )
 
             ActionButton(
-                text = stringResource(id = R.string.log_out),
+                textId = R.string.log_out,
                 onClick = {
                     option = 2
                     isDialogVisible = true

@@ -1,5 +1,7 @@
 package com.example.pizza_pro_2.util
 
+import android.text.format.DateFormat
+import java.text.NumberFormat
 import java.util.Locale
 
 class Util {
@@ -14,8 +16,12 @@ class Util {
             }
         }
 
-        fun String.formatDouble(): String {
-            return this.replace(',', '.')
+        fun Double.formatPrice(): String {
+            return NumberFormat.getCurrencyInstance().format(this).toString().replace(',', '.')
+        }
+
+        fun Long.formatTime(): String {
+            return DateFormat.format("d.M.yyyy (h:mm a)", this).toString()
         }
     }
 }
