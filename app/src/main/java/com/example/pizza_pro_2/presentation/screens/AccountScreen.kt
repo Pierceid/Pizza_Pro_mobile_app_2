@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -56,6 +57,7 @@ import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.components.InputTextField
+import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
@@ -76,10 +78,6 @@ fun AccountScreen(
     val context = LocalContext.current
     val toastMessage = stringResource(id = R.string.update_account)
 
-    var isNameEdited by rememberSaveable { mutableStateOf(false) }
-    var isEmailEdited by rememberSaveable { mutableStateOf(false) }
-    var isPasswordEdited by rememberSaveable { mutableStateOf(false) }
-    var isGenderEdited by rememberSaveable { mutableStateOf(false) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
@@ -91,17 +89,6 @@ fun AccountScreen(
         else R.string.are_you_certain_you_want_to_log_out_of_your_account
     )
     val color = if (option == 1) Maroon else Teal
-
-    val user = sharedState.currentUser ?: User("", "", "", Gender.OTHER)
-
-    user.let {
-        viewModel.state.value = AuthState(
-            name = it.name,
-            email = it.email,
-            password = it.password,
-            gender = it.gender
-        )
-    }
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
@@ -121,6 +108,17 @@ fun AccountScreen(
                 }
             }
         }
+    }
+
+    val user = sharedState.currentUser ?: User("", "", "", Gender.OTHER)
+
+    user.let {
+        viewModel.state.value = AuthState(
+            name = it.name,
+            email = it.email,
+            password = it.password,
+            gender = it.gender
+        )
     }
 
     DefaultColumn {
@@ -184,9 +182,10 @@ fun AccountScreen(
                 leadingIcon = Icons.Default.Person,
                 trailingIcon = Icons.Default.Create,
                 onTrailingIconClick = {
-                    isNameEdited = !isNameEdited
+                    viewModel.onEvent(AuthEvent.NameEdited(!state.isNameEdited))
                 },
-                readOnly = !isNameEdited
+                imeAction = ImeAction.Done,
+                readOnly = !state.isNameEdited
             )
 
             state.nameError?.let {
@@ -205,10 +204,11 @@ fun AccountScreen(
                 leadingIcon = Icons.Default.Email,
                 trailingIcon = Icons.Default.Create,
                 onTrailingIconClick = {
-                    isEmailEdited = !isEmailEdited
+                    viewModel.onEvent(AuthEvent.EmailEdited(!state.isEmailEdited))
                 },
                 keyboardType = KeyboardType.Email,
-                readOnly = !isEmailEdited
+                imeAction = ImeAction.Done,
+                readOnly = !state.isEmailEdited
             )
 
             state.emailError?.let {
@@ -218,7 +218,7 @@ fun AccountScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             InputTextField(
-                value = if (isPasswordEdited) state.password else state.password.map { '*' }.joinToString(separator = ""),
+                value = if (state.isPasswordEdited) state.password else state.password.map { '*' }.joinToString(separator = ""),
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.PasswordChanged(it))
                 },
@@ -227,11 +227,12 @@ fun AccountScreen(
                 leadingIcon = Icons.Default.Lock,
                 trailingIcon = Icons.Default.Create,
                 onTrailingIconClick = {
-                    isPasswordEdited = !isPasswordEdited
+                    viewModel.onEvent(AuthEvent.PasswordEdited(!state.isPasswordEdited))
                 },
                 keyboardType = KeyboardType.Password,
-                visualTransformation = if (isPasswordEdited) VisualTransformation.None else PasswordVisualTransformation(),
-                readOnly = !isPasswordEdited
+                imeAction = ImeAction.Done,
+                visualTransformation = if (state.isPasswordEdited) VisualTransformation.None else PasswordVisualTransformation(),
+                readOnly = !state.isPasswordEdited
             )
 
             state.passwordError?.let {
@@ -240,25 +241,29 @@ fun AccountScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            InputTextField(
-                value = state.gender.toString(),
-                onValueChange = {
-                    // TODO glitch => cant type in it
-                    val gender = when (it.lowercase()) {
-                        "m" -> Gender.MALE
-                        "f" -> Gender.FEMALE
-                        else -> Gender.OTHER
-                    }
-                    viewModel.onEvent(AuthEvent.GenderChanged(gender))
-                },
-                label = stringResource(id = R.string.gender),
-                leadingIcon = Icons.Default.Face,
-                trailingIcon = Icons.Default.Create,
-                onTrailingIconClick = {
-                    isGenderEdited = !isGenderEdited
-                },
-                readOnly = !isGenderEdited
-            )
+            if (!state.isGenderEdited) {
+                InputTextField(
+                    value = state.gender.toString(),
+                    onValueChange = { },
+                    label = stringResource(id = R.string.gender),
+                    leadingIcon = Icons.Default.Face,
+                    trailingIcon = Icons.Default.Create,
+                    onTrailingIconClick = {
+                        viewModel.onEvent(AuthEvent.GenderEdited(true))
+                    },
+                    readOnly = true
+                )
+            } else {
+                RadioGroup(
+                    selected = state.gender,
+                    onSelectionChange = {
+                        viewModel.onEvent(AuthEvent.GenderChanged(it))
+                        viewModel.onEvent(AuthEvent.GenderEdited(false))
+                    },
+                    options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE),
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -268,10 +273,6 @@ fun AccountScreen(
             onClick = {
                 option = 0
                 viewModel.onEvent(AuthEvent.Submit(type = 2, currentUser = user))
-                isNameEdited = false
-                isEmailEdited = false
-                isPasswordEdited = false
-                isGenderEdited = false
             },
             modifier = Modifier.fillMaxWidth()
         )

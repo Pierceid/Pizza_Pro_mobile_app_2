@@ -155,7 +155,7 @@ fun SignUpScreen(
                     },
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
-                    visualTransformation = if (state.passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+                    visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -165,9 +165,9 @@ fun SignUpScreen(
                         .size(40.dp)
                         .padding(top = 4.dp)
                         .clickable {
-                            viewModel.onEvent(AuthEvent.OnPasswordVisibilityChanged(!state.passwordVisible))
+                            viewModel.onEvent(AuthEvent.PasswordVisibilityChanged(!state.isPasswordVisible))
                         },
-                    painter = painterResource(id = if (state.passwordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
+                    painter = painterResource(id = if (state.isPasswordVisible) R.drawable.visible_24 else R.drawable.hidden_24),
                     contentDescription = stringResource(id = R.string.visibility),
                     tint = White
                 )
@@ -193,7 +193,7 @@ fun SignUpScreen(
             ActionButton(
                 text = stringResource(id = R.string.sign_up),
                 onClick = {
-                    viewModel.onEvent(AuthEvent.Submit(type = 0))
+                    viewModel.onEvent(AuthEvent.Submit(0))
                 },
                 modifier = Modifier.fillMaxWidth()
             )

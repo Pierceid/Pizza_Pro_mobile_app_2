@@ -82,7 +82,7 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                                     gender = event.gender,
                                     id = user.id
                                 )
-                                myRepository.updateUser(user = userToUpdate)
+                                myRepository.updateUser(userToUpdate)
 
                                 _state.update { currentState ->
                                     currentState.copy(currentUser = userToUpdate)
@@ -95,16 +95,16 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                     val userToDelete = _state.value.currentUser!!
                     myRepository.getUser(name = userToDelete.name, email = userToDelete.email)
                         .collect { user ->
-                            myRepository.deleteUser(user = user!!)
+                            myRepository.deleteUser(user!!)
                         }
                 }
 
                 is SharedEvent.PlaceOrder -> {
-                    myRepository.insertOrder(order = event.order)
+                    myRepository.insertOrder(event.order)
                 }
 
                 is SharedEvent.CancelOrder -> {
-                    myRepository.deleteOrder(order = event.order)
+                    myRepository.deleteOrder(event.order)
                 }
 
                 is SharedEvent.DiscardOrder -> {

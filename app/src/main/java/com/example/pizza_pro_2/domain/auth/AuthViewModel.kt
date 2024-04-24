@@ -57,9 +57,9 @@ class AuthViewModel(
                     }
                 }
 
-                is AuthEvent.OnPasswordVisibilityChanged -> {
+                is AuthEvent.PasswordVisibilityChanged -> {
                     _state.update { currentState ->
-                        currentState.copy(passwordVisible = event.isVisible)
+                        currentState.copy(isPasswordVisible = event.isVisible)
                     }
                 }
 
@@ -69,10 +69,50 @@ class AuthViewModel(
                     }
                 }
 
+                is AuthEvent.NameEdited -> {
+                    _state.update { currentState ->
+                        currentState.copy(isNameEdited = event.isEdited)
+                    }
+                }
+
+                is AuthEvent.EmailEdited -> {
+                    _state.update { currentState ->
+                        currentState.copy(isEmailEdited = event.isEdited)
+                    }
+                }
+
+                is AuthEvent.PasswordEdited -> {
+                    _state.update { currentState ->
+                        currentState.copy(isPasswordEdited = event.isEdited)
+                    }
+                }
+
+                is AuthEvent.GenderEdited -> {
+                    _state.update { currentState ->
+                        currentState.copy(isGenderEdited = event.isEdited)
+                    }
+                }
+
                 is AuthEvent.Submit -> {
+                    refresh()
                     submitData(type = event.type, currentUser = event.currentUser)
                 }
             }
+        }
+    }
+
+    private fun refresh() {
+        _state.update { currentState ->
+            currentState.copy(
+                nameError = null,
+                emailError = null,
+                passwordError = null,
+                isPasswordVisible = false,
+                isNameEdited = false,
+                isEmailEdited = false,
+                isPasswordEdited = false,
+                isGenderEdited = false
+            )
         }
     }
 
