@@ -15,8 +15,8 @@ data class AuthState(
     @StringRes val emailErrorId: Int? = null,
     @StringRes val passwordErrorId: Int? = null,
     val isPasswordVisible: Boolean = false,
-    val isEmailEdited: Boolean = false,
     val isNameEdited: Boolean = false,
+    val isEmailEdited: Boolean = false,
     val isPasswordEdited: Boolean = false,
     val isGenderEdited: Boolean = false,
     val users: List<User> = emptyList()

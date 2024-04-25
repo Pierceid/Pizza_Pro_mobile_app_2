@@ -1,6 +1,5 @@
 package com.example.pizza_pro_2.domain.auth
 
-import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.options.Gender
 
 sealed class AuthEvent {
@@ -13,5 +12,6 @@ sealed class AuthEvent {
     data class EmailEdited(val isEdited: Boolean): AuthEvent()
     data class PasswordEdited(val isEdited: Boolean): AuthEvent()
     data class GenderEdited(val isEdited: Boolean): AuthEvent()
-    data class Submit(val type: Int, val currentUser: User? = null): AuthEvent()
+    data class Submit(val type: Int): AuthEvent()
+    data object Delete: AuthEvent()
 }

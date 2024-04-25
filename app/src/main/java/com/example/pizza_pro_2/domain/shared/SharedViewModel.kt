@@ -7,7 +7,6 @@ import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.models.Pizza
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -27,8 +26,8 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            _state.update { currentState ->
-                currentState.copy(filteredPizzas = currentState.allPizzas)
+            _state.update {
+                it.copy(filteredPizzas = it.allPizzas)
             }
         }
     }
@@ -36,12 +35,6 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
     fun onEvent(event: SharedEvent) {
         viewModelScope.launch {
             when (event) {
-                is SharedEvent.CurrentUserChanged -> {
-                    _state.update { currentState ->
-                        currentState.copy(currentUser = event.user)
-                    }
-                }
-
                 is SharedEvent.SearchQueryChanged -> {
                     filterPizzas(query = event.query)
                 }
@@ -51,54 +44,9 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                 }
 
                 is SharedEvent.PizzaSelectionChanged -> {
-                    _state.update { currentState ->
-                        currentState.copy(selectedPizza = event.pizza)
+                    _state.update {
+                        it.copy(selectedPizza = event.pizza)
                     }
-                }
-
-                is SharedEvent.SignUp -> {
-                    myRepository.insertUser(user = event.user)
-                    _state.update { currentState ->
-                        currentState.copy(currentUser = event.user)
-                    }
-                }
-
-                is SharedEvent.SignIn -> {
-                    myRepository.getUser(event.name, event.email)
-                        .collectLatest { user ->
-                            _state.update { currentState ->
-                                currentState.copy(currentUser = user)
-                            }
-                        }
-                }
-
-                is SharedEvent.UpdateAccount -> {
-                    var userToUpdate = _state.value.currentUser!!
-                    myRepository.getUser(userToUpdate.name, userToUpdate.email)
-                        .collectLatest { user ->
-                            if (user != null) {
-                                userToUpdate = user.copy(
-                                    name = event.name,
-                                    email = event.email,
-                                    password = event.password,
-                                    gender = event.gender,
-                                    id = user.id
-                                )
-                                myRepository.updateUser(userToUpdate)
-
-                                _state.update { currentState ->
-                                    currentState.copy(currentUser = userToUpdate)
-                                }
-                            }
-                        }
-                }
-
-                is SharedEvent.DeleteAccount -> {
-                    val userToDelete = _state.value.currentUser!!
-                    myRepository.getUser(userToDelete.name, userToDelete.email)
-                        .collectLatest { user ->
-                            myRepository.deleteUser(user!!)
-                        }
                 }
 
                 is SharedEvent.PlaceOrder -> {
@@ -120,31 +68,31 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
         val updatedList = _state.value.allPizzas
         updatedList.first { it.id == pizza.id }.count = pizza.count
         val orderedList = updatedList.filter { it.count > 0 }
-        _state.update { currentState ->
-            currentState.copy(allPizzas = updatedList, orderedPizzas = orderedList)
+        _state.update {
+            it.copy(allPizzas = updatedList, orderedPizzas = orderedList)
         }
         updateCost()
     }
 
     private fun filterPizzas(query: String = _state.value.searchQuery.lowercase()) {
         val filteredList = _state.value.allPizzas.filter { it.name!!.lowercase().contains(query) }
-        _state.update { currentState ->
-            currentState.copy(searchQuery = query, filteredPizzas = filteredList)
+        _state.update {
+            it.copy(searchQuery = query, filteredPizzas = filteredList)
         }
     }
 
     private fun clearPizzas() {
         val clearedList = _state.value.allPizzas.map { it.copy(count = 0) }
-        _state.update { currentState ->
-            currentState.copy(allPizzas = clearedList, orderedPizzas = emptyList())
+        _state.update {
+            it.copy(allPizzas = clearedList, orderedPizzas = emptyList())
         }
         updateCost()
     }
 
     private fun updateCost() {
         val sum = _state.value.orderedPizzas.sumOf { it.count * it.cost }
-        _state.update { currentState ->
-            currentState.copy(itemsCost = sum)
+        _state.update {
+            it.copy(itemsCost = sum)
         }
     }
 }

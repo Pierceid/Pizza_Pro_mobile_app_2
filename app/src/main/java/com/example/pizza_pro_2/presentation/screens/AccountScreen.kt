@@ -72,7 +72,6 @@ fun AccountScreen(
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
 ) {
-    var isInitialized by rememberSaveable { mutableStateOf(false) }
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
@@ -86,26 +85,10 @@ fun AccountScreen(
     val toastMessage = stringResource(R.string.account_updated_successfully)
     val color = if (option == 1) Maroon else Teal
 
-    if (!isInitialized) {
-        viewModel.refresh(sharedState.currentUser)
-        isInitialized = true
-    }
-
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        onSharedEvent(
-                            SharedEvent.UpdateAccount(
-                                name = state.name,
-                                email = state.email,
-                                password = state.password,
-                                gender = state.gender
-                            )
-                        )
-                        delay(200)
-                    }
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -122,7 +105,7 @@ fun AccountScreen(
                 onConfirm = {
                     if (option == 1) {
                         CoroutineScope(Dispatchers.IO).launch {
-                            onSharedEvent(SharedEvent.DeleteAccount(state.name, state.email))
+                            viewModel.onEvent(AuthEvent.Delete)
                             delay(200)
                             exitProcess(0)
                         }
@@ -166,9 +149,6 @@ fun AccountScreen(
                         viewModel.onEvent(AuthEvent.NameChanged(""))
                     } else {
                         viewModel.onEvent(AuthEvent.NameEdited(true))
-                        viewModel.onEvent(AuthEvent.EmailEdited(false))
-                        viewModel.onEvent(AuthEvent.PasswordEdited(false))
-                        viewModel.onEvent(AuthEvent.GenderEdited(false))
                     }
                 },
                 imeAction = ImeAction.Done,
@@ -194,10 +174,7 @@ fun AccountScreen(
                     if (state.isEmailEdited) {
                         viewModel.onEvent(AuthEvent.EmailChanged(""))
                     } else {
-                        viewModel.onEvent(AuthEvent.NameEdited(false))
                         viewModel.onEvent(AuthEvent.EmailEdited(true))
-                        viewModel.onEvent(AuthEvent.PasswordEdited(false))
-                        viewModel.onEvent(AuthEvent.GenderEdited(false))
                     }
                 },
                 keyboardType = KeyboardType.Email,
@@ -225,10 +202,7 @@ fun AccountScreen(
                     if (state.isPasswordEdited) {
                         viewModel.onEvent(AuthEvent.PasswordChanged(""))
                     } else {
-                        viewModel.onEvent(AuthEvent.NameEdited(false))
-                        viewModel.onEvent(AuthEvent.EmailEdited(false))
                         viewModel.onEvent(AuthEvent.PasswordEdited(true))
-                        viewModel.onEvent(AuthEvent.GenderEdited(false))
                     }
                 },
                 keyboardType = KeyboardType.Password,
@@ -251,9 +225,6 @@ fun AccountScreen(
                     leadingIcon = Icons.Default.Face,
                     trailingIcon = Icons.Default.Create,
                     onTrailingIconClick = {
-                        viewModel.onEvent(AuthEvent.NameEdited(false))
-                        viewModel.onEvent(AuthEvent.EmailEdited(false))
-                        viewModel.onEvent(AuthEvent.PasswordEdited(false))
                         viewModel.onEvent(AuthEvent.GenderEdited(true))
                     },
                     readOnly = true
@@ -277,7 +248,7 @@ fun AccountScreen(
             textId = R.string.save,
             onClick = {
                 option = 0
-                viewModel.onEvent(AuthEvent.Submit(2, sharedState.currentUser))
+                viewModel.onEvent(AuthEvent.Submit(2))
             },
             modifier = Modifier.fillMaxWidth()
         )

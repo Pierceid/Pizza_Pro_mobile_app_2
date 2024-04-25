@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MyDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUser(user: User)
 
@@ -32,8 +33,8 @@ interface MyDao {
     suspend fun deleteOrder(order: Order)
 
     @Transaction
-    @Query("SELECT * FROM users WHERE name = :name OR email = :email LIMIT 1")
-    fun getUser(name: String = "", email: String = ""): Flow<User?>
+    @Query("SELECT * FROM users WHERE id = :id OR name = :name OR email = :email LIMIT 1")
+    fun getUser(id: Int = -1, name: String = "", email: String = ""): Flow<User?>
 
     @Transaction
     @Query("SELECT * FROM users WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")

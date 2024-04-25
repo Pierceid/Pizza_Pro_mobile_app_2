@@ -196,7 +196,7 @@ fun CartScreen(
 
 private fun createOrder(sharedState: SharedState, total: Double): Order {
     return Order(
-        name = sharedState.currentUser!!.name,
+        name = "Jozef",
         time = System.currentTimeMillis().formatTime(),
         place = "none",
         items = sharedState.orderedPizzas.sumOf { it.count },

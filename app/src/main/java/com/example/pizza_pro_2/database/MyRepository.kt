@@ -3,8 +3,13 @@ package com.example.pizza_pro_2.database
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.User
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class MyRepository(private val myDao: MyDao) {
+    var currentUser : Flow<User?> = flowOf(null)
+    val allUsers: Flow<List<User>> = myDao.getAllUsers()
+    val allOrders: Flow<List<Order>> = myDao.getAllOrders()
+
     suspend fun insertUser(user: User) = myDao.insertUser(user)
 
     suspend fun updateUser(user: User) = myDao.updateUser(user)
@@ -17,13 +22,11 @@ class MyRepository(private val myDao: MyDao) {
 
     suspend fun deleteOrder(order: Order) = myDao.deleteOrder(order)
 
-    fun getUser(name: String = "", email: String = ""): Flow<User?> = myDao.getUser(name, email)
+    fun setCurrentUser(id: Int = -1, name: String = "", email: String = "") {
+        currentUser = myDao.getUser(id, name, email)
+    }
 
     fun getFilteredUsers(regex: String = ""): Flow<List<User>> = myDao.getFilteredUsers(regex)
 
     fun getFilteredOrders(regex: String = ""): Flow<List<Order>> = myDao.getFilteredOrders(regex)
-
-    fun getAllUsers(): Flow<List<User>> = myDao.getAllUsers()
-
-    fun getAllOrders(): Flow<List<Order>> = myDao.getAllOrders()
 }

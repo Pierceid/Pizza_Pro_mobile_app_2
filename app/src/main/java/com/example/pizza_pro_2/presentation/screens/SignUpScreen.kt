@@ -33,16 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.presentation.MyViewModelProvider
-import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
-import com.example.pizza_pro_2.domain.auth.AuthState
 import com.example.pizza_pro_2.domain.auth.AuthViewModel
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.options.GraphRoute
+import com.example.pizza_pro_2.presentation.MyViewModelProvider
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
@@ -51,9 +49,6 @@ import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.White
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
@@ -70,10 +65,6 @@ fun SignUpScreen(
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        onSharedEvent(SharedEvent.SignUp(createUser(state)))
-                    }
-
                     navController.navigate(route = GraphRoute.HomeGraph.name) {
                         popUpTo(GraphRoute.AuthGraph.name) {
                             inclusive = true
@@ -193,7 +184,7 @@ fun SignUpScreen(
             ActionButton(
                 textId = R.string.sign_up,
                 onClick = {
-                    viewModel.onEvent(AuthEvent.Submit(0))
+                    viewModel.onEvent(AuthEvent.Submit(type = 0))
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -215,13 +206,4 @@ fun SignUpScreen(
             )
         }
     }
-}
-
-private fun createUser(state: AuthState): User {
-    return User(
-        name = state.name,
-        email = state.email,
-        password = state.password,
-        gender = state.gender
-    )
 }
