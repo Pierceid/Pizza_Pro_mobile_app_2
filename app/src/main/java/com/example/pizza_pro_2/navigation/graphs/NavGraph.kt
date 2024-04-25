@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.pizza_pro_2.presentation.MyViewModelProvider
+import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import com.example.pizza_pro_2.navigation.HomeScreen
 import com.example.pizza_pro_2.options.GraphRoute

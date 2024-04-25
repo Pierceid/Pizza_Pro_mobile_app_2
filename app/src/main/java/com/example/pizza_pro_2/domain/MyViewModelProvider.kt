@@ -1,4 +1,4 @@
-package com.example.pizza_pro_2.presentation
+package com.example.pizza_pro_2.domain
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -14,6 +14,7 @@ object MyViewModelProvider {
         initializer {
             AuthViewModel(myRepository = myApplication().myContainer.myRepository)
         }
+
         initializer {
             SharedViewModel(myRepository = myApplication().myContainer.myRepository)
         }

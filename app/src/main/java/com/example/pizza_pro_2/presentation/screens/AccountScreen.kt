@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,13 +43,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
 import com.example.pizza_pro_2.domain.auth.AuthViewModel
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.Gender
-import com.example.pizza_pro_2.presentation.MyViewModelProvider
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
@@ -250,7 +249,7 @@ fun AccountScreen(
                 option = 0
                 viewModel.onEvent(AuthEvent.Submit(2))
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.width(480.dp)
         )
 
         Spacer(Modifier.height(16.dp))

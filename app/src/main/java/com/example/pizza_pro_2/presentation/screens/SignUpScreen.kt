@@ -40,7 +40,7 @@ import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.options.GraphRoute
-import com.example.pizza_pro_2.presentation.MyViewModelProvider
+import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText

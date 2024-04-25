@@ -107,8 +107,9 @@
     <string name="user_removed_successfully">User has been\n removed successfully!</string>
     <string name="feedback_sent_successfully">Feedback has been\n sent successfully!</string>
     <string name="feedback_discarded_successfully">Feedback has been\n discarded successfully!</string>
-    <string name="account_updated_successfully">Account updated successfully!</string>
+    <string name="account_updated_successfully">Account has been\n updated successfully!</string>
     <string name="history_cleared_successfully">History has been\n cleared successfully!</string>
+    <!-- Error -->
     <string name="name_must_be_unique_and_not_blank">Name must be unique and not blank.</string>
     <string name="email_must_be_unique_and_in_valid_form">Email must be unique and in valid form.</string>
     <string name="no_match_found_for_such_email">No match found for such email.</string>

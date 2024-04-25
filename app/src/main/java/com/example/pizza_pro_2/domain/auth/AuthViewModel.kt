@@ -40,6 +40,7 @@ class AuthViewModel(
                     )
                 }
             }
+
             myRepository.allUsers.collect { users ->
                 _state.update {
                     it.copy(users = users)
@@ -139,16 +140,18 @@ class AuthViewModel(
     }
 
     private fun submitData(type: Int) {
-        val result = when (type) {
-            0 -> validateSignUp(type)
-            1 -> validateSignIn(type)
-            2 -> validateUpdateAccount(type)
-            else -> false
-        }
+        viewModelScope.launch {
+            val result = when (type) {
+                0 -> validateSignUp(type)
+                1 -> validateSignIn(type)
+                2 -> validateUpdateAccount(type)
+                else -> false
+            }
 
-        if (result) {
-            viewModelScope.launch {
-                validationChannel.send(ValidationEvent.Success)
+            if (result) {
+                viewModelScope.launch {
+                    validationChannel.send((ValidationEvent.Success))
+                }
             }
         }
     }
@@ -174,7 +177,6 @@ class AuthViewModel(
                     passwordErrorId = passwordResult.errorMessageId
                 )
             }
-
             return false
         } else {
             viewModelScope.launch {
@@ -184,17 +186,16 @@ class AuthViewModel(
                     password = _state.value.password,
                     gender = _state.value.gender
                 )
-
                 myRepository.insertUser(newUser)
                 myRepository.setCurrentUser(email = _state.value.email)
             }
-
             return true
         }
     }
 
     private fun validateSignIn(type: Int): Boolean {
         val user = _state.value.users.firstOrNull { it.email == _state.value.email }
+
         val metEmailCondition = _state.value.users.any { it.email == _state.value.email }
         val metPasswordCondition = user != null && user.password == _state.value.password
 
@@ -220,56 +221,45 @@ class AuthViewModel(
         return true
     }
 
-    private fun validateUpdateAccount(type: Int): Boolean {
-        var result = false
+    private suspend fun validateUpdateAccount(type: Int): Boolean {
+        val user = myRepository.currentUser.firstOrNull() ?: return false
 
-        viewModelScope.launch {
-            myRepository.currentUser.firstOrNull()?.let { user ->
-                val metNameCondition = user.name == _state.value.name ||
-                        !_state.value.users.any { it.name == _state.value.name }
-                val metEmailCondition = user.email == _state.value.email ||
-                        !_state.value.users.any { it.email == _state.value.email }
-                val metPasswordCondition = user.password == _state.value.password ||
-                        _state.value.password.any { it.isDigit() } &&
-                        _state.value.password.any { it.isLetter() }
+        val metNameCondition = user.name == _state.value.name ||
+                !_state.value.users.any { it.name == _state.value.name }
+        val metEmailCondition = user.email == _state.value.email ||
+                !_state.value.users.any { it.email == _state.value.email }
+        val metPasswordCondition = user.password == _state.value.password ||
+                _state.value.password.any { it.isDigit() } &&
+                _state.value.password.any { it.isLetter() }
 
-                val nameResult = validateName.execute(_state.value.name, metNameCondition)
-                val emailResult =
-                    validateEmail.execute(_state.value.email, metEmailCondition, type)
-                val passwordResult =
-                    validatePassword.execute(_state.value.password, metPasswordCondition, type)
-                val hasError =
-                    listOf(nameResult, emailResult, passwordResult).any { !it.successful }
+        val nameResult = validateName.execute(_state.value.name, metNameCondition)
+        val emailResult = validateEmail.execute(_state.value.email, metEmailCondition, type)
+        val passwordResult =
+            validatePassword.execute(_state.value.password, metPasswordCondition, type)
+        val hasError = listOf(nameResult, emailResult, passwordResult).any { !it.successful }
 
-                if (hasError) {
-                    _state.update {
-                        it.copy(
-                            nameErrorId = nameResult.errorMessageId,
-                            emailErrorId = emailResult.errorMessageId,
-                            passwordErrorId = passwordResult.errorMessageId
-                        )
-                    }
-                } else {
-                    myRepository.updateUser(
-                        user.copy(
-                            name = _state.value.name,
-                            email = _state.value.email,
-                            password = _state.value.password,
-                            gender = _state.value.gender
-                        )
-                    )
-                    myRepository.setCurrentUser(
-                        id = user.id,
-                        name = _state.value.name,
-                        email = _state.value.email
-                    )
-                    result = true
-                    refresh()
-                }
+        if (hasError) {
+            _state.update {
+                it.copy(
+                    nameErrorId = nameResult.errorMessageId,
+                    emailErrorId = emailResult.errorMessageId,
+                    passwordErrorId = passwordResult.errorMessageId
+                )
             }
+            return false
+        } else {
+            myRepository.updateUser(
+                user.copy(
+                    name = _state.value.name,
+                    email = _state.value.email,
+                    password = _state.value.password,
+                    gender = _state.value.gender
+                )
+            )
+            myRepository.setCurrentUser(id = user.id)
+            refresh()
+            return true
         }
-
-        return result
     }
 
     private fun refresh() {
