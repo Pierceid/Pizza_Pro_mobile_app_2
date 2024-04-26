@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.flowOf
 
 class MyRepository(private val myDao: MyDao) {
     var currentUser : Flow<User?> = flowOf(null)
-    val allUsers: Flow<List<User>> = myDao.getAllUsers()
-    val allOrders: Flow<List<Order>> = myDao.getAllOrders()
+    val allUsers: Flow<List<User>> = myDao.getUsers()
+    val allOrders: Flow<List<Order>> = myDao.getOrders()
 
     suspend fun insertUser(user: User) = myDao.insertUser(user)
 
@@ -18,15 +18,17 @@ class MyRepository(private val myDao: MyDao) {
 
     suspend fun insertOrder(order: Order) = myDao.insertOrder(order)
 
-    suspend fun updateOrder(order: Order) = myDao.updateOrder(order)
-
     suspend fun deleteOrder(order: Order) = myDao.deleteOrder(order)
+
+    suspend fun deleteAllUsers() = myDao.deleteAllUsers()
+
+    suspend fun deleteAllOrders() = myDao.deleteAllOrders()
 
     fun setCurrentUser(id: Int = -1, name: String = "", email: String = "") {
         currentUser = myDao.getUser(id, name, email)
     }
 
-    fun getFilteredUsers(regex: String = ""): Flow<List<User>> = myDao.getFilteredUsers(regex)
+    fun getUsers(regex: String = ""): Flow<List<User>> = myDao.getUsers(regex)
 
-    fun getFilteredOrders(regex: String = ""): Flow<List<Order>> = myDao.getFilteredOrders(regex)
+    fun getOrders(regex: String = ""): Flow<List<Order>> = myDao.getOrders(regex)
 }

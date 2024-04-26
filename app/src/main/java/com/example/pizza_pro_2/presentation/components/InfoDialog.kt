@@ -49,7 +49,8 @@ fun InfoDialog(
                 ) {
                     Text(
                         text = stringResource(it),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = color
                     )
                 }
             }

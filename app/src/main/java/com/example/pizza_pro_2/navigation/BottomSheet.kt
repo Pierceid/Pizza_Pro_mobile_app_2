@@ -43,7 +43,7 @@ import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Yellow
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
-import com.example.pizza_pro_2.util.Util.Companion.formatPrice
+import com.example.pizza_pro_2.util.Util.Companion.formatRating
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,7 +91,7 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
                     )
 
                     Text(
-                        text = " ${pizza.rating.formatPrice()}",
+                        text = " ${pizza.rating.formatRating()}",
                         style = MaterialTheme.typography.titleSmall
                     )
                 }

@@ -77,6 +77,11 @@ fun AccountScreen(
     val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val pictureId = when (state.gender) {
+        Gender.OTHER -> R.drawable.profile_other
+        Gender.MALE -> R.drawable.profile_male
+        Gender.FEMALE -> R.drawable.profile_female
+    }
     val dialogTitleId = if (option == 1) R.string.delete_account else R.string.log_out
     val dialogTextId =
         if (option == 1) R.string.are_you_certain_you_want_to_proceed_with_deleting_your_account
@@ -127,7 +132,7 @@ fun AccountScreen(
                     .padding(top = 8.dp)
                     .background(White, RoundedCornerShape(80.dp))
                     .border(BorderStroke(1.dp, White), RoundedCornerShape(80.dp)),
-                painter = painterResource(R.drawable.profile_male),
+                painter = painterResource(pictureId),
                 contentDescription = stringResource(R.string.profile_picture),
                 contentScale = ContentScale.Fit
             )

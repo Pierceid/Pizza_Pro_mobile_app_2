@@ -17,11 +17,15 @@ class Util {
         }
 
         fun Double.formatPrice(): String {
-            return NumberFormat.getCurrencyInstance().format(this).toString().replace(',', '.')
+            return NumberFormat.getCurrencyInstance().format(this).replace(',', '.')
         }
 
         fun Long.formatTime(): String {
             return DateFormat.format("d.M.yyyy (h:mm a)", this).toString()
+        }
+
+        fun Double.formatRating(): String {
+            return "%.1f".format(this).replace(',', '.')
         }
     }
 }

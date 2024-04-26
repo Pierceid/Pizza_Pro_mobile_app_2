@@ -71,7 +71,7 @@ fun ShopScreen(
                     onCountChanged = {
                         onSharedEvent(SharedEvent.PizzaCountChanged(it))
                         val toastMessage =
-                            "${pizza.name!!.capitalizeText()} Pizza\nwas added to your cart!"
+                            "${it.name!!.capitalizeText()} Pizza\nwas added to your cart!"
                         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
