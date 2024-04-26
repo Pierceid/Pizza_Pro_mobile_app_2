@@ -42,10 +42,18 @@ interface MyDao {
     fun getUser(id: Int = -1, name: String = "", email: String = ""): Flow<User?>
 
     @Transaction
-    @Query("SELECT * FROM users WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
+    @Query("SELECT * FROM users WHERE name LIKE '%' || :regex || '%' ORDER BY id ASC")
     fun getUsers(regex: String = ""): Flow<List<User>>
 
     @Transaction
-    @Query("SELECT * FROM orders WHERE name LIKE '%' || :regex || '%' ORDER BY id DESC")
-    fun getOrders(regex: String = ""): Flow<List<Order>>
+    @Query("SELECT * FROM orders WHERE name = :name ORDER BY time ASC")
+    fun getOrdersBasedOnTime(name: String = ""): Flow<List<Order>>
+
+    @Transaction
+    @Query("SELECT * FROM orders WHERE name = :name ORDER BY cost ASC")
+    fun getOrdersBasedOnCost(name: String = ""): Flow<List<Order>>
+
+    @Transaction
+    @Query("SELECT * FROM orders WHERE name = :name ORDER BY place ASC")
+    fun getOrdersBasedOnPlace(name: String = ""): Flow<List<Order>>
 }

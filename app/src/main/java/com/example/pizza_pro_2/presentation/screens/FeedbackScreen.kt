@@ -59,9 +59,9 @@ fun FeedbackScreen(navController: NavController) {
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
+    val context = LocalContext.current
     val viewModel = viewModel<FeedbackViewModel>()
     val state = viewModel.state
-    val context = LocalContext.current
     val dialogTitleId = if (option == 0) R.string.discard_feedback else R.string.share_feedback
     val dialogTextId =
         if (option == 0) R.string.are_you_sure_you_want_to_discard_your_feedback
@@ -298,7 +298,7 @@ fun FeedbackScreen(navController: NavController) {
                         Icon(
                             imageVector = if (state.followUp) Icons.Default.Check else Icons.Default.Clear,
                             tint = White,
-                            contentDescription = stringResource(R.string.f_u_switch)
+                            contentDescription = stringResource(R.string.switcher)
                         )
                     },
                     colors = SwitchDefaults.colors(

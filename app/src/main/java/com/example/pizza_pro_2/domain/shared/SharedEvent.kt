@@ -7,7 +7,7 @@ sealed class SharedEvent {
     data class SearchQueryChanged(val query: String) : SharedEvent()
     data class PizzaCountChanged(val pizza: Pizza) : SharedEvent()
     data class PizzaSelectionChanged(val pizza: Pizza) : SharedEvent()
-    data class PlaceOrder(val order: Order) : SharedEvent()
+    data object PlaceOrder : SharedEvent()
     data class CancelOrder(val order: Order) : SharedEvent()
     data object DiscardOrder : SharedEvent()
 }

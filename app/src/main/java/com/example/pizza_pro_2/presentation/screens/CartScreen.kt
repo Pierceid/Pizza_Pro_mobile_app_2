@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.navigation.BottomSheet
@@ -39,10 +38,6 @@ import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatPrice
-import com.example.pizza_pro_2.util.Util.Companion.formatTime
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun CartScreen(
@@ -66,6 +61,7 @@ fun CartScreen(
         if (option == 0) R.string.order_discarded_successfully
         else R.string.order_placed_successfully
     )
+    val event = if (option == 0) SharedEvent.DiscardOrder else SharedEvent.PlaceOrder
     val color = if (option == 0) Maroon else Teal
 
     DefaultColumn {
@@ -76,12 +72,7 @@ fun CartScreen(
                 onDismiss = { isDialogVisible = it },
                 dismissButton = R.string.no,
                 onConfirm = {
-                    if (option == 1) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            onSharedEvent(SharedEvent.PlaceOrder(createOrder(sharedState, total)))
-                        }
-                    }
-                    onSharedEvent(SharedEvent.DiscardOrder)
+                    onSharedEvent(event)
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
@@ -192,14 +183,4 @@ fun CartScreen(
     if (isSheetOpened) {
         BottomSheet(sharedState) { isSheetOpened = it }
     }
-}
-
-private fun createOrder(sharedState: SharedState, total: Double): Order {
-    return Order(
-        name = "Jozef",
-        time = System.currentTimeMillis().formatTime(),
-        place = "none",
-        items = sharedState.orderedPizzas.sumOf { it.count },
-        cost = total.formatPrice()
-    )
 }

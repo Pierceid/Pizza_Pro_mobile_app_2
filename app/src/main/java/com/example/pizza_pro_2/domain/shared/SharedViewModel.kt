@@ -4,25 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.data.DataSource
 import com.example.pizza_pro_2.database.MyRepository
+import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.models.Pizza
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
     private val _state = MutableStateFlow(SharedState(allPizzas = DataSource().loadData()))
     val state = _state.asStateFlow()
-
-    /*
-    TODO: this is for history screen => State(listOfUsers, listOfOrders)
-    val _state: StateFlow<SharedFormState> = myRepository.getAllUsers().map { SharedFormState(it) }.
-        stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = SharedFormState()
-        )
-     */
 
     init {
         viewModelScope.launch {
@@ -50,7 +42,15 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                 }
 
                 is SharedEvent.PlaceOrder -> {
-                    myRepository.insertOrder(event.order)
+                    val order = Order(
+                        name = myRepository.currentUser.firstOrNull()!!.name,
+                        time = System.currentTimeMillis(),
+                        place = "abc",
+                        items = _state.value.orderedPizzas.sumOf { it.count },
+                        cost = _state.value.orderedPizzas.sumOf { it.count * it.cost }
+                    )
+                    myRepository.insertOrder(order)
+                    clearPizzas()
                 }
 
                 is SharedEvent.CancelOrder -> {

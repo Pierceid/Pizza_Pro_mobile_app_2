@@ -58,7 +58,7 @@
     <string name="customer_service">Customer service</string>
     <string name="comment">3. Comment (optional)</string>
     <string name="may_we_follow_you_up_on_your_feedback">4. May we follow you up on your feedback?</string>
-    <string name="f_u_switch">Switch</string>
+    <string name="switcher">Switch</string>
     <!-- Settings -->
     <string name="account">Account</string>
     <string name="history">History</string>
@@ -71,9 +71,8 @@
     <!-- Account -->
     <string name="profile_picture">Profile picture</string>
     <!-- History -->
-    <string name="database_tables">Database tables</string>
-    <string name="users">Users</string>
-    <string name="orders">Orders</string>
+    <string name="your_orders">Your orders</string>
+    <string name="active_accounts">Active accounts</string>
     <!-- Items -->
     <string name="pizza_image">Pizza image</string>
     <string name="satisfaction_image">Satisfaction image</string>
@@ -90,6 +89,7 @@
     <string name="discard_feedback">Discard feedback</string>
     <string name="delete_account">Delete account</string>
     <string name="cancel_order">Cancel order</string>
+    <string name="remove_account">Remove account</string>
     <string name="clear_history">Clear history</string>
     <string name="pizza_card_info">1. Tap on a pizza image to see more details about it.\n\n2. To add a pizza to your cart, tap on the green plus button.\n\n3. You can adjust the quantity of the pizza using the plus and minus buttons.\n\n4. If you want to remove a pizza from your cart, just tap on the "x" button next to it.</string>
     <string name="would_you_like_to_proceed_and_place_your_order">Would you like to proceed and place your order?</string>
@@ -98,12 +98,16 @@
     <string name="are_you_sure_you_want_to_discard_your_feedback">Are you sure you want to discard your feedback?</string>
     <string name="are_you_certain_you_want_to_proceed_with_deleting_your_account">Are you certain you want to proceed with deleting your account?</string>
     <string name="are_you_certain_you_want_to_log_out_of_your_account">"Are you certain you want to log out of your account?"</string>
-    <string name="are_you_sure_you_want_to_remove_all_previously_saved_data">Are you sure you want to remove all previously saved data?</string>
+    <string name="are_you_sure_you_want_to_cancel_this_order">Are you sure you want to cancel this order?</string>
+    <string name="are_you_sure_you_want_to_remove_this_account">"Are you sure you want to remove this account?"</string>
+    <string name="are_you_certain_you_want_to_proceed_with_cancelling_all_of_your_orders">Are you certain you want to proceed with cancelling all of your orders?</string>
+    <string name="are_you_certain_you_want_to_proceed_with_removing_all_active_accounts">Are you certain you want to proceed with removing all active accounts?</string>
     <!-- Toast -->
     <string name="signed_up_successfully">Signed up successfully!</string>
     <string name="signed_in_successfully">Signed in successfully!</string>
     <string name="order_placed_successfully">Order has been\n placed successfully!</string>
     <string name="order_discarded_successfully">Order has been\n discarded successfully!</string>
+    <string name="order_cancelled_successfully">Order has been\n cancelled successfully!</string>
     <string name="user_removed_successfully">User has been\n removed successfully!</string>
     <string name="feedback_sent_successfully">Feedback has been\n sent successfully!</string>
     <string name="feedback_discarded_successfully">Feedback has been\n discarded successfully!</string>

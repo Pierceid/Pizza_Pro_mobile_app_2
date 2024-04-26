@@ -59,10 +59,6 @@ import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.ui.theme.White
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 @Composable
@@ -74,9 +70,9 @@ fun AccountScreen(
     var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
+    val context = LocalContext.current
     val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
-    val context = LocalContext.current
     val pictureId = when (state.gender) {
         Gender.OTHER -> R.drawable.profile_other
         Gender.MALE -> R.drawable.profile_male
@@ -108,11 +104,7 @@ fun AccountScreen(
                 dismissButton = R.string.no,
                 onConfirm = {
                     if (option == 1) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.onEvent(AuthEvent.Delete)
-                            delay(200)
-                            exitProcess(0)
-                        }
+                        viewModel.onEvent(AuthEvent.Delete).also { exitProcess(0) }
                     } else if (option == 2) {
                         exitProcess(0)
                     }
@@ -131,10 +123,10 @@ fun AccountScreen(
                     .size(160.dp)
                     .padding(top = 8.dp)
                     .background(White, RoundedCornerShape(80.dp))
-                    .border(BorderStroke(1.dp, White), RoundedCornerShape(80.dp)),
+                    .border(BorderStroke(2.dp, White), RoundedCornerShape(80.dp)),
                 painter = painterResource(pictureId),
                 contentDescription = stringResource(R.string.profile_picture),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.FillBounds
             )
 
             Spacer(Modifier.height(16.dp))
@@ -193,8 +185,7 @@ fun AccountScreen(
             Spacer(Modifier.height(16.dp))
 
             InputTextField(
-                value = if (state.isPasswordEdited) state.password else state.password.map { '*' }
-                    .joinToString(separator = ""),
+                value = state.password,
                 onValueChange = {
                     viewModel.onEvent(AuthEvent.PasswordChanged(it))
                 },

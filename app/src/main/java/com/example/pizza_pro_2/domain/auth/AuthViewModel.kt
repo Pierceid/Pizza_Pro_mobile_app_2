@@ -149,9 +149,7 @@ class AuthViewModel(
             }
 
             if (result) {
-                viewModelScope.launch {
-                    validationChannel.send((ValidationEvent.Success))
-                }
+                validationChannel.send((ValidationEvent.Success))
             }
         }
     }
