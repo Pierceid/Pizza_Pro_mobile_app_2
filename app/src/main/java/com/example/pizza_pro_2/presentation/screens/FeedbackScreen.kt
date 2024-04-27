@@ -23,9 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -46,7 +43,6 @@ import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.Lime
-import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Salmon
 import com.example.pizza_pro_2.ui.theme.Sea
 import com.example.pizza_pro_2.ui.theme.Silver
@@ -56,22 +52,10 @@ import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
 fun FeedbackScreen(navController: NavController) {
-    var option by rememberSaveable { mutableIntStateOf(0) }
-
     val viewModel: FeedbackViewModel = viewModel()
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    val dialogTitleId = if (option == 0) R.string.discard_feedback else R.string.share_feedback
-    val dialogTextId =
-        if (option == 0) R.string.are_you_sure_you_want_to_discard_your_feedback
-        else R.string.would_you_like_to_proceed_and_provide_us_with_your_feedback
-    val toastMessage = stringResource(
-        if (option == 0) R.string.feedback_discarded_successfully
-        else R.string.feedback_sent_successfully
-    )
-    val event = if (option == 0) FeedbackEvent.Discard else FeedbackEvent.Send
-    val color = if (option == 0) Maroon else Teal
     val options = listOf(
         Satisfaction.AWFUL,
         Satisfaction.BAD,
@@ -89,20 +73,24 @@ fun FeedbackScreen(navController: NavController) {
 
     DefaultColumn {
         if (state.isDialogVisible) {
+            val message = stringResource(state.toastMessageId)
+
             InfoDialog(
-                titleId = dialogTitleId,
-                textId = dialogTextId,
+                titleId = state.dialogTitleId,
+                textId = state.dialogTextId,
                 onDismiss = {
                     viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(false))
                 },
                 dismissButton = R.string.no,
                 onConfirm = {
-                    viewModel.onEvent(event)
+                    state.dialogEvent?.let {
+                        viewModel.onEvent(it)
+                    }
                     viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(false))
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
-                color = color
+                color = state.dialogColor ?: Slate
             )
         }
 
@@ -325,8 +313,7 @@ fun FeedbackScreen(navController: NavController) {
                 ActionButton(
                     textId = R.string.discard,
                     onClick = {
-                        option = 0
-                        viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(true))
+                        viewModel.onEvent(FeedbackEvent.OptionChanged(0))
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -334,8 +321,7 @@ fun FeedbackScreen(navController: NavController) {
                 ActionButton(
                     textId = R.string.send,
                     onClick = {
-                        option = 1
-                        viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(true))
+                        viewModel.onEvent(FeedbackEvent.OptionChanged(1))
                     },
                     modifier = Modifier.weight(1f)
                 )

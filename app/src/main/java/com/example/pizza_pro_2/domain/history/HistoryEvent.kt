@@ -9,6 +9,7 @@ sealed class HistoryEvent {
     data class SearchQueryChanged(val query: String) : HistoryEvent()
     data class DialogVisibilityChanged(val isVisible: Boolean) : HistoryEvent()
     data class ItemSelectionChanged(val item: Any) : HistoryEvent()
+    data class OptionChanged(val option: Int): HistoryEvent()
     data object Remove : HistoryEvent()
     data object Clear : HistoryEvent()
 }

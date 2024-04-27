@@ -184,7 +184,7 @@ fun SignUpScreen(
             ActionButton(
                 textId = R.string.sign_up,
                 onClick = {
-                    viewModel.onEvent(AuthEvent.Submit(type = 0))
+                    viewModel.onEvent(AuthEvent.SubmitForm(type = 0))
                 },
                 modifier = Modifier.fillMaxWidth()
             )

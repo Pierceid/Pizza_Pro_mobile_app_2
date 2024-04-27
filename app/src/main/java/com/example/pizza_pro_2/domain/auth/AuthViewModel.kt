@@ -11,7 +11,6 @@ import com.example.pizza_pro_2.use_cases.ValidatePassword
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,17 +29,6 @@ class AuthViewModel(
 
     init {
         viewModelScope.launch {
-            myRepository.currentUser.firstOrNull()?.let { user ->
-                _state.update {
-                    it.copy(
-                        name = user.name,
-                        email = user.email,
-                        password = user.password,
-                        gender = user.gender
-                    )
-                }
-            }
-
             myRepository.allUsers.collect { users ->
                 _state.update {
                     it.copy(users = users)
@@ -82,64 +70,8 @@ class AuthViewModel(
                     }
                 }
 
-                is AuthEvent.NameEdited -> {
-                    _state.update {
-                        it.copy(
-                            isNameEdited = true,
-                            isEmailEdited = false,
-                            isPasswordEdited = false,
-                            isGenderEdited = false
-                        )
-                    }
-                }
-
-                is AuthEvent.EmailEdited -> {
-                    _state.update {
-                        it.copy(
-                            isNameEdited = false,
-                            isEmailEdited = true,
-                            isPasswordEdited = false,
-                            isGenderEdited = false
-                        )
-                    }
-                }
-
-                is AuthEvent.PasswordEdited -> {
-                    _state.update {
-                        it.copy(
-                            isNameEdited = false,
-                            isEmailEdited = false,
-                            isPasswordEdited = true,
-                            isGenderEdited = false
-                        )
-                    }
-                }
-
-                is AuthEvent.GenderEdited -> {
-                    _state.update {
-                        it.copy(
-                            isNameEdited = false,
-                            isEmailEdited = false,
-                            isPasswordEdited = false,
-                            isGenderEdited = event.isEdited
-                        )
-                    }
-                }
-
-                is AuthEvent.DialogVisibilityChanged -> {
-                    _state.update {
-                        it.copy(isDialogVisible = event.isVisible)
-                    }
-                }
-
-                is AuthEvent.Submit -> {
+                is AuthEvent.SubmitForm -> {
                     submitData(type = event.type)
-                }
-
-                is AuthEvent.Delete -> {
-                    myRepository.currentUser.firstOrNull()?.let {
-                        myRepository.deleteUser(it)
-                    }
                 }
             }
         }
@@ -150,7 +82,6 @@ class AuthViewModel(
             val result = when (type) {
                 0 -> validateSignUp(type)
                 1 -> validateSignIn(type)
-                2 -> validateUpdateAccount(type)
                 else -> false
             }
 
@@ -223,60 +154,5 @@ class AuthViewModel(
         }
 
         return true
-    }
-
-    private suspend fun validateUpdateAccount(type: Int): Boolean {
-        val user = myRepository.currentUser.firstOrNull() ?: return false
-
-        val metNameCondition = user.name == _state.value.name ||
-                !_state.value.users.any { it.name == _state.value.name }
-        val metEmailCondition = user.email == _state.value.email ||
-                !_state.value.users.any { it.email == _state.value.email }
-        val metPasswordCondition = user.password == _state.value.password ||
-                _state.value.password.any { it.isDigit() } &&
-                _state.value.password.any { it.isLetter() }
-
-        val nameResult = validateName.execute(_state.value.name, metNameCondition)
-        val emailResult = validateEmail.execute(_state.value.email, metEmailCondition, type)
-        val passwordResult =
-            validatePassword.execute(_state.value.password, metPasswordCondition, type)
-        val hasError = listOf(nameResult, emailResult, passwordResult).any { !it.successful }
-
-        if (hasError) {
-            _state.update {
-                it.copy(
-                    nameErrorId = nameResult.errorMessageId,
-                    emailErrorId = emailResult.errorMessageId,
-                    passwordErrorId = passwordResult.errorMessageId
-                )
-            }
-            return false
-        } else {
-            myRepository.updateUser(
-                user.copy(
-                    name = _state.value.name,
-                    email = _state.value.email,
-                    password = _state.value.password,
-                    gender = _state.value.gender
-                )
-            )
-            myRepository.setCurrentUser(id = user.id)
-            refresh()
-            return true
-        }
-    }
-
-    private fun refresh() {
-        _state.update {
-            it.copy(
-                nameErrorId = null,
-                emailErrorId = null,
-                passwordErrorId = null,
-                isNameEdited = false,
-                isEmailEdited = false,
-                isPasswordEdited = false,
-                isGenderEdited = false
-            )
-        }
     }
 }

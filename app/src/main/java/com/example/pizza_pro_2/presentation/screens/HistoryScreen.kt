@@ -19,9 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -54,52 +51,27 @@ fun HistoryScreen(
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
 ) {
-    var option by rememberSaveable { mutableIntStateOf(0) }
-
-    val context = LocalContext.current
     val viewModel: HistoryViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
-    val headerId =
-        if (state.tableType == TableType.ORDERS) R.string.your_orders
-        else R.string.active_accounts
-    val switchToTable =
-        if (state.tableType == TableType.ORDERS) TableType.USERS
-        else TableType.ORDERS
-    val dialogTitleId =
-        when (option) {
-            0 -> R.string.cancel_order
-            1 -> R.string.remove_account
-            else -> R.string.clear_history
-        }
-    val dialogTextId =
-        when (option) {
-            0 -> R.string.are_you_sure_you_want_to_cancel_this_order
-            1 -> R.string.are_you_sure_you_want_to_remove_this_account
-            2 -> R.string.are_you_certain_you_want_to_proceed_with_cancelling_all_of_your_orders
-            else -> R.string.are_you_certain_you_want_to_proceed_with_removing_all_active_accounts
-        }
-    val toastMessage = stringResource(
-        when (option) {
-            0 -> R.string.order_cancelled_successfully
-            1 -> R.string.user_removed_successfully
-            else -> R.string.history_cleared_successfully
-        }
-    )
-    val event = if (option == 0 || option == 1) HistoryEvent.Remove else HistoryEvent.Clear
+    val context = LocalContext.current
 
     DefaultColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         if (state.isDialogVisible) {
+            val message = stringResource(state.toastMessageId)
+
             InfoDialog(
-                titleId = dialogTitleId,
-                textId = dialogTextId,
+                titleId = state.dialogTitleId,
+                textId = state.dialogTextId,
                 onDismiss = {
                     viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(false))
                 },
                 dismissButton = R.string.no,
                 onConfirm = {
-                    viewModel.onEvent(event)
+                    state.dialogEvent?.let {
+                        viewModel.onEvent(it)
+                    }
                     viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(false))
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
                 color = Maroon
@@ -111,11 +83,11 @@ fun HistoryScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            HeaderText(textId = headerId, textStyle = MaterialTheme.typography.headlineMedium)
+            HeaderText(textId = state.headerId, textStyle = MaterialTheme.typography.headlineMedium)
 
             IconButton(
                 onClick = {
-                    viewModel.onEvent(HistoryEvent.TableTypeChanged(switchToTable))
+                    viewModel.onEvent(HistoryEvent.TableTypeChanged(state.switchToTable))
                 }
             ) {
                 Icon(
@@ -133,7 +105,11 @@ fun HistoryScreen(
                     onSelectionChange = {
                         viewModel.onEvent(HistoryEvent.SortTypeChanged(it))
                     },
-                    options = listOf(OrderSortType.TIME, OrderSortType.PLACE, OrderSortType.PURCHASE),
+                    options = listOf(
+                        OrderSortType.TIME,
+                        OrderSortType.PLACE,
+                        OrderSortType.PURCHASE
+                    ),
                     modifier = Modifier.padding(end = 16.dp)
                 )
             }
@@ -167,9 +143,8 @@ fun HistoryScreen(
                         HistoryOrderCard(
                             order = order,
                             onClick = {
-                                option = 0
+                                viewModel.onEvent(HistoryEvent.OptionChanged(0))
                                 viewModel.onEvent(HistoryEvent.ItemSelectionChanged(order))
-                                viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(true))
                             },
                             orderSortType = state.orderSortType
                         )
@@ -181,9 +156,8 @@ fun HistoryScreen(
                         HistoryUserCard(
                             user = user,
                             onClick = {
-                                option = 1
+                                viewModel.onEvent(HistoryEvent.OptionChanged(1))
                                 viewModel.onEvent(HistoryEvent.ItemSelectionChanged(user))
-                                viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(true))
                             }
                         )
                     }
@@ -194,11 +168,11 @@ fun HistoryScreen(
         ActionButton(
             textId = R.string.clear,
             onClick = {
-                option = when (state.tableType) {
+                val option = when (state.tableType) {
                     TableType.ORDERS -> 2
                     TableType.USERS -> 3
                 }
-                viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(true))
+                viewModel.onEvent(HistoryEvent.OptionChanged(option))
             },
             modifier = Modifier.fillMaxWidth()
         )

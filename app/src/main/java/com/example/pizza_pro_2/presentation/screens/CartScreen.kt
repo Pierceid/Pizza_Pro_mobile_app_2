@@ -156,7 +156,6 @@ fun CartScreen(
                 textId = R.string.discard,
                 onClick = {
                     viewModel.onEvent(CartEvent.OptionChanged(0))
-                    viewModel.onEvent(CartEvent.DialogVisibilityChanged(true))
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -165,7 +164,6 @@ fun CartScreen(
                 textId = R.string.order,
                 onClick = {
                     viewModel.onEvent(CartEvent.OptionChanged(1))
-                    viewModel.onEvent(CartEvent.DialogVisibilityChanged(true))
                 },
                 modifier = Modifier.weight(1f)
             )

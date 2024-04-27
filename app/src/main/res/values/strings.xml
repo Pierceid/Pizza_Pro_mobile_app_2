@@ -87,6 +87,7 @@
     <string name="discard_order">Discard order</string>
     <string name="share_feedback">Share feedback</string>
     <string name="discard_feedback">Discard feedback</string>
+    <string name="update_account">Update account</string>
     <string name="delete_account">Delete account</string>
     <string name="cancel_order">Cancel order</string>
     <string name="remove_account">Remove account</string>
@@ -96,6 +97,7 @@
     <string name="are_you_sure_you_want_to_discard_your_order">Are you sure you want to discard your order?</string>
     <string name="would_you_like_to_proceed_and_provide_us_with_your_feedback">Would you like to proceed and provide us with your feedback?</string>
     <string name="are_you_sure_you_want_to_discard_your_feedback">Are you sure you want to discard your feedback?</string>
+    <string name="are_you_sure_you_want_to_save_changes">Are you sure you want to save changes?</string>
     <string name="are_you_certain_you_want_to_proceed_with_deleting_your_account">Are you certain you want to proceed with deleting your account?</string>
     <string name="are_you_certain_you_want_to_log_out_of_your_account">"Are you certain you want to log out of your account?"</string>
     <string name="are_you_sure_you_want_to_cancel_this_order">Are you sure you want to cancel this order?</string>

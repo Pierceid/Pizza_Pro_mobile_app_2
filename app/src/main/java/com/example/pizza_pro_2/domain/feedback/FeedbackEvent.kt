@@ -10,6 +10,7 @@ sealed class FeedbackEvent {
     data class CommentChanged(val comment: String): FeedbackEvent()
     data class FollowUpChanged(val followUp: Boolean): FeedbackEvent()
     data class DialogVisibilityChanged(val isVisible: Boolean) : FeedbackEvent()
-    data object Discard: FeedbackEvent()
-    data object Send: FeedbackEvent()
+    data class OptionChanged(val option: Int): FeedbackEvent()
+    data object DiscardFeedback: FeedbackEvent()
+    data object SendFeedback: FeedbackEvent()
 }

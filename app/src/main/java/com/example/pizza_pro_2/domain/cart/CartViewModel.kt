@@ -37,7 +37,7 @@ class CartViewModel : ViewModel() {
 
                 is CartEvent.OptionChanged -> {
                     _state.update {
-                        it.copy(buttonOption = event.option)
+                        it.copy(buttonOption = event.option, isDialogVisible = true)
                     }
                     when (event.option) {
                         0 -> {
@@ -51,7 +51,6 @@ class CartViewModel : ViewModel() {
                                 )
                             }
                         }
-
                         1 -> {
                             _state.update {
                                 it.copy(
@@ -63,7 +62,6 @@ class CartViewModel : ViewModel() {
                                 )
                             }
                         }
-
                         else -> {}
                     }
                 }

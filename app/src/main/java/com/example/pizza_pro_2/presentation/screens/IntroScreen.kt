@@ -26,12 +26,14 @@ fun IntroScreen(navController: NavController) {
             contentDescription = stringResource(R.string.logo),
             contentScale = ContentScale.Fit
         )
+
         Image(
             modifier = Modifier.size(400.dp, 160.dp),
             painter = painterResource(R.drawable.motto),
             contentDescription = stringResource(R.string.motto),
             contentScale = ContentScale.Fit
         )
+
         ActionButton(
             textId = R.string.let_s_get_started,
             onClick = {

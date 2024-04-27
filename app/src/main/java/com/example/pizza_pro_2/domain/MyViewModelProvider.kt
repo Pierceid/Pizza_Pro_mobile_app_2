@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.pizza_pro_2.MyApplication
+import com.example.pizza_pro_2.domain.account.AccountViewModel
 import com.example.pizza_pro_2.domain.auth.AuthViewModel
 import com.example.pizza_pro_2.domain.history.HistoryViewModel
 import com.example.pizza_pro_2.domain.shared.SharedViewModel
@@ -18,6 +19,10 @@ object MyViewModelProvider {
 
         initializer {
             SharedViewModel(myRepository = myApplication().myContainer.myRepository)
+        }
+
+        initializer {
+            AccountViewModel(myRepository = myApplication().myContainer.myRepository)
         }
 
         initializer {

@@ -150,7 +150,7 @@ fun SignInScreen(
             ActionButton(
                 textId = R.string.sign_in,
                 onClick = {
-                    viewModel.onEvent(AuthEvent.Submit(1))
+                    viewModel.onEvent(AuthEvent.SubmitForm(1))
                 },
                 modifier = Modifier.fillMaxWidth()
             )
