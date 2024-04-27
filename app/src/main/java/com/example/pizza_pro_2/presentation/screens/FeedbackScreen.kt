@@ -21,9 +21,9 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -56,12 +56,12 @@ import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
 fun FeedbackScreen(navController: NavController) {
-    var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
+    val viewModel: FeedbackViewModel = viewModel()
+    val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val viewModel = viewModel<FeedbackViewModel>()
-    val state = viewModel.state
+
     val dialogTitleId = if (option == 0) R.string.discard_feedback else R.string.share_feedback
     val dialogTextId =
         if (option == 0) R.string.are_you_sure_you_want_to_discard_your_feedback
@@ -88,14 +88,17 @@ fun FeedbackScreen(navController: NavController) {
     )
 
     DefaultColumn {
-        if (isDialogVisible) {
+        if (state.isDialogVisible) {
             InfoDialog(
                 titleId = dialogTitleId,
                 textId = dialogTextId,
-                onDismiss = { isDialogVisible = it },
+                onDismiss = {
+                    viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(false))
+                },
                 dismissButton = R.string.no,
                 onConfirm = {
                     viewModel.onEvent(event)
+                    viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(false))
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
@@ -323,7 +326,7 @@ fun FeedbackScreen(navController: NavController) {
                     textId = R.string.discard,
                     onClick = {
                         option = 0
-                        isDialogVisible = true
+                        viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(true))
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -332,7 +335,7 @@ fun FeedbackScreen(navController: NavController) {
                     textId = R.string.send,
                     onClick = {
                         option = 1
-                        isDialogVisible = true
+                        viewModel.onEvent(FeedbackEvent.DialogVisibilityChanged(true))
                     },
                     modifier = Modifier.weight(1f)
                 )

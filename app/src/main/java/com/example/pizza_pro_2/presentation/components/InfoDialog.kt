@@ -19,14 +19,14 @@ import com.example.pizza_pro_2.ui.theme.Slate
 fun InfoDialog(
     @StringRes titleId: Int,
     @StringRes textId: Int,
-    onDismiss: (Boolean) -> Unit,
+    onDismiss: () -> Unit,
     dismissButton: Int? = null,
     onConfirm: () -> Unit = { },
     confirmButton: Int? = null,
     color: Color = Slate
 ) {
     AlertDialog(
-        onDismissRequest = { onDismiss(false) },
+        onDismissRequest = onDismiss,
         title = {
             Text(
                 text = stringResource(titleId),
@@ -41,12 +41,7 @@ fun InfoDialog(
         },
         confirmButton = {
             confirmButton?.let {
-                Button(
-                    onClick = {
-                        onConfirm()
-                        onDismiss(false)
-                    }
-                ) {
+                Button(onClick = onConfirm) {
                     Text(
                         text = stringResource(it),
                         style = MaterialTheme.typography.bodyMedium,
@@ -57,7 +52,7 @@ fun InfoDialog(
         },
         dismissButton = {
             dismissButton?.let {
-                OutlinedButton(onClick = { onDismiss(false) }) {
+                OutlinedButton(onClick = onDismiss) {
                     Text(
                         text = stringResource(it),
                         style = MaterialTheme.typography.bodyMedium

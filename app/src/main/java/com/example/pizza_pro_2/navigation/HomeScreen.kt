@@ -17,9 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,23 +38,25 @@ fun HomeScreen(
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
 ) {
-    var isVisible by rememberSaveable { mutableStateOf(false) }
-
     val navController = rememberNavController()
 
     Scaffold(
         topBar = {
-            TopBar(navController) { isVisible = it }
+            TopBar(navController) {
+                onSharedEvent(SharedEvent.DialogVisibilityChanged(true))
+            }
         },
         bottomBar = {
             BottomBar(navController)
         },
         content = { innerPadding ->
-            if (isVisible) {
+            if (sharedState.isDialogVisible) {
                 InfoDialog(
                     titleId = R.string.pizza_info,
                     textId = R.string.pizza_card_info,
-                    onDismiss = { isVisible = it },
+                    onDismiss = {
+                        onSharedEvent(SharedEvent.DialogVisibilityChanged(false))
+                    },
                     dismissButton = R.string.cancel
                 )
             }
@@ -71,7 +70,7 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
+fun TopBar(navController: NavHostController, onDialogShow: () -> Unit) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val header = stringResource(
@@ -102,7 +101,7 @@ fun TopBar(navController: NavHostController, onDialogShow: (Boolean) -> Unit) {
             }
         },
         actions = {
-            IconButton(onClick = { onDialogShow(true) }) {
+            IconButton(onClick = onDialogShow) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = stringResource(R.string.pizza_info)

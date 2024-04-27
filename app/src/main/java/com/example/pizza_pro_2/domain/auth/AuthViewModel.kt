@@ -126,6 +126,12 @@ class AuthViewModel(
                     }
                 }
 
+                is AuthEvent.DialogVisibilityChanged -> {
+                    _state.update {
+                        it.copy(isDialogVisible = event.isVisible)
+                    }
+                }
+
                 is AuthEvent.Submit -> {
                     submitData(type = event.type)
                 }

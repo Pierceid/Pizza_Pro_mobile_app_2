@@ -1,7 +1,7 @@
 package com.example.pizza_pro_2.options
 
-enum class SortType {
+enum class OrderSortType {
     TIME,
-    Place,
-    COST
+    PLACE,
+    PURCHASE
 }

@@ -19,5 +19,6 @@ data class AuthState(
     val isEmailEdited: Boolean = false,
     val isPasswordEdited: Boolean = false,
     val isGenderEdited: Boolean = false,
+    val isDialogVisible: Boolean = false,
     val users: List<User> = emptyList()
 )

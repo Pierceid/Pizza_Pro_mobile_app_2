@@ -6,6 +6,7 @@ import com.example.pizza_pro_2.data.DataSource
 import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.models.Pizza
+import com.example.pizza_pro_2.options.PizzaSortType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -27,12 +28,8 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
     fun onEvent(event: SharedEvent) {
         viewModelScope.launch {
             when (event) {
-                is SharedEvent.SearchQueryChanged -> {
-                    filterPizzas(query = event.query)
-                }
-
-                is SharedEvent.PizzaCountChanged -> {
-                    updatePizzaCount(pizza = event.pizza)
+                is SharedEvent.FilterPizzas -> {
+                    filterPizzas(event.sortType, event.query)
                 }
 
                 is SharedEvent.PizzaSelectionChanged -> {
@@ -41,20 +38,26 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                     }
                 }
 
+                is SharedEvent.PizzaCountChanged -> {
+                    updatePizzaCount(pizza = event.pizza)
+                }
+
+                is SharedEvent.DialogVisibilityChanged -> {
+                    _state.update {
+                        it.copy(isDialogVisible = event.isVisible)
+                    }
+                }
+
                 is SharedEvent.PlaceOrder -> {
                     val order = Order(
                         name = myRepository.currentUser.firstOrNull()!!.name,
                         time = System.currentTimeMillis(),
-                        place = "abc",
+                        place = event.place,
                         items = _state.value.orderedPizzas.sumOf { it.count },
-                        cost = _state.value.orderedPizzas.sumOf { it.count * it.cost }
+                        cost = event.total
                     )
                     myRepository.insertOrder(order)
                     clearPizzas()
-                }
-
-                is SharedEvent.CancelOrder -> {
-                    myRepository.deleteOrder(event.order)
                 }
 
                 is SharedEvent.DiscardOrder -> {
@@ -71,13 +74,21 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
         _state.update {
             it.copy(allPizzas = updatedList, orderedPizzas = orderedList)
         }
-        updateCost()
     }
 
-    private fun filterPizzas(query: String = _state.value.searchQuery.lowercase()) {
-        val filteredList = _state.value.allPizzas.filter { it.name!!.lowercase().contains(query) }
+    private fun filterPizzas(sortType: PizzaSortType, query: String) {
+        val updatedList = _state.value.allPizzas.filter {
+            it.name!!.lowercase().contains(query.lowercase())
+        }.toMutableList()
+
+        when (sortType) {
+            PizzaSortType.NAME -> updatedList.sortBy { it.name }
+            PizzaSortType.RATING -> updatedList.sortByDescending { it.rating }
+            PizzaSortType.PRICE -> updatedList.sortBy { it.cost }
+        }
+
         _state.update {
-            it.copy(searchQuery = query, filteredPizzas = filteredList)
+            it.copy(filteredPizzas = updatedList.toList())
         }
     }
 
@@ -85,14 +96,6 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
         val clearedList = _state.value.allPizzas.map { it.copy(count = 0) }
         _state.update {
             it.copy(allPizzas = clearedList, orderedPizzas = emptyList())
-        }
-        updateCost()
-    }
-
-    private fun updateCost() {
-        val sum = _state.value.orderedPizzas.sumOf { it.count * it.cost }
-        _state.update {
-            it.copy(itemsCost = sum)
         }
     }
 }

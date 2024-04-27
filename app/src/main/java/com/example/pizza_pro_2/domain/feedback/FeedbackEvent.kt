@@ -9,6 +9,7 @@ sealed class FeedbackEvent {
     data class CustomerServiceChanged(val customerService: Boolean): FeedbackEvent()
     data class CommentChanged(val comment: String): FeedbackEvent()
     data class FollowUpChanged(val followUp: Boolean): FeedbackEvent()
+    data class DialogVisibilityChanged(val isVisible: Boolean) : FeedbackEvent()
     data object Discard: FeedbackEvent()
     data object Send: FeedbackEvent()
 }

@@ -1,48 +1,67 @@
 package com.example.pizza_pro_2.domain.feedback
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FeedbackViewModel : ViewModel() {
-    var state: FeedbackState by mutableStateOf(FeedbackState())
+    private val _state = MutableStateFlow(FeedbackState())
+    val state = _state.asStateFlow()
 
     fun onEvent(event: FeedbackEvent) {
         viewModelScope.launch {
             when (event) {
                 is FeedbackEvent.SatisfactionChanged -> {
-                    state = state.copy(satisfaction = event.satisfaction)
+                    _state.update { 
+                        it.copy(satisfaction = event.satisfaction)
+                    }
                 }
 
                 is FeedbackEvent.DeliveryTimeChanged -> {
-                    state = state.copy(deliveryTime = event.deliveryTime)
+                    _state.update {
+                        it.copy(deliveryTime = event.deliveryTime)
+                    }
                 }
 
                 is FeedbackEvent.ProductQualityChanged -> {
-                    state = state.copy(productQuality = event.productQuality)
+                    _state.update {
+                        it.copy(productQuality = event.productQuality)
+                    }
                 }
 
                 is FeedbackEvent.CustomerServiceChanged -> {
-                    state = state.copy(customerService = event.customerService)
+                    _state.update {
+                        it.copy(customerService = event.customerService)
+                    }
                 }
 
                 is FeedbackEvent.CommentChanged -> {
-                    state = state.copy(comment = event.comment)
+                    _state.update {
+                        it.copy(comment = event.comment)
+                    }
                 }
 
                 is FeedbackEvent.FollowUpChanged -> {
-                    state = state.copy(followUp = event.followUp)
+                    _state.update {
+                        it.copy(followUp = event.followUp)
+                    }
+                }
+
+                is FeedbackEvent.DialogVisibilityChanged -> {
+                    _state.update {
+                        it.copy(isDialogVisible = event.isVisible)
+                    }
                 }
 
                 is FeedbackEvent.Discard -> {
-                    state = FeedbackState()
+                    _state.value = FeedbackState()
                 }
 
                 is FeedbackEvent.Send -> {
-                    state = FeedbackState()
+                    _state.value = FeedbackState()
                 }
             }
         }

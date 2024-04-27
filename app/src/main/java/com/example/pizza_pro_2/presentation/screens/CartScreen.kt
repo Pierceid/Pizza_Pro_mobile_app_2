@@ -14,17 +14,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.cart.CartEvent
+import com.example.pizza_pro_2.domain.cart.CartViewModel
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.navigation.BottomSheet
@@ -33,9 +33,8 @@ import com.example.pizza_pro_2.presentation.components.CartPizzaCard
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InfoDialog
-import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Silver
-import com.example.pizza_pro_2.ui.theme.Teal
+import com.example.pizza_pro_2.ui.theme.Slate
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatPrice
 
@@ -45,38 +44,31 @@ fun CartScreen(
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
 ) {
-    var isSheetOpened by rememberSaveable { mutableStateOf(false) }
-    var isDialogVisible by rememberSaveable { mutableStateOf(false) }
-    var option by rememberSaveable { mutableIntStateOf(0) }
-
+    val viewModel: CartViewModel = viewModel()
+    val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val items = sharedState.itemsCost
-    val delivery = if (items == 0.0) 0.0 else 5.0
-    val total = items + delivery
-    val dialogTitleId = if (option == 0) R.string.discard_order else R.string.place_order
-    val dialogTextId =
-        if (option == 0) R.string.are_you_sure_you_want_to_discard_your_order
-        else R.string.would_you_like_to_proceed_and_place_your_order
-    val toastMessage = stringResource(
-        if (option == 0) R.string.order_discarded_successfully
-        else R.string.order_placed_successfully
-    )
-    val event = if (option == 0) SharedEvent.DiscardOrder else SharedEvent.PlaceOrder
-    val color = if (option == 0) Maroon else Teal
+
+    viewModel.onEvent(CartEvent.CostsChanged(sharedState.orderedPizzas.sumOf { it.count * it.cost }))
 
     DefaultColumn {
-        if (isDialogVisible) {
+        if (state.isDialogVisible) {
+            val message = stringResource(state.toastMessageId)
+
             InfoDialog(
-                titleId = dialogTitleId,
-                textId = dialogTextId,
-                onDismiss = { isDialogVisible = it },
+                titleId = state.dialogTitleId,
+                textId = state.dialogTextId,
+                onDismiss = {
+                    viewModel.onEvent(CartEvent.DialogVisibilityChanged(false))
+                },
                 dismissButton = R.string.no,
                 onConfirm = {
-                    onSharedEvent(event)
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+                    state.dialogEvent?.let(onSharedEvent)
+                    viewModel.onEvent(CartEvent.CostsChanged(0.0))
+                    viewModel.onEvent(CartEvent.DialogVisibilityChanged(false))
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
-                color = color
+                color = state.dialogColor ?: Slate
             )
         }
 
@@ -86,15 +78,15 @@ fun CartScreen(
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = sharedState.orderedPizzas, key = { it.id!! }) { pizza ->
+            items(items = sharedState.orderedPizzas, key = { it.id!! }) { orderedPizza ->
                 CartPizzaCard(
-                    pizza = pizza,
-                    onCountChanged = {
-                        onSharedEvent(SharedEvent.PizzaCountChanged(it))
+                    pizza = orderedPizza,
+                    onCountChanged = { pizza ->
+                        onSharedEvent(SharedEvent.PizzaCountChanged(pizza))
+                        viewModel.onEvent(CartEvent.CostsChanged(sharedState.orderedPizzas.sumOf { it.count * it.cost }))
                     },
                     onClick = {
-                        onSharedEvent(SharedEvent.PizzaSelectionChanged(pizza))
-                        isSheetOpened = true
+                        onSharedEvent(SharedEvent.PizzaSelectionChanged(orderedPizza))
                     }
                 )
             }
@@ -112,7 +104,7 @@ fun CartScreen(
                 color = Silver
             )
             Text(
-                text = items.formatPrice(),
+                text = state.itemsCost.formatPrice(),
                 style = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
@@ -128,7 +120,7 @@ fun CartScreen(
                 color = Silver
             )
             Text(
-                text = delivery.formatPrice(),
+                text = state.deliveryCost.formatPrice(),
                 style = MaterialTheme.typography.titleMedium,
                 color = Silver
             )
@@ -151,7 +143,7 @@ fun CartScreen(
                 color = White
             )
             Text(
-                text = total.formatPrice(),
+                text = state.totalCost.formatPrice(),
                 style = MaterialTheme.typography.headlineLarge,
                 color = White
             )
@@ -163,8 +155,8 @@ fun CartScreen(
             ActionButton(
                 textId = R.string.discard,
                 onClick = {
-                    option = 0
-                    isDialogVisible = true
+                    viewModel.onEvent(CartEvent.OptionChanged(0))
+                    viewModel.onEvent(CartEvent.DialogVisibilityChanged(true))
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -172,15 +164,17 @@ fun CartScreen(
             ActionButton(
                 textId = R.string.order,
                 onClick = {
-                    option = 1
-                    isDialogVisible = true
+                    viewModel.onEvent(CartEvent.OptionChanged(1))
+                    viewModel.onEvent(CartEvent.DialogVisibilityChanged(true))
                 },
                 modifier = Modifier.weight(1f)
             )
         }
     }
 
-    if (isSheetOpened) {
-        BottomSheet(sharedState) { isSheetOpened = it }
+    sharedState.selectedPizza?.let {
+        BottomSheet(sharedState.selectedPizza) {
+            onSharedEvent(SharedEvent.PizzaSelectionChanged(null))
+        }
     }
 }

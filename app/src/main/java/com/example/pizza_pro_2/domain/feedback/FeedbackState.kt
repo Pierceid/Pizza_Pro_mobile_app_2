@@ -10,5 +10,6 @@ data class FeedbackState(
     val productQuality: Boolean = true,
     val customerService: Boolean = true,
     val comment: String = "",
-    val followUp: Boolean = false
+    val followUp: Boolean = false,
+    val isDialogVisible: Boolean = false
 )

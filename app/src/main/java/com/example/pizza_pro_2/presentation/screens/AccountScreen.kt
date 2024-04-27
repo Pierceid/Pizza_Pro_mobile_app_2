@@ -26,7 +26,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,7 +66,6 @@ fun AccountScreen(
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
 ) {
-    var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
     val context = LocalContext.current
@@ -96,13 +94,16 @@ fun AccountScreen(
     }
 
     DefaultColumn {
-        if (isDialogVisible) {
+        if (state.isDialogVisible) {
             InfoDialog(
                 titleId = dialogTitleId,
                 textId = dialogTextId,
-                onDismiss = { isDialogVisible = it },
+                onDismiss = {
+                    viewModel.onEvent(AuthEvent.DialogVisibilityChanged(false))
+                },
                 dismissButton = R.string.no,
                 onConfirm = {
+                    viewModel.onEvent(AuthEvent.DialogVisibilityChanged(false))
                     if (option == 1) {
                         viewModel.onEvent(AuthEvent.Delete).also { exitProcess(0) }
                     } else if (option == 2) {
@@ -258,7 +259,7 @@ fun AccountScreen(
                 textId = R.string.delete,
                 onClick = {
                     option = 1
-                    isDialogVisible = true
+                    viewModel.onEvent(AuthEvent.DialogVisibilityChanged(true))
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -267,7 +268,7 @@ fun AccountScreen(
                 textId = R.string.log_out,
                 onClick = {
                     option = 2
-                    isDialogVisible = true
+                    viewModel.onEvent(AuthEvent.DialogVisibilityChanged(true))
                 },
                 modifier = Modifier.weight(1f)
             )

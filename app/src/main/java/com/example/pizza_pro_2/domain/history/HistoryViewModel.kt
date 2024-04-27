@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.User
-import com.example.pizza_pro_2.options.SortType
+import com.example.pizza_pro_2.options.OrderSortType
 import com.example.pizza_pro_2.options.TableType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,9 +20,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
     private val _tableType = MutableStateFlow(TableType.ORDERS)
-    private val _sortType = MutableStateFlow(SortType.TIME)
+    private val _Order_sortType = MutableStateFlow(OrderSortType.TIME)
     private val _searchQuery = MutableStateFlow("")
-    private val _items = combine(_searchQuery, _tableType, _sortType) { query, tableType, sortType ->
+    private val _items = combine(_searchQuery, _tableType, _Order_sortType) { query, tableType, sortType ->
         Triple(query, tableType, sortType)
     }.flatMapLatest { (query, tableType, sortType) ->
         when (tableType) {
@@ -33,11 +33,11 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryState())
     val state = combine(
-        _state, _tableType, _sortType, _searchQuery, _items
+        _state, _tableType, _Order_sortType, _searchQuery, _items
     ) { state, tableType, sortType, searchQuery, items ->
         state.copy(
             tableType = tableType,
-            sortType = sortType,
+            orderSortType = sortType,
             searchQuery = searchQuery,
             orders = items.filterIsInstance<Order>(),
             users = items.filterIsInstance<User>()
@@ -51,10 +51,15 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                     _tableType.value = event.type
                 }
                 is HistoryEvent.SortTypeChanged -> {
-                    _sortType.value = event.type
+                    _Order_sortType.value = event.type
                 }
                 is HistoryEvent.SearchQueryChanged -> {
                     _searchQuery.value = event.query
+                }
+                is HistoryEvent.DialogVisibilityChanged -> {
+                    _state.update {
+                        it.copy(isDialogVisible = event.isVisible)
+                    }
                 }
                 is HistoryEvent.ItemSelectionChanged -> {
                     _state.update {

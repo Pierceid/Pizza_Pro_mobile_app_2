@@ -22,10 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -35,7 +33,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.shared.SharedState
+import com.example.pizza_pro_2.domain.sheet.SheetEvent
+import com.example.pizza_pro_2.domain.sheet.SheetViewModel
+import com.example.pizza_pro_2.models.Pizza
 import com.example.pizza_pro_2.ui.theme.Lime
 import com.example.pizza_pro_2.ui.theme.Orange
 import com.example.pizza_pro_2.ui.theme.Pink
@@ -47,14 +47,13 @@ import com.example.pizza_pro_2.util.Util.Companion.formatRating
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
-    var isExpanded by rememberSaveable { mutableStateOf(false) }
-
-    val pizza = sharedState.selectedPizza!!
+fun BottomSheet(pizza: Pizza, onDismiss: () -> Unit) {
+    val viewModel = SheetViewModel(pizza = pizza)
+    val state by viewModel.state.collectAsState()
 
     ModalBottomSheet(
         sheetState = rememberModalBottomSheetState(),
-        onDismissRequest = { onDismiss(false) }
+        onDismissRequest = onDismiss
     ) {
         Column(
             modifier = Modifier
@@ -70,7 +69,7 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
             ) {
                 Image(
                     modifier = Modifier.aspectRatio(3f / 2f),
-                    painter = painterResource(pizza.imageSource),
+                    painter = painterResource(state.pizza!!.imageSource),
                     contentDescription = stringResource(R.string.pizza_image),
                     contentScale = ContentScale.FillBounds
                 )
@@ -91,7 +90,7 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
                     )
 
                     Text(
-                        text = " ${pizza.rating.formatRating()}",
+                        text = " ${state.pizza!!.rating.formatRating()}",
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
@@ -125,7 +124,7 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "${pizza.name!!.capitalizeText()} Pizza",
+                text = "${state.pizza!!.name!!.capitalizeText()} Pizza",
                 style = MaterialTheme.typography.titleMedium,
                 color = Pink
             )
@@ -137,7 +136,7 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
                         .animateContentSize(),
                     text = pizza.description!!,
                     style = MaterialTheme.typography.bodyLarge,
-                    maxLines = if (isExpanded) Int.MAX_VALUE else 5,
+                    maxLines = if (state.isExpanded) Int.MAX_VALUE else 5,
                     overflow = TextOverflow.Ellipsis
                 )
 
@@ -148,11 +147,18 @@ fun BottomSheet(sharedState: SharedState, onDismiss: (Boolean) -> Unit) {
                 ) {
                     Text(
                         modifier = Modifier
-                            .background(if (isExpanded) Salmon else Lime, RoundedCornerShape(4.dp))
+                            .background(
+                                if (state.isExpanded) Salmon else Lime,
+                                RoundedCornerShape(4.dp)
+                            )
                             .padding(4.dp)
                             .align(Alignment.Center)
-                            .clickable { isExpanded = !isExpanded },
-                        text = stringResource(if (isExpanded) R.string.show_less else R.string.show_more)
+                            .clickable {
+                                viewModel.onEvent(
+                                    SheetEvent.ExpansionChanged(!state.isExpanded)
+                                )
+                            },
+                        text = stringResource(if (state.isExpanded) R.string.show_less else R.string.show_more)
                     )
                 }
             }

@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,7 +36,7 @@ import com.example.pizza_pro_2.domain.history.HistoryEvent
 import com.example.pizza_pro_2.domain.history.HistoryViewModel
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
-import com.example.pizza_pro_2.options.SortType
+import com.example.pizza_pro_2.options.OrderSortType
 import com.example.pizza_pro_2.options.TableType
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
@@ -55,7 +54,6 @@ fun HistoryScreen(
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
 ) {
-    var isDialogVisible by rememberSaveable { mutableStateOf(false) }
     var option by rememberSaveable { mutableIntStateOf(0) }
 
     val context = LocalContext.current
@@ -90,14 +88,17 @@ fun HistoryScreen(
     val event = if (option == 0 || option == 1) HistoryEvent.Remove else HistoryEvent.Clear
 
     DefaultColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        if (isDialogVisible) {
+        if (state.isDialogVisible) {
             InfoDialog(
                 titleId = dialogTitleId,
                 textId = dialogTextId,
-                onDismiss = { isDialogVisible = it },
+                onDismiss = {
+                    viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(false))
+                },
                 dismissButton = R.string.no,
                 onConfirm = {
                     viewModel.onEvent(event)
+                    viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(false))
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
@@ -128,11 +129,11 @@ fun HistoryScreen(
         when (state.tableType) {
             TableType.ORDERS -> {
                 RadioGroup(
-                    selected = state.sortType,
+                    selected = state.orderSortType,
                     onSelectionChange = {
                         viewModel.onEvent(HistoryEvent.SortTypeChanged(it))
                     },
-                    options = listOf(SortType.TIME, SortType.Place, SortType.COST),
+                    options = listOf(OrderSortType.TIME, OrderSortType.PLACE, OrderSortType.PURCHASE),
                     modifier = Modifier.padding(end = 16.dp)
                 )
             }
@@ -166,11 +167,11 @@ fun HistoryScreen(
                         HistoryOrderCard(
                             order = order,
                             onClick = {
-                                viewModel.onEvent(HistoryEvent.ItemSelectionChanged(order))
                                 option = 0
-                                isDialogVisible = true
+                                viewModel.onEvent(HistoryEvent.ItemSelectionChanged(order))
+                                viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(true))
                             },
-                            sortType = state.sortType
+                            orderSortType = state.orderSortType
                         )
                     }
                 }
@@ -180,9 +181,9 @@ fun HistoryScreen(
                         HistoryUserCard(
                             user = user,
                             onClick = {
-                                viewModel.onEvent(HistoryEvent.ItemSelectionChanged(user))
                                 option = 1
-                                isDialogVisible = true
+                                viewModel.onEvent(HistoryEvent.ItemSelectionChanged(user))
+                                viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(true))
                             }
                         )
                     }
@@ -193,11 +194,11 @@ fun HistoryScreen(
         ActionButton(
             textId = R.string.clear,
             onClick = {
-                option = when(state.tableType) {
+                option = when (state.tableType) {
                     TableType.ORDERS -> 2
                     TableType.USERS -> 3
                 }
-                isDialogVisible = true
+                viewModel.onEvent(HistoryEvent.DialogVisibilityChanged(true))
             },
             modifier = Modifier.fillMaxWidth()
         )

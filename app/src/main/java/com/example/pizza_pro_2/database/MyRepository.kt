@@ -2,7 +2,7 @@ package com.example.pizza_pro_2.database
 
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.User
-import com.example.pizza_pro_2.options.SortType
+import com.example.pizza_pro_2.options.OrderSortType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -29,11 +29,11 @@ class MyRepository(private val myDao: MyDao) {
 
     fun getUsers(regex: String = ""): Flow<List<User>> = myDao.getUsers(regex)
 
-    fun getOrders(name: String = "", sortType: SortType): Flow<List<Order>> {
-        return when (sortType) {
-            SortType.TIME -> myDao.getOrdersBasedOnTime(name)
-            SortType.Place -> myDao.getOrdersBasedOnPlace(name)
-            SortType.COST -> myDao.getOrdersBasedOnCost(name)
+    fun getOrders(name: String = "", orderSortType: OrderSortType): Flow<List<Order>> {
+        return when (orderSortType) {
+            OrderSortType.TIME -> myDao.getOrdersBasedOnTime(name)
+            OrderSortType.PLACE -> myDao.getOrdersBasedOnPlace(name)
+            OrderSortType.PURCHASE -> myDao.getOrdersBasedOnCost(name)
         }
     }
 }
