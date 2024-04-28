@@ -2,10 +2,7 @@ package com.example.pizza_pro_2.presentation.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -54,19 +51,7 @@ fun ShopScreen(
         gridState.scrollToItem(index = 0)
     }
 
-    DefaultColumn {
-        RadioGroup(
-            selected = state.sortType,
-            onSelectionChange = {
-                viewModel.onEvent(ShopEvent.SortTypeChanged(it))
-                onSharedEvent(SharedEvent.FilterPizzas(it, state.searchQuery))
-            },
-            options = sortTypes,
-            modifier = Modifier.padding(end = 16.dp)
-        )
-
-        Spacer(Modifier.height(12.dp))
-
+    DefaultColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         InputTextField(
             value = state.searchQuery,
             onValueChange = {
@@ -83,7 +68,15 @@ fun ShopScreen(
             imeAction = ImeAction.Done
         )
 
-        Spacer(Modifier.height(12.dp))
+        RadioGroup(
+            selected = state.sortType,
+            onSelectionChange = {
+                viewModel.onEvent(ShopEvent.SortTypeChanged(it))
+                onSharedEvent(SharedEvent.FilterPizzas(it, state.searchQuery))
+            },
+            options = sortTypes,
+            type = 1
+        )
 
         LazyVerticalGrid(
             modifier = Modifier

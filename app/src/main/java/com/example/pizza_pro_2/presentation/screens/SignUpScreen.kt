@@ -177,6 +177,7 @@ fun SignUpScreen(
                     viewModel.onEvent(AuthEvent.GenderChanged(it))
                 },
                 options = genders,
+                type = 0,
                 modifier = Modifier.padding(end = 16.dp)
             )
 

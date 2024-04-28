@@ -82,7 +82,9 @@ fun CartScreen(
                     pizza = orderedPizza,
                     onCountChanged = { pizza ->
                         onSharedEvent(SharedEvent.PizzaCountChanged(pizza))
-                        viewModel.onEvent(CartEvent.CostsChanged(sharedState.orderedPizzas.sumOf { it.count * it.cost }))
+                        viewModel.onEvent(CartEvent.CostsChanged(
+                            sharedState.orderedPizzas.sumOf { it.count * it.cost }
+                        ))
                     },
                     onClick = {
                         onSharedEvent(SharedEvent.PizzaSelectionChanged(orderedPizza))
@@ -91,7 +93,7 @@ fun CartScreen(
             }
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -148,7 +150,7 @@ fun CartScreen(
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             ActionButton(

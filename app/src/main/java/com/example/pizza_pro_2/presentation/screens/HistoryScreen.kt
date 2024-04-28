@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -55,7 +54,7 @@ fun HistoryScreen(
     val context = LocalContext.current
     val sortTypes = listOf(OrderSortType.TIME, OrderSortType.PLACE, OrderSortType.PURCHASE)
 
-    DefaultColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    DefaultColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (state.isDialogVisible) {
             val message = stringResource(state.toastMessageId)
 
@@ -106,7 +105,7 @@ fun HistoryScreen(
                         viewModel.onEvent(HistoryEvent.SortTypeChanged(it))
                     },
                     options = sortTypes,
-                    modifier = Modifier.padding(end = 16.dp)
+                    type = 1
                 )
             }
 

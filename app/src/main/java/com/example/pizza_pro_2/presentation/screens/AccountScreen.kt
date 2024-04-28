@@ -105,7 +105,6 @@ fun AccountScreen(
             Image(
                 modifier = Modifier
                     .size(160.dp)
-                    .padding(top = 8.dp)
                     .background(White, RoundedCornerShape(80.dp))
                     .border(BorderStroke(2.dp, White), RoundedCornerShape(80.dp)),
                 painter = painterResource(state.imageId),
@@ -216,12 +215,13 @@ fun AccountScreen(
                         viewModel.onEvent(AccountEvent.GenderEdited(false))
                     },
                     options = genders,
+                    type = 0,
                     modifier = Modifier.padding(end = 16.dp)
                 )
             }
         }
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
 
         ActionButton(
             textId = R.string.save,

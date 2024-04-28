@@ -46,7 +46,7 @@ interface MyDao {
     fun getUsers(regex: String = ""): Flow<List<User>>
 
     @Transaction
-    @Query("SELECT * FROM orders WHERE name = :name ORDER BY time ASC")
+    @Query("SELECT * FROM orders WHERE name = :name ORDER BY time DESC")
     fun getOrdersBasedOnTime(name: String = ""): Flow<List<Order>>
 
     @Transaction

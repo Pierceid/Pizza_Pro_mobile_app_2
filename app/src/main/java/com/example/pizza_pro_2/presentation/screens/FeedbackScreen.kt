@@ -110,6 +110,7 @@ fun FeedbackScreen(navController: NavController) {
                     viewModel.onEvent(FeedbackEvent.SatisfactionChanged(it))
                 },
                 options = options,
+                type = 2,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 imagePainterIds = imageIds
             )
