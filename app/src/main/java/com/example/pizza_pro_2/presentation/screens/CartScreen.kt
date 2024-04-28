@@ -34,7 +34,6 @@ import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.ui.theme.Silver
-import com.example.pizza_pro_2.ui.theme.Slate
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.formatPrice
 
@@ -68,7 +67,7 @@ fun CartScreen(
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
-                color = state.dialogColor ?: Slate
+                color = state.dialogColor
             )
         }
 

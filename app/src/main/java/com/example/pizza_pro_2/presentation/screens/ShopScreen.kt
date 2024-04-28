@@ -46,6 +46,7 @@ fun ShopScreen(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val gridState = rememberLazyGridState()
+    val sortTypes = listOf(PizzaSortType.NAME, PizzaSortType.RATING, PizzaSortType.PRICE)
 
     onSharedEvent(SharedEvent.FilterPizzas(state.sortType, state.searchQuery))
 
@@ -60,7 +61,7 @@ fun ShopScreen(
                 viewModel.onEvent(ShopEvent.SortTypeChanged(it))
                 onSharedEvent(SharedEvent.FilterPizzas(it, state.searchQuery))
             },
-            options = listOf(PizzaSortType.NAME, PizzaSortType.RATING, PizzaSortType.PRICE),
+            options = sortTypes,
             modifier = Modifier.padding(end = 16.dp)
         )
 

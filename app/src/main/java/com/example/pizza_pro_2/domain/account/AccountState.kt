@@ -3,8 +3,10 @@ package com.example.pizza_pro_2.domain.account
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
+import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.options.Gender
+import com.example.pizza_pro_2.ui.theme.Slate
 
 @Stable
 data class AccountState(
@@ -12,6 +14,7 @@ data class AccountState(
     val email: String = "",
     val password: String = "",
     val gender: Gender = Gender.OTHER,
+    val imageId: Int = R.drawable.profile_other,
     @StringRes val nameErrorId: Int? = null,
     @StringRes val emailErrorId: Int? = null,
     @StringRes val passwordErrorId: Int? = null,
@@ -25,6 +28,6 @@ data class AccountState(
     val dialogTitleId: Int = -1,
     val dialogTextId: Int = -1,
     val dialogEvent: AccountEvent? = null,
-    val dialogColor: Color? = null,
+    val dialogColor: Color = Slate,
     val users: List<User> = emptyList()
 )

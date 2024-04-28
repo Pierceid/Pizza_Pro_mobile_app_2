@@ -7,6 +7,7 @@ import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.User
 import com.example.pizza_pro_2.options.OrderSortType
 import com.example.pizza_pro_2.options.TableType
+import com.example.pizza_pro_2.ui.theme.Slate
 
 @Stable
 data class HistoryState(
@@ -14,6 +15,9 @@ data class HistoryState(
     val orderSortType: OrderSortType = OrderSortType.TIME,
     val searchQuery: String = "",
     val isDialogVisible: Boolean = false,
+    val orders: List<Order> = emptyList(),
+    val users: List<User> = emptyList(),
+    val selectedItem: Any? = null,
     val headerId: Int = R.string.your_orders,
     val switchToTable: TableType = TableType.USERS,
     val buttonOption: Int = -1,
@@ -21,8 +25,5 @@ data class HistoryState(
     val dialogTextId: Int = -1,
     val toastMessageId: Int = -1,
     val dialogEvent: HistoryEvent? = null,
-    val dialogColor: Color? = null,
-    val orders: List<Order> = emptyList(),
-    val users: List<User> = emptyList(),
-    val selectedItem: Any? = null
+    val dialogColor: Color = Slate
 )

@@ -55,7 +55,6 @@ fun FeedbackScreen(navController: NavController) {
     val viewModel: FeedbackViewModel = viewModel()
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-
     val options = listOf(
         Satisfaction.AWFUL,
         Satisfaction.BAD,
@@ -63,7 +62,7 @@ fun FeedbackScreen(navController: NavController) {
         Satisfaction.GREAT,
         Satisfaction.AMAZING
     )
-    val imagePainterIds = listOf(
+    val imageIds = listOf(
         R.drawable.awful,
         R.drawable.bad,
         R.drawable.good,
@@ -90,7 +89,7 @@ fun FeedbackScreen(navController: NavController) {
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
-                color = state.dialogColor ?: Slate
+                color = state.dialogColor
             )
         }
 
@@ -112,7 +111,7 @@ fun FeedbackScreen(navController: NavController) {
                 },
                 options = options,
                 modifier = Modifier.padding(horizontal = 8.dp),
-                imagePainterIds = imagePainterIds
+                imagePainterIds = imageIds
             )
 
             Spacer(Modifier)

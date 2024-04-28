@@ -43,7 +43,6 @@ import com.example.pizza_pro_2.presentation.components.HistoryUserCard
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
-import com.example.pizza_pro_2.ui.theme.Maroon
 
 @Composable
 fun HistoryScreen(
@@ -54,6 +53,7 @@ fun HistoryScreen(
     val viewModel: HistoryViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val sortTypes = listOf(OrderSortType.TIME, OrderSortType.PLACE, OrderSortType.PURCHASE)
 
     DefaultColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         if (state.isDialogVisible) {
@@ -74,7 +74,7 @@ fun HistoryScreen(
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
-                color = Maroon
+                color = state.dialogColor
             )
         }
 
@@ -105,11 +105,7 @@ fun HistoryScreen(
                     onSelectionChange = {
                         viewModel.onEvent(HistoryEvent.SortTypeChanged(it))
                     },
-                    options = listOf(
-                        OrderSortType.TIME,
-                        OrderSortType.PLACE,
-                        OrderSortType.PURCHASE
-                    ),
+                    options = sortTypes,
                     modifier = Modifier.padding(end = 16.dp)
                 )
             }
@@ -168,11 +164,14 @@ fun HistoryScreen(
         ActionButton(
             textId = R.string.clear,
             onClick = {
-                val option = when (state.tableType) {
-                    TableType.ORDERS -> 2
-                    TableType.USERS -> 3
-                }
-                viewModel.onEvent(HistoryEvent.OptionChanged(option))
+                viewModel.onEvent(
+                    HistoryEvent.OptionChanged(
+                        when (state.tableType) {
+                            TableType.ORDERS -> 2
+                            TableType.USERS -> 3
+                        }
+                    )
+                )
             },
             modifier = Modifier.fillMaxWidth()
         )

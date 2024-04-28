@@ -52,7 +52,6 @@ import com.example.pizza_pro_2.presentation.components.ErrorText
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
-import com.example.pizza_pro_2.ui.theme.Slate
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
@@ -64,6 +63,7 @@ fun AccountScreen(
     val viewModel: AccountViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val genders = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE)
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
@@ -94,7 +94,7 @@ fun AccountScreen(
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                 },
                 confirmButton = R.string.yes,
-                color = state.dialogColor ?: Slate
+                color = state.dialogColor
             )
         }
 
@@ -108,13 +108,7 @@ fun AccountScreen(
                     .padding(top = 8.dp)
                     .background(White, RoundedCornerShape(80.dp))
                     .border(BorderStroke(2.dp, White), RoundedCornerShape(80.dp)),
-                painter = painterResource(
-                    when (state.gender) {
-                        Gender.OTHER -> R.drawable.profile_other
-                        Gender.MALE -> R.drawable.profile_male
-                        Gender.FEMALE -> R.drawable.profile_female
-                    }
-                ),
+                painter = painterResource(state.imageId),
                 contentDescription = stringResource(R.string.profile_picture),
                 contentScale = ContentScale.FillBounds
             )
@@ -221,7 +215,7 @@ fun AccountScreen(
                         viewModel.onEvent(AccountEvent.GenderChanged(it))
                         viewModel.onEvent(AccountEvent.GenderEdited(false))
                     },
-                    options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE),
+                    options = genders,
                     modifier = Modifier.padding(end = 16.dp)
                 )
             }

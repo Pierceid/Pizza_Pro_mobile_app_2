@@ -3,6 +3,7 @@ package com.example.pizza_pro_2.domain.feedback
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 import com.example.pizza_pro_2.options.Satisfaction
+import com.example.pizza_pro_2.ui.theme.Slate
 
 @Stable
 data class FeedbackState(
@@ -18,5 +19,5 @@ data class FeedbackState(
     val dialogTextId: Int = -1,
     val toastMessageId: Int = -1,
     val dialogEvent: FeedbackEvent? = null,
-    val dialogColor: Color? = null
+    val dialogColor: Color = Slate
 )

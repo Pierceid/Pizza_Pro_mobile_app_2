@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
 import com.example.pizza_pro_2.domain.auth.AuthViewModel
@@ -40,7 +41,6 @@ import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.options.GraphRoute
-import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
@@ -60,6 +60,7 @@ fun SignUpScreen(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val toastMessage = stringResource(R.string.signed_up_successfully)
+    val genders = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE)
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
@@ -175,7 +176,7 @@ fun SignUpScreen(
                 onSelectionChange = {
                     viewModel.onEvent(AuthEvent.GenderChanged(it))
                 },
-                options = listOf(Gender.OTHER, Gender.MALE, Gender.FEMALE),
+                options = genders,
                 modifier = Modifier.padding(end = 16.dp)
             )
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.domain.ValidationEvent
+import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Teal
 import com.example.pizza_pro_2.use_cases.ValidateEmail
@@ -40,7 +41,8 @@ class AccountViewModel(
                         name = user.name,
                         email = user.email,
                         password = user.password,
-                        gender = user.gender
+                        gender = user.gender,
+                        imageId = getImageId(user.gender)
                     )
                 }
             }
@@ -82,7 +84,9 @@ class AccountViewModel(
 
                 is AccountEvent.GenderChanged -> {
                     _state.update {
-                        it.copy(gender = event.gender)
+                        it.copy(
+                            gender = event.gender, imageId = getImageId(event.gender)
+                        )
                     }
                 }
 
@@ -270,6 +274,14 @@ class AccountViewModel(
                 isPasswordEdited = false,
                 isGenderEdited = false
             )
+        }
+    }
+
+    private fun getImageId(gender: Gender): Int {
+        return when (gender) {
+            Gender.OTHER -> R.drawable.profile_other
+            Gender.MALE -> R.drawable.profile_male
+            Gender.FEMALE -> R.drawable.profile_female
         }
     }
 }
