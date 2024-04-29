@@ -40,10 +40,6 @@ fun BottomNavGraph(
         composable(route = Screen.Feedback.route) {
             FeedbackScreen(navController = navController)
         }
-        settingsNavGraph(
-            navController = navController,
-            sharedState = sharedState,
-            onSharedEvent = onSharedEvent
-        )
+        settingsNavGraph(navController = navController)
     }
 }

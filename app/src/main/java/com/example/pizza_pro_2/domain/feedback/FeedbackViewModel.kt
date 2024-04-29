@@ -18,7 +18,7 @@ class FeedbackViewModel : ViewModel() {
         viewModelScope.launch {
             when (event) {
                 is FeedbackEvent.SatisfactionChanged -> {
-                    _state.update { 
+                    _state.update {
                         it.copy(satisfaction = event.satisfaction)
                     }
                 }
@@ -75,6 +75,7 @@ class FeedbackViewModel : ViewModel() {
                                 )
                             }
                         }
+
                         1 -> {
                             _state.update {
                                 it.copy(
@@ -86,6 +87,7 @@ class FeedbackViewModel : ViewModel() {
                                 )
                             }
                         }
+
                         else -> {}
                     }
                 }

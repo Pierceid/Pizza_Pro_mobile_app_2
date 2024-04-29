@@ -150,11 +150,13 @@ class AccountViewModel(
                                 it.copy(
                                     dialogTitleId = R.string.update_account,
                                     dialogTextId = R.string.are_you_sure_you_want_to_save_changes,
+                                    toastMessageId = R.string.account_updated_successfully,
                                     dialogEvent = AccountEvent.UpdateAccount,
                                     dialogColor = Teal
                                 )
                             }
                         }
+
                         1 -> {
                             _state.update {
                                 it.copy(
@@ -166,6 +168,7 @@ class AccountViewModel(
                                 )
                             }
                         }
+
                         2 -> {
                             _state.update {
                                 it.copy(
@@ -177,6 +180,7 @@ class AccountViewModel(
                                 )
                             }
                         }
+
                         else -> {}
                     }
                 }

@@ -24,18 +24,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
-import com.example.pizza_pro_2.domain.shared.SharedEvent
-import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.ui.theme.Lilac
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
-fun SettingsScreen(
-    navController: NavController,
-    sharedState: SharedState,
-    onSharedEvent: (SharedEvent) -> Unit
-) {
+fun SettingsScreen(navController: NavController) {
     DefaultColumn {
         Column(
             modifier = Modifier.padding(16.dp),

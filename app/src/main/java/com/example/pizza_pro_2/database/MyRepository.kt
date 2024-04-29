@@ -21,7 +21,7 @@ class MyRepository(private val myDao: MyDao) {
 
     suspend fun deleteAllUsers() = myDao.deleteAllUsers()
 
-    suspend fun deleteAllOrders() = myDao.deleteAllOrders()
+    suspend fun deleteAllOrders(name: String = "") = myDao.deleteAllOrders(name)
 
     fun setCurrentUser(id: Int = -1, name: String = "", email: String = "") {
         currentUser = myDao.getUser(id, name, email)

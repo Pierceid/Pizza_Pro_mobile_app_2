@@ -37,14 +37,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.account.AccountEvent
 import com.example.pizza_pro_2.domain.account.AccountViewModel
-import com.example.pizza_pro_2.domain.shared.SharedEvent
-import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.Gender
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
@@ -55,11 +52,7 @@ import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
-fun AccountScreen(
-    navController: NavController,
-    sharedState: SharedState,
-    onSharedEvent: (SharedEvent) -> Unit
-) {
+fun AccountScreen() {
     val viewModel: AccountViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -77,7 +70,7 @@ fun AccountScreen(
 
     DefaultColumn {
         if (state.isDialogVisible) {
-            val toastMessage = stringResource(R.string.account_updated_successfully)
+            val toastMessage = stringResource(state.toastMessageId)
 
             InfoDialog(
                 titleId = state.dialogTitleId,

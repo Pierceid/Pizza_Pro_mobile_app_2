@@ -25,8 +25,9 @@ data class AccountState(
     val isGenderEdited: Boolean = false,
     val isDialogVisible: Boolean = false,
     val buttonOption: Int = -1,
-    val dialogTitleId: Int = -1,
-    val dialogTextId: Int = -1,
+    val dialogTitleId: Int = R.string.empty,
+    val dialogTextId: Int = R.string.empty,
+    val toastMessageId: Int = R.string.empty,
     val dialogEvent: AccountEvent? = null,
     val dialogColor: Color = Slate,
     val users: List<User> = emptyList()

@@ -32,13 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.ValidationEvent
 import com.example.pizza_pro_2.domain.auth.AuthEvent
 import com.example.pizza_pro_2.domain.auth.AuthViewModel
-import com.example.pizza_pro_2.domain.shared.SharedEvent
-import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.options.GraphRoute
-import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.ErrorText
@@ -48,11 +46,7 @@ import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
-fun SignInScreen(
-    navController: NavHostController,
-    sharedState: SharedState,
-    onSharedEvent: (SharedEvent) -> Unit
-) {
+fun SignInScreen(navController: NavHostController) {
     val viewModel: AuthViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current

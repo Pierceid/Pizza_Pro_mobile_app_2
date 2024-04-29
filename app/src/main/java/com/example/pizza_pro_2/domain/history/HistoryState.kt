@@ -21,9 +21,9 @@ data class HistoryState(
     val headerId: Int = R.string.your_orders,
     val switchToTable: TableType = TableType.USERS,
     val buttonOption: Int = -1,
-    val dialogTitleId: Int = -1,
-    val dialogTextId: Int = -1,
-    val toastMessageId: Int = -1,
+    val dialogTitleId: Int = R.string.empty,
+    val dialogTextId: Int = R.string.empty,
+    val toastMessageId: Int = R.string.empty,
     val dialogEvent: HistoryEvent? = null,
     val dialogColor: Color = Slate
 )

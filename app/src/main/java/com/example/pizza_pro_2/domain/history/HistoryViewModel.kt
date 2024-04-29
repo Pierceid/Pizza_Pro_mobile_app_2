@@ -44,11 +44,11 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
             tableType = tableType,
             orderSortType = sortType,
             searchQuery = searchQuery,
-            headerId = when(tableType) {
+            headerId = when (tableType) {
                 TableType.ORDERS -> R.string.your_orders
                 TableType.USERS -> R.string.active_accounts
             },
-            switchToTable = when(tableType) {
+            switchToTable = when (tableType) {
                 TableType.ORDERS -> TableType.USERS
                 TableType.USERS -> TableType.ORDERS
             },
@@ -100,6 +100,7 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                                 )
                             }
                         }
+
                         1 -> {
                             _state.update {
                                 it.copy(
@@ -111,6 +112,7 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                                 )
                             }
                         }
+
                         2 -> {
                             _state.update {
                                 it.copy(
@@ -122,6 +124,7 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                                 )
                             }
                         }
+
                         3 -> {
                             _state.update {
                                 it.copy(
@@ -133,6 +136,7 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                                 )
                             }
                         }
+
                         else -> {}
                     }
                 }
@@ -147,9 +151,11 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                 }
 
                 is HistoryEvent.Clear -> {
-                    when (_tableType.value) {
-                        TableType.ORDERS -> myRepository.deleteAllOrders()
-                        TableType.USERS -> myRepository.deleteAllUsers()
+                    myRepository.currentUser.firstOrNull()?.let {
+                        when (_tableType.value) {
+                            TableType.ORDERS -> myRepository.deleteAllOrders(it.name)
+                            TableType.USERS -> myRepository.deleteAllUsers()
+                        }
                     }
                 }
             }

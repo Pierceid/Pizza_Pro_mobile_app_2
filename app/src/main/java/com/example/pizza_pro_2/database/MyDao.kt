@@ -34,8 +34,8 @@ interface MyDao {
     suspend fun deleteAllUsers()
 
     @Transaction
-    @Query("DELETE FROM orders")
-    suspend fun deleteAllOrders()
+    @Query("DELETE FROM orders WHERE name = :name")
+    suspend fun deleteAllOrders(name: String = "")
 
     @Transaction
     @Query("SELECT * FROM users WHERE id = :id OR name = :name OR email = :email LIMIT 1")

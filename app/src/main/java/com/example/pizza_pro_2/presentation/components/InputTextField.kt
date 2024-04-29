@@ -65,6 +65,6 @@ fun InputTextField(
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         visualTransformation = visualTransformation,
         readOnly = readOnly,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(16.dp)
     )
 }

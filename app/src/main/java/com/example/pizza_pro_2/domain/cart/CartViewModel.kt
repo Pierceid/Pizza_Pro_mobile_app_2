@@ -51,17 +51,22 @@ class CartViewModel : ViewModel() {
                                 )
                             }
                         }
+
                         1 -> {
                             _state.update {
                                 it.copy(
                                     dialogTitleId = R.string.place_order,
                                     dialogTextId = R.string.would_you_like_to_proceed_and_place_your_order,
                                     toastMessageId = R.string.order_placed_successfully,
-                                    dialogEvent = SharedEvent.PlaceOrder(_state.value.orderPlace, _state.value.totalCost),
+                                    dialogEvent = SharedEvent.PlaceOrder(
+                                        _state.value.orderPlace,
+                                        _state.value.totalCost
+                                    ),
                                     dialogColor = Teal
                                 )
                             }
                         }
+
                         else -> {}
                     }
                 }

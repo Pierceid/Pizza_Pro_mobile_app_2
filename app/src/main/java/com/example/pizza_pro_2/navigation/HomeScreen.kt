@@ -16,28 +16,31 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.shared.SharedEvent
-import com.example.pizza_pro_2.domain.shared.SharedState
+import com.example.pizza_pro_2.domain.shared.SharedViewModel
 import com.example.pizza_pro_2.navigation.graphs.BottomNavGraph
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.screens.Screen
 
 @Composable
-fun HomeScreen(
-    sharedState: SharedState,
-    onSharedEvent: (SharedEvent) -> Unit
-) {
+fun HomeScreen() {
+    val sharedViewModel: SharedViewModel = viewModel(factory = MyViewModelProvider.factory)
+    val sharedState by sharedViewModel.state.collectAsState()
+    val onSharedEvent = sharedViewModel::onEvent
     val navController = rememberNavController()
 
     Scaffold(
