@@ -12,7 +12,7 @@
     <string name="send">Send</string>
     <string name="save">Save changes</string>
     <string name="delete">Delete</string>
-    <string name="log_out">Log out</string>
+    <string name="sign_out">Sign out</string>
     <string name="clear">Clear</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -99,7 +99,7 @@
     <string name="are_you_sure_you_want_to_discard_your_feedback">Are you sure you want to discard your feedback?</string>
     <string name="are_you_sure_you_want_to_save_changes">Are you sure you want to save changes?</string>
     <string name="are_you_certain_you_want_to_proceed_with_deleting_your_account">Are you certain you want to proceed with deleting your account?</string>
-    <string name="are_you_certain_you_want_to_log_out_of_your_account">"Are you certain you want to log out of your account?"</string>
+    <string name="are_you_certain_you_want_to_sign_out_of_your_account">"Are you certain you want to sign out of your account?"</string>
     <string name="are_you_sure_you_want_to_cancel_this_order">Are you sure you want to cancel this order?</string>
     <string name="are_you_sure_you_want_to_remove_this_account">"Are you sure you want to remove this account?"</string>
     <string name="are_you_certain_you_want_to_proceed_with_cancelling_all_of_your_orders">Are you certain you want to proceed with cancelling all of your orders?</string>

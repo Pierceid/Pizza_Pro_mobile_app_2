@@ -173,8 +173,8 @@ class AccountViewModel(
                             _state.update {
                                 it.copy(
                                     isDialogVisible = true,
-                                    dialogTitleId = R.string.log_out,
-                                    dialogTextId = R.string.are_you_certain_you_want_to_log_out_of_your_account,
+                                    dialogTitleId = R.string.sign_out,
+                                    dialogTextId = R.string.are_you_certain_you_want_to_sign_out_of_your_account,
                                     dialogEvent = AccountEvent.LogOut,
                                     dialogColor = Maroon
                                 )

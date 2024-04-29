@@ -240,7 +240,7 @@ fun AccountScreen() {
             )
 
             ActionButton(
-                textId = R.string.log_out,
+                textId = R.string.sign_out,
                 onClick = {
                     viewModel.onEvent(AccountEvent.OptionChanged(2))
                 },

@@ -84,7 +84,7 @@ fun <T> RadioGroup(
                             .weight(1f)
                             .background(if (isSelected) Lime else Salmon, RoundedCornerShape(8.dp))
                             .border(BorderStroke(2.dp, White), RoundedCornerShape(8.dp))
-                            .padding(horizontal = 4.dp, vertical = 8.dp)
+                            .padding(horizontal = 6.dp, vertical = 10.dp)
                             .clickable {
                                 selectedOption = option
                                 onSelectionChange(option)
