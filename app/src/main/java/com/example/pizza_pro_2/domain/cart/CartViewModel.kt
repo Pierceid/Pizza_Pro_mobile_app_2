@@ -5,13 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.ui.theme.Maroon
+import com.example.pizza_pro_2.ui.theme.Mustard
 import com.example.pizza_pro_2.ui.theme.Teal
+import com.example.pizza_pro_2.use_cases.ValidatePlace
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CartViewModel : ViewModel() {
+class CartViewModel(private val validatePlace: ValidatePlace = ValidatePlace()) : ViewModel() {
     private val _state = MutableStateFlow(CartState())
     val state = _state.asStateFlow()
 
@@ -47,12 +49,24 @@ class CartViewModel : ViewModel() {
                                     dialogTextId = R.string.are_you_sure_you_want_to_discard_your_order,
                                     toastMessageId = R.string.order_discarded_successfully,
                                     dialogEvent = SharedEvent.DiscardOrder,
-                                    dialogColor = Maroon
+                                    dialogColor = Maroon,
+                                    hasDialogInputField = false
                                 )
                             }
                         }
 
                         1 -> {
+                            _state.update {
+                                it.copy(
+                                    dialogTitleId = R.string.choose_place,
+                                    dialogTextId = R.string.specify_the_delivery_place_for_your_order,
+                                    dialogColor = Mustard,
+                                    hasDialogInputField = true
+                                )
+                            }
+                        }
+
+                        2 -> {
                             _state.update {
                                 it.copy(
                                     dialogTitleId = R.string.place_order,
@@ -62,7 +76,8 @@ class CartViewModel : ViewModel() {
                                         _state.value.orderPlace,
                                         _state.value.totalCost
                                     ),
-                                    dialogColor = Teal
+                                    dialogColor = Teal,
+                                    hasDialogInputField = false
                                 )
                             }
                         }
@@ -76,6 +91,34 @@ class CartViewModel : ViewModel() {
                         it.copy(isDialogVisible = event.isVisible)
                     }
                 }
+
+                CartEvent.SubmitForm -> {
+                    validateOrderPlace()
+                    if (_state.value.isValidForm) {
+                        onEvent(CartEvent.OptionChanged(2))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun validateOrderPlace() {
+        val placeResult = validatePlace.execute(_state.value.orderPlace)
+        val hasError = listOf(placeResult).any { !it.successful }
+
+        if (hasError) {
+            _state.update {
+                it.copy(
+                    placeErrorId = placeResult.errorMessageId,
+                    isValidForm = false
+                )
+            }
+        } else {
+            _state.update {
+                it.copy(
+                    placeErrorId = null,
+                    isValidForm = true
+                )
             }
         }
     }

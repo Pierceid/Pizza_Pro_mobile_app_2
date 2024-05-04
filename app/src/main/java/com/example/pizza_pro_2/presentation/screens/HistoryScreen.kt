@@ -39,6 +39,7 @@ import com.example.pizza_pro_2.presentation.components.HistoryUserCard
 import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
+import com.example.pizza_pro_2.ui.theme.Pink
 
 @Composable
 fun HistoryScreen() {
@@ -85,7 +86,8 @@ fun HistoryScreen() {
                 Icon(
                     modifier = Modifier.size(40.dp),
                     imageVector = Icons.Default.Refresh,
-                    contentDescription = stringResource(R.string.switcher)
+                    contentDescription = stringResource(R.string.switcher),
+                    tint = Pink
                 )
             }
         }

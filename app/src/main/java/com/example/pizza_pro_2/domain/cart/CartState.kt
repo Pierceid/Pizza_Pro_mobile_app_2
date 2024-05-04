@@ -1,5 +1,6 @@
 package com.example.pizza_pro_2.domain.cart
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 import com.example.pizza_pro_2.R
@@ -19,5 +20,8 @@ data class CartState(
     val dialogTextId: Int = R.string.empty,
     val toastMessageId: Int = R.string.empty,
     val dialogEvent: SharedEvent? = null,
-    val dialogColor: Color = Slate
+    val dialogColor: Color = Slate,
+    val hasDialogInputField: Boolean = false,
+    val isValidForm: Boolean = true,
+    @StringRes val placeErrorId: Int? = null
 )

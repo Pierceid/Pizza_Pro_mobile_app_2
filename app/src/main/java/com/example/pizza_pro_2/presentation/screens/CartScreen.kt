@@ -61,12 +61,23 @@ fun CartScreen(
                 },
                 dismissButton = R.string.no,
                 onConfirm = {
-                    state.dialogEvent?.let(onSharedEvent)
-                    viewModel.onEvent(CartEvent.CostsChanged(0.0))
-                    viewModel.onEvent(CartEvent.DialogVisibilityChanged(false))
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    if (state.buttonOption == 1) {
+                        viewModel.onEvent(CartEvent.SubmitForm)
+                    } else {
+                        state.dialogEvent?.let(onSharedEvent)
+                        viewModel.onEvent(CartEvent.CostsChanged(0.0))
+                        viewModel.onEvent(CartEvent.DialogVisibilityChanged(false))
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    }
                 },
                 confirmButton = R.string.yes,
+                isError = !state.isValidForm,
+                errorMessageId = state.placeErrorId,
+                hasInputField = state.hasDialogInputField,
+                inputFieldValue = state.orderPlace,
+                onInputFieldValueChange = {
+                    viewModel.onEvent(CartEvent.PlaceChanged(it))
+                },
                 color = state.dialogColor
             )
         }
@@ -164,7 +175,9 @@ fun CartScreen(
             ActionButton(
                 textId = R.string.order,
                 onClick = {
-                    viewModel.onEvent(CartEvent.OptionChanged(1))
+                    if (sharedState.orderedPizzas.isNotEmpty()) {
+                        viewModel.onEvent(CartEvent.OptionChanged(1))
+                    }
                 },
                 modifier = Modifier.weight(1f)
             )

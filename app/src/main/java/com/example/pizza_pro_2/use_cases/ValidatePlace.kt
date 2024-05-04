@@ -2,12 +2,12 @@ package com.example.pizza_pro_2.use_cases
 
 import com.example.pizza_pro_2.R
 
-class ValidateLocation {
-    fun execute(location: String): ValidationResult {
-        if (location.isBlank()) {
+class ValidatePlace {
+    fun execute(place: String): ValidationResult {
+        if (place.isBlank()) {
             return ValidationResult(
                 false,
-                R.string.location_must_not_be_blank
+                R.string.place_must_not_be_blank
             )
         }
         return ValidationResult(true)

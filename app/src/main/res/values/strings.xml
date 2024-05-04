@@ -38,7 +38,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
-    <string name="location">Location</string>
+    <string name="place">Place</string>
     <string name="visibility">Visibility</string>
     <!-- Shop -->
     <string name="search">Search</string>
@@ -73,6 +73,13 @@
     <!-- History -->
     <string name="your_orders">Your orders</string>
     <string name="active_accounts">Active accounts</string>
+    <!-- About app -->
+    <string name="app_version">Pizza Pro 2 - Version 1.0</string>
+    <string name="app_copyright">Copyright © 2023 Erik Mešina.\nAll rights reserved.</string>
+    <string name="app_description">"Welcome to Pizza Pro 2, the ultimate pizza ordering app designed to satisfy your cravings with convenience and flavor.</string>
+    <string name="app_highlights">"App Highlights:\n\uD83C\uDF55 Explore Our Menu: Browse a delectable assortment of pizzas.\n\uD83D\uDED2 Easy Ordering: Customize and place your order effortlessly.\n\uD83D\uDE80 Fast Delivery: Enjoy prompt delivery to your doorstep.</string>
+    <string name="app_support">Questions or suggestions?\nReach out to our support team at support@pizzapro.com.</string>
+    <string name="app_thanks">Thank you for choosing Pizza Pro 2 for your pizza desires!</string>
     <!-- Items -->
     <string name="pizza_image">Pizza image</string>
     <string name="satisfaction_image">Satisfaction image</string>
@@ -83,6 +90,7 @@
     <string name="minus_sign">-</string>
     <!-- Alert Dialog -->
     <string name="pizza_info">Pizza info</string>
+    <string name="choose_place">Choose place</string>
     <string name="place_order">Place order</string>
     <string name="discard_order">Discard order</string>
     <string name="share_feedback">Share feedback</string>
@@ -93,6 +101,7 @@
     <string name="remove_account">Remove account</string>
     <string name="clear_history">Clear history</string>
     <string name="pizza_card_info">1. Tap on a pizza image to see more details about it.\n\n2. To add a pizza to your cart, tap on the green plus button.\n\n3. You can adjust the quantity of the pizza using the plus and minus buttons.\n\n4. If you want to remove a pizza from your cart, just tap on the "x" button next to it.</string>
+    <string name="specify_the_delivery_place_for_your_order">Specify the delivery place for your order:</string>
     <string name="would_you_like_to_proceed_and_place_your_order">Would you like to proceed and place your order?</string>
     <string name="are_you_sure_you_want_to_discard_your_order">Are you sure you want to discard your order?</string>
     <string name="would_you_like_to_proceed_and_provide_us_with_your_feedback">Would you like to proceed and provide us with your feedback?</string>
@@ -121,5 +130,5 @@
     <string name="no_match_found_for_such_email">No match found for such email.</string>
     <string name="password_must_be_at_least_8_characters_long_and_contain_at_least_1_letter_and_number">Password must be at least 8 characters long and contain at least 1 letter and number.</string>
     <string name="incorrect_password">Incorrect password.</string>
-    <string name="location_must_not_be_blank">Location must not be blank.</string>
+    <string name="place_must_not_be_blank">Place must not be blank.</string>
 </resources>
