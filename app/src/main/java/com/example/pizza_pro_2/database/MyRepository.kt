@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.flowOf
 class MyRepository(private val myDao: MyDao) {
     var currentUser: Flow<User?> = flowOf(null)
     val allUsers: Flow<List<User>> = myDao.getUsers()
+    
     suspend fun insertUser(user: User) = myDao.insertUser(user)
 
     suspend fun updateUser(user: User) = myDao.updateUser(user)
