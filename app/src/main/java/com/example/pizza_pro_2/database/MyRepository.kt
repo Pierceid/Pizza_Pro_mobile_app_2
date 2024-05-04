@@ -1,21 +1,40 @@
 package com.example.pizza_pro_2.database
 
-import com.example.pizza_pro_2.database.entity.Order
-import com.example.pizza_pro_2.database.entity.User
+import com.example.pizza_pro_2.database.entities.Order
+import com.example.pizza_pro_2.database.entities.User
+import com.example.pizza_pro_2.options.OrderSortType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
-class MyRepository(private val dao: MyDao) {
+class MyRepository(private val myDao: MyDao) {
+    var currentUser: Flow<User?> = flowOf(null)
+    val allUsers: Flow<List<User>> = myDao.getUsers()
+    
+    suspend fun insertUser(user: User) = myDao.insertUser(user)
 
-    var allUsers: Flow<MutableList<User>> = dao.getAllUsers()
-    var allOrders: Flow<MutableList<Order>> = dao.getAllOrders()
+    suspend fun updateUser(user: User) = myDao.updateUser(user)
 
-    suspend fun addUser(user: User) = dao.upsertUser(user)
-    suspend fun addOrder(order: Order) = dao.upsertOrder(order)
-    suspend fun removeUser(user: User) = dao.deleteUser(user)
-    suspend fun removeOrder(order: Order) = dao.deleteOrder(order)
-    suspend fun clearAllUsers() = dao.clearAllUsers()
-    suspend fun clearAllOrders() = dao.clearAllOrders()
-    fun getUser(name: String, email: String) = dao.getUser(name, email)
-    fun getFilteredOrders(regex: String) = dao.getFilteredOrders(regex)
-    fun getFilteredUsers(regex: String) = dao.getFilteredUsers(regex)
+    suspend fun deleteUser(user: User) = myDao.deleteUser(user)
+
+    suspend fun insertOrder(order: Order) = myDao.insertOrder(order)
+
+    suspend fun deleteOrder(order: Order) = myDao.deleteOrder(order)
+
+    suspend fun deleteAllUsers() = myDao.deleteAllUsers()
+
+    suspend fun deleteAllOrders(name: String = "") = myDao.deleteAllOrders(name)
+
+    fun setCurrentUser(id: Int = -1, name: String = "", email: String = "") {
+        currentUser = myDao.getUser(id, name, email)
+    }
+
+    fun getUsers(regex: String = ""): Flow<List<User>> = myDao.getUsers(regex)
+
+    fun getOrders(name: String = "", orderSortType: OrderSortType): Flow<List<Order>> {
+        return when (orderSortType) {
+            OrderSortType.TIME -> myDao.getOrdersBasedOnTime(name)
+            OrderSortType.PLACE -> myDao.getOrdersBasedOnPlace(name)
+            OrderSortType.PURCHASE -> myDao.getOrdersBasedOnCost(name)
+        }
+    }
 }
