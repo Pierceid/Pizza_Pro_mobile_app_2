@@ -135,8 +135,7 @@ fun HistoryScreen() {
                             onClick = {
                                 viewModel.onEvent(HistoryEvent.OptionChanged(0))
                                 viewModel.onEvent(HistoryEvent.ItemSelectionChanged(order))
-                            },
-                            orderSortType = state.orderSortType
+                            }
                         )
                     }
                 }

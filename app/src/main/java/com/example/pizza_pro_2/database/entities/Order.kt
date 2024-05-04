@@ -11,5 +11,6 @@ data class Order(
     @ColumnInfo(name = "place") val place: String,
     @ColumnInfo(name = "items") val items: Int,
     @ColumnInfo(name = "cost") val cost: Double,
+    @ColumnInfo(name = "payment") val payment: String,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )

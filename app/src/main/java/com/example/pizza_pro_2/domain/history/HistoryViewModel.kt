@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
@@ -144,8 +145,18 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                 is HistoryEvent.Remove -> {
                     _state.value.selectedItem?.let {
                         when (_tableType.value) {
-                            TableType.ORDERS -> myRepository.deleteOrder(it as Order)
-                            TableType.USERS -> myRepository.deleteUser(it as User)
+                            TableType.ORDERS -> {
+                                val order = it as Order
+                                myRepository.deleteOrder(order)
+                            }
+
+                            TableType.USERS -> {
+                                val user = it as User
+                                myRepository.deleteUser(user)
+                                if (user.id == myRepository.currentUser.firstOrNull()?.id) {
+                                    exitProcess(0)
+                                }
+                            }
                         }
                     }
                 }
@@ -153,8 +164,14 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                 is HistoryEvent.Clear -> {
                     myRepository.currentUser.firstOrNull()?.let {
                         when (_tableType.value) {
-                            TableType.ORDERS -> myRepository.deleteAllOrders(it.name)
-                            TableType.USERS -> myRepository.deleteAllUsers()
+                            TableType.ORDERS -> {
+                                myRepository.deleteAllOrders(it.name)
+                            }
+
+                            TableType.USERS -> {
+                                myRepository.deleteAllUsers()
+                                exitProcess(0)
+                            }
                         }
                     }
                 }

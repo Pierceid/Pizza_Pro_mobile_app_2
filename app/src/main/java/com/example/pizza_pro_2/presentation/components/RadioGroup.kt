@@ -25,10 +25,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.ui.theme.Lime
@@ -42,7 +44,8 @@ fun <T> RadioGroup(
     options: List<T>,
     type: Int,
     modifier: Modifier = Modifier,
-    imagePainterIds: List<Int> = emptyList()
+    imagePainterIds: List<Int> = emptyList(),
+    imageSize: Dp = 52.dp
 ) {
     var selectedOption by rememberSaveable { mutableStateOf(selected) }
 
@@ -78,6 +81,7 @@ fun <T> RadioGroup(
                         )
                     }
                 }
+
                 1 -> {
                     Text(
                         modifier = Modifier
@@ -99,20 +103,23 @@ fun <T> RadioGroup(
                         Spacer(Modifier.width(8.dp))
                     }
                 }
+
                 2 -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         IconButton(
+                            modifier = Modifier.size(imageSize + 12.dp),
                             onClick = {
                                 selectedOption = option
                                 onSelectionChange(option)
                             }
                         ) {
                             Image(
-                                modifier = Modifier.size(44.dp),
+                                modifier = Modifier.size(imageSize).padding(6.dp),
                                 painter = painterResource(
                                     imagePainterIds.getOrElse(index) { R.drawable.image_not_found }
                                 ),
-                                contentDescription = stringResource(R.string.satisfaction_image)
+                                contentDescription = stringResource(R.string.option_image),
+                                contentScale = ContentScale.FillBounds
                             )
                         }
 
@@ -125,6 +132,7 @@ fun <T> RadioGroup(
                         }
                     }
                 }
+
                 else -> {}
             }
         }

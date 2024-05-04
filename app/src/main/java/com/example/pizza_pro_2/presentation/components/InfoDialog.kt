@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.ui.theme.Slate
@@ -30,11 +31,17 @@ fun InfoDialog(
     dismissButton: Int? = null,
     onConfirm: () -> Unit = { },
     confirmButton: Int? = null,
-    isError: Boolean = false,
-    errorMessageId: Int? = null,
     hasInputField: Boolean = false,
     inputFieldValue: String = "",
     onInputFieldValueChange: (String) -> Unit = { },
+    isError: Boolean = false,
+    errorMessageId: Int? = null,
+    hasRadioGroup: Boolean = false,
+    radioGroupValue: Any? = null,
+    onRadioGroupValueChange: (Any) -> Unit = { },
+    options: List<Any> = emptyList(),
+    imagePainterIds: List<Int> = emptyList(),
+    imageSize: Dp = 48.dp,
     color: Color = Slate
 ) {
     AlertDialog(
@@ -65,6 +72,17 @@ fun InfoDialog(
                     errorMessageId?.let {
                         ErrorText(messageId = it)
                     }
+                }
+
+                if (hasRadioGroup) {
+                    RadioGroup(
+                        selected = radioGroupValue ?: options[0],
+                        onSelectionChange = onRadioGroupValueChange,
+                        options = options,
+                        type = 2,
+                        imagePainterIds = imagePainterIds,
+                        imageSize = imageSize
+                    )
                 }
             }
         },

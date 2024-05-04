@@ -55,7 +55,7 @@ fun FeedbackScreen(navController: NavController) {
     val viewModel: FeedbackViewModel = viewModel()
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
-    val options = listOf(
+    val satisfactions = listOf(
         Satisfaction.AWFUL,
         Satisfaction.BAD,
         Satisfaction.GOOD,
@@ -109,7 +109,7 @@ fun FeedbackScreen(navController: NavController) {
                 onSelectionChange = {
                     viewModel.onEvent(FeedbackEvent.SatisfactionChanged(it))
                 },
-                options = options,
+                options = satisfactions,
                 type = 2,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 imagePainterIds = imageIds

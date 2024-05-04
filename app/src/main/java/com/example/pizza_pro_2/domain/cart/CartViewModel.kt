@@ -37,6 +37,12 @@ class CartViewModel(private val validatePlace: ValidatePlace = ValidatePlace()) 
                     }
                 }
 
+                is CartEvent.PaymentTypeChanged -> {
+                    _state.update {
+                        it.copy(paymentType = event.type)
+                    }
+                }
+
                 is CartEvent.OptionChanged -> {
                     _state.update {
                         it.copy(buttonOption = event.option, isDialogVisible = true)
@@ -50,7 +56,8 @@ class CartViewModel(private val validatePlace: ValidatePlace = ValidatePlace()) 
                                     toastMessageId = R.string.order_discarded_successfully,
                                     dialogEvent = SharedEvent.DiscardOrder,
                                     dialogColor = Maroon,
-                                    hasDialogInputField = false
+                                    hasDialogInputField = false,
+                                    hasRadioGroup = false
                                 )
                             }
                         }
@@ -58,10 +65,11 @@ class CartViewModel(private val validatePlace: ValidatePlace = ValidatePlace()) 
                         1 -> {
                             _state.update {
                                 it.copy(
-                                    dialogTitleId = R.string.choose_place,
-                                    dialogTextId = R.string.specify_the_delivery_place_for_your_order,
+                                    dialogTitleId = R.string.choose_details,
+                                    dialogTextId = R.string.specify_delivery_details_for_your_order,
                                     dialogColor = Mustard,
-                                    hasDialogInputField = true
+                                    hasDialogInputField = true,
+                                    hasRadioGroup = true
                                 )
                             }
                         }
@@ -74,10 +82,12 @@ class CartViewModel(private val validatePlace: ValidatePlace = ValidatePlace()) 
                                     toastMessageId = R.string.order_placed_successfully,
                                     dialogEvent = SharedEvent.PlaceOrder(
                                         _state.value.orderPlace,
-                                        _state.value.totalCost
+                                        _state.value.totalCost,
+                                        _state.value.paymentType
                                     ),
                                     dialogColor = Teal,
-                                    hasDialogInputField = false
+                                    hasDialogInputField = false,
+                                    hasRadioGroup = false
                                 )
                             }
                         }

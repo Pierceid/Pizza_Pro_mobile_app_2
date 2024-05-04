@@ -54,7 +54,8 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
                         time = System.currentTimeMillis(),
                         place = event.place,
                         items = _state.value.orderedPizzas.sumOf { it.count },
-                        cost = event.total
+                        cost = event.total,
+                        payment = event.payment.toString()
                     )
                     myRepository.insertOrder(order)
                     clearPizzas()

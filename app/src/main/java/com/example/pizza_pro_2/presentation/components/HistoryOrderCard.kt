@@ -25,8 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.entities.Order
-import com.example.pizza_pro_2.options.OrderSortType
-import com.example.pizza_pro_2.ui.theme.Lime
 import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.White
 import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
@@ -34,7 +32,7 @@ import com.example.pizza_pro_2.util.Util.Companion.formatPrice
 import com.example.pizza_pro_2.util.Util.Companion.formatTime
 
 @Composable
-fun HistoryOrderCard(order: Order, onClick: () -> Unit, orderSortType: OrderSortType) {
+fun HistoryOrderCard(order: Order, onClick: () -> Unit) {
     Card(
         modifier = Modifier.drawBehind { RoundedCornerShape(8.dp) },
         border = BorderStroke(1.dp, White)
@@ -71,17 +69,22 @@ fun HistoryOrderCard(order: Order, onClick: () -> Unit, orderSortType: OrderSort
 
             Text(
                 text = "Time: ${order.time.formatTime()}",
-                color = if (orderSortType == OrderSortType.TIME) Lime else MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             Text(
                 text = "Place: ${order.place}",
-                color = if (orderSortType == OrderSortType.PLACE) Lime else MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             Text(
                 text = "Purchase: (${order.items}) ${order.cost.formatPrice()}",
-                color = if (orderSortType == OrderSortType.PURCHASE) Lime else MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+
+            Text(
+                text = "Payment type: ${order.payment}",
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }

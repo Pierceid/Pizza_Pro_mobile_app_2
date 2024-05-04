@@ -28,6 +28,7 @@ import com.example.pizza_pro_2.domain.cart.CartViewModel
 import com.example.pizza_pro_2.domain.shared.SharedEvent
 import com.example.pizza_pro_2.domain.shared.SharedState
 import com.example.pizza_pro_2.navigation.BottomSheet
+import com.example.pizza_pro_2.options.Payment
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.CartPizzaCard
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
@@ -46,6 +47,8 @@ fun CartScreen(
     val viewModel: CartViewModel = viewModel()
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val payments = listOf(Payment.CASH, Payment.CARD, Payment.COUPON)
+    val imageIds = listOf(R.drawable.cash, R.drawable.credit_card, R.drawable.coupon)
 
     viewModel.onEvent(CartEvent.CostsChanged(sharedState.orderedPizzas.sumOf { it.count * it.cost }))
 
@@ -78,6 +81,14 @@ fun CartScreen(
                 onInputFieldValueChange = {
                     viewModel.onEvent(CartEvent.PlaceChanged(it))
                 },
+                hasRadioGroup = state.hasRadioGroup,
+                radioGroupValue = state.paymentType,
+                onRadioGroupValueChange = {
+                    viewModel.onEvent(CartEvent.PaymentTypeChanged(it as Payment))
+                },
+                options = payments,
+                imagePainterIds = imageIds,
+                imageSize = 60.dp,
                 color = state.dialogColor
             )
         }
