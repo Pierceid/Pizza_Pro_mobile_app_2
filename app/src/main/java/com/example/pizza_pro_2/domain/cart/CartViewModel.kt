@@ -65,8 +65,7 @@ class CartViewModel(private val validatePlace: ValidatePlace = ValidatePlace()) 
                         1 -> {
                             _state.update {
                                 it.copy(
-                                    dialogTitleId = R.string.choose_details,
-                                    dialogTextId = R.string.specify_delivery_details_for_your_order,
+                                    dialogTitleId = R.string.specify_details,
                                     dialogColor = Mustard,
                                     hasDialogInputField = true,
                                     hasRadioGroup = true

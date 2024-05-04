@@ -47,17 +47,21 @@ fun InfoDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(
-                text = stringResource(titleId),
-                textDecoration = TextDecoration.Underline
-            )
+            if (titleId != R.string.empty) {
+                Text(
+                    text = stringResource(titleId),
+                    textDecoration = TextDecoration.Underline
+                )
+            }
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true),
-                    text = stringResource(textId),
-                )
+                if (textId != R.string.empty) {
+                    Text(
+                        modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true),
+                        text = stringResource(textId),
+                    )
+                }
 
                 if (hasInputField) {
                     InputTextField(

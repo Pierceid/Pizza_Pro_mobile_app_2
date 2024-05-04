@@ -90,7 +90,7 @@
     <string name="minus_sign">-</string>
     <!-- Alert Dialog -->
     <string name="pizza_info">Pizza info</string>
-    <string name="choose_details">Choose details</string>
+    <string name="specify_details">Specify details</string>
     <string name="place_order">Place order</string>
     <string name="discard_order">Discard order</string>
     <string name="share_feedback">Share feedback</string>
@@ -101,7 +101,6 @@
     <string name="remove_account">Remove account</string>
     <string name="clear_history">Clear history</string>
     <string name="pizza_card_info">1. Tap on a pizza image to see more details about it.\n\n2. To add a pizza to your cart, tap on the green plus button.\n\n3. You can adjust the quantity of the pizza using the plus and minus buttons.\n\n4. If you want to remove a pizza from your cart, just tap on the "x" button next to it.</string>
-    <string name="specify_delivery_details_for_your_order">Specify delivery details such as place and type of payment for your order:</string>
     <string name="would_you_like_to_proceed_and_place_your_order">Would you like to proceed and place your order?</string>
     <string name="are_you_sure_you_want_to_discard_your_order">Are you sure you want to discard your order?</string>
     <string name="would_you_like_to_proceed_and_provide_us_with_your_feedback">Would you like to proceed and provide us with your feedback?</string>
