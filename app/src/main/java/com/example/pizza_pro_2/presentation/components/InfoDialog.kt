@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.ui.theme.Slate
+import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 
 @Composable
 fun InfoDialog(
@@ -65,7 +66,7 @@ fun InfoDialog(
 
                 if (hasInputField) {
                     InputTextField(
-                        value = inputFieldValue,
+                        value = inputFieldValue.capitalizeText(),
                         onValueChange = onInputFieldValueChange,
                         labelId = R.string.place,
                         isError = isError,
