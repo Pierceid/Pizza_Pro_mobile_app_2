@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
@@ -16,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -46,7 +48,12 @@ fun HistoryScreen() {
     val viewModel: HistoryViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    val listState = rememberLazyListState()
     val sortTypes = listOf(OrderSortType.TIME, OrderSortType.PLACE, OrderSortType.PURCHASE)
+
+    LaunchedEffect(key1 = state.orderSortType) {
+        listState.scrollToItem(index = 0)
+    }
 
     DefaultColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (state.isDialogVisible) {
@@ -125,7 +132,8 @@ fun HistoryScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            state = listState
         ) {
             when (state.tableType) {
                 TableType.ORDERS -> {
