@@ -32,7 +32,7 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
             when (tableType) {
                 TableType.USERS -> myRepository.getUsers(query)
                 TableType.ORDERS -> myRepository.getOrders(
-                    myRepository.currentUser.firstOrNull()?.name ?: "", sortType
+                    myRepository.currentUser.firstOrNull()!!.id, sortType
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -143,17 +143,16 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                 }
 
                 is HistoryEvent.Remove -> {
-                    _state.value.selectedItem?.let {
+                    _state.value.selectedItem?.let { item ->
                         when (_tableType.value) {
-                            TableType.ORDERS -> {
-                                val order = it as Order
-                                myRepository.deleteOrder(order)
+                            TableType.ORDERS -> (item as? Order)?.let {
+                                myRepository.deleteOrder(it)
                             }
 
-                            TableType.USERS -> {
-                                val user = it as User
-                                myRepository.deleteUser(user)
-                                if (user.id == myRepository.currentUser.firstOrNull()?.id) {
+                            TableType.USERS -> (item as? User)?.let {
+                                val currentId = myRepository.currentUser.firstOrNull()!!.id
+                                myRepository.deleteUser(it)
+                                if (it.id == currentId) {
                                     exitProcess(0)
                                 }
                             }
@@ -165,7 +164,7 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                     myRepository.currentUser.firstOrNull()?.let {
                         when (_tableType.value) {
                             TableType.ORDERS -> {
-                                myRepository.deleteAllOrders(it.name)
+                                myRepository.deleteUsersOrders(it.id)
                             }
 
                             TableType.USERS -> {

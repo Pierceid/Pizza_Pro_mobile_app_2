@@ -1,8 +1,9 @@
 package com.example.pizza_pro_2.presentation.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -17,11 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.ui.theme.Slate
+import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 
 @Composable
 fun InfoDialog(
@@ -55,7 +58,7 @@ fun InfoDialog(
             }
         },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column {
                 if (textId != R.string.empty) {
                     Text(
                         modifier = Modifier.verticalScroll(state = rememberScrollState(), enabled = true),
@@ -63,20 +66,26 @@ fun InfoDialog(
                     )
                 }
 
+                Spacer(Modifier.height(8.dp))
+
                 if (hasInputField) {
                     InputTextField(
-                        value = inputFieldValue,
+                        value = inputFieldValue.capitalizeText(),
                         onValueChange = onInputFieldValueChange,
                         labelId = R.string.place,
                         isError = isError,
                         leadingIcon = Icons.Default.LocationOn,
                         trailingIcon = Icons.Default.Clear,
-                        onTrailingIconClick = { onInputFieldValueChange("") }
+                        onTrailingIconClick = { onInputFieldValueChange("") },
+                        imeAction = ImeAction.Done
                     )
+                    
                     errorMessageId?.let {
                         ErrorText(messageId = it)
                     }
                 }
+
+                Spacer(Modifier.height(8.dp))
 
                 if (hasRadioGroup) {
                     RadioGroup(

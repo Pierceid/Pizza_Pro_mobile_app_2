@@ -34,8 +34,8 @@ interface MyDao {
     suspend fun deleteAllUsers()
 
     @Transaction
-    @Query("DELETE FROM orders WHERE name = :name")
-    suspend fun deleteAllOrders(name: String = "")
+    @Query("DELETE FROM orders WHERE user = :user")
+    suspend fun deleteUsersOrders(user: Int)
 
     @Transaction
     @Query("SELECT * FROM users WHERE id = :id OR name = :name OR email = :email LIMIT 1")
@@ -46,14 +46,14 @@ interface MyDao {
     fun getUsers(regex: String = ""): Flow<List<User>>
 
     @Transaction
-    @Query("SELECT * FROM orders WHERE name = :name ORDER BY time DESC")
-    fun getOrdersBasedOnTime(name: String = ""): Flow<List<Order>>
+    @Query("SELECT * FROM orders WHERE user = :user ORDER BY time DESC")
+    fun getOrdersBasedOnTime(user: Int): Flow<List<Order>>
 
     @Transaction
-    @Query("SELECT * FROM orders WHERE name = :name ORDER BY cost ASC")
-    fun getOrdersBasedOnCost(name: String = ""): Flow<List<Order>>
+    @Query("SELECT * FROM orders WHERE user = :user ORDER BY cost ASC")
+    fun getOrdersBasedOnCost(user: Int): Flow<List<Order>>
 
     @Transaction
-    @Query("SELECT * FROM orders WHERE name = :name ORDER BY place ASC")
-    fun getOrdersBasedOnPlace(name: String = ""): Flow<List<Order>>
+    @Query("SELECT * FROM orders WHERE user = :user ORDER BY place ASC")
+    fun getOrdersBasedOnPlace(user: Int): Flow<List<Order>>
 }
