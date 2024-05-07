@@ -27,7 +27,6 @@ import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.ui.theme.Red
 import com.example.pizza_pro_2.ui.theme.White
-import com.example.pizza_pro_2.util.Util.Companion.capitalizeText
 import com.example.pizza_pro_2.util.Util.Companion.formatPrice
 import com.example.pizza_pro_2.util.Util.Companion.formatTime
 
@@ -50,7 +49,7 @@ fun HistoryOrderCard(order: Order, onClick: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${order.id}. ${order.name.capitalizeText()}",
+                    text = "ID: ${order.id}",
                     style = MaterialTheme.typography.titleSmall,
                     color = Red
                 )

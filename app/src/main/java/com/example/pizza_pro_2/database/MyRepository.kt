@@ -22,7 +22,7 @@ class MyRepository(private val myDao: MyDao) {
 
     suspend fun deleteAllUsers() = myDao.deleteAllUsers()
 
-    suspend fun deleteAllOrders(name: String = "") = myDao.deleteAllOrders(name)
+    suspend fun deleteUsersOrders(user: Int) = myDao.deleteUsersOrders(user)
 
     fun setCurrentUser(id: Int = -1, name: String = "", email: String = "") {
         currentUser = myDao.getUser(id, name, email)
@@ -30,11 +30,11 @@ class MyRepository(private val myDao: MyDao) {
 
     fun getUsers(regex: String = ""): Flow<List<User>> = myDao.getUsers(regex)
 
-    fun getOrders(name: String = "", orderSortType: OrderSortType): Flow<List<Order>> {
+    fun getOrders(user: Int, orderSortType: OrderSortType): Flow<List<Order>> {
         return when (orderSortType) {
-            OrderSortType.TIME -> myDao.getOrdersBasedOnTime(name)
-            OrderSortType.PLACE -> myDao.getOrdersBasedOnPlace(name)
-            OrderSortType.PURCHASE -> myDao.getOrdersBasedOnCost(name)
+            OrderSortType.TIME -> myDao.getOrdersBasedOnTime(user)
+            OrderSortType.PLACE -> myDao.getOrdersBasedOnPlace(user)
+            OrderSortType.PURCHASE -> myDao.getOrdersBasedOnCost(user)
         }
     }
 }

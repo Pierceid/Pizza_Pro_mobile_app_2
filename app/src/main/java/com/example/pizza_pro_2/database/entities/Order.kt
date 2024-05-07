@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "orders")
 data class Order(
-    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "user") val user: Int,
     @ColumnInfo(name = "time") val time: Long,
     @ColumnInfo(name = "place") val place: String,
     @ColumnInfo(name = "items") val items: Int,

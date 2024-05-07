@@ -50,7 +50,7 @@ class SharedViewModel(private val myRepository: MyRepository) : ViewModel() {
 
                 is SharedEvent.PlaceOrder -> {
                     val order = Order(
-                        name = myRepository.currentUser.firstOrNull()!!.name,
+                        user = myRepository.currentUser.firstOrNull()!!.id,
                         time = System.currentTimeMillis(),
                         place = event.place,
                         items = _state.value.orderedPizzas.sumOf { it.count },
