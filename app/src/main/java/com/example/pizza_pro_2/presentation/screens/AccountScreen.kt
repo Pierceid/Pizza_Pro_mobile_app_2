@@ -6,13 +6,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -25,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -91,127 +89,122 @@ fun AccountScreen() {
             )
         }
 
-        Column(
-            modifier = Modifier.width(480.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                modifier = Modifier
-                    .size(160.dp)
-                    .background(White, RoundedCornerShape(80.dp))
-                    .border(BorderStroke(2.dp, White), RoundedCornerShape(80.dp)),
-                painter = painterResource(state.imageId),
-                contentDescription = stringResource(R.string.profile_picture),
-                contentScale = ContentScale.FillBounds
-            )
+        Image(
+            modifier = Modifier
+                .size(160.dp)
+                .background(White, RoundedCornerShape(80.dp))
+                .border(BorderStroke(2.dp, White), RoundedCornerShape(80.dp)),
+            painter = painterResource(state.imageId),
+            contentDescription = stringResource(R.string.profile_picture),
+            contentScale = ContentScale.FillBounds
+        )
 
-            Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
+        InputTextField(
+            value = state.name,
+            onValueChange = {
+                viewModel.onEvent(AccountEvent.NameChanged(it))
+            },
+            labelId = R.string.name,
+            isError = state.nameErrorId != null,
+            leadingIcon = Icons.Default.Person,
+            trailingIcon = if (state.isNameEdited) Icons.Default.Clear else Icons.Default.Create,
+            onTrailingIconClick = {
+                if (state.isNameEdited) {
+                    viewModel.onEvent(AccountEvent.NameChanged(""))
+                } else {
+                    viewModel.onEvent(AccountEvent.NameEdited(true))
+                }
+            },
+            imeAction = ImeAction.Done,
+            readOnly = !state.isNameEdited
+        )
+
+        state.nameErrorId?.let {
+            ErrorText(messageId = it)
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        InputTextField(
+            value = state.email,
+            onValueChange = {
+                viewModel.onEvent(AccountEvent.EmailChanged(it))
+            },
+            labelId = R.string.email,
+            isError = state.emailErrorId != null,
+            leadingIcon = Icons.Default.Email,
+            trailingIcon = if (state.isEmailEdited) Icons.Default.Clear else Icons.Default.Create,
+            onTrailingIconClick = {
+                if (state.isEmailEdited) {
+                    viewModel.onEvent(AccountEvent.EmailChanged(""))
+                } else {
+                    viewModel.onEvent(AccountEvent.EmailEdited(true))
+                }
+            },
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Done,
+            readOnly = !state.isEmailEdited
+        )
+
+        state.emailErrorId?.let {
+            ErrorText(messageId = it)
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        InputTextField(
+            value = state.password,
+            onValueChange = {
+                viewModel.onEvent(AccountEvent.PasswordChanged(it))
+            },
+            labelId = R.string.password,
+            isError = state.passwordErrorId != null,
+            leadingIcon = Icons.Default.Lock,
+            trailingIcon = if (state.isPasswordEdited) Icons.Default.Clear else Icons.Default.Create,
+            onTrailingIconClick = {
+                if (state.isPasswordEdited) {
+                    viewModel.onEvent(AccountEvent.PasswordChanged(""))
+                } else {
+                    viewModel.onEvent(AccountEvent.PasswordEdited(true))
+                }
+            },
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done,
+            visualTransformation = if (state.isPasswordEdited) VisualTransformation.None else PasswordVisualTransformation(),
+            readOnly = !state.isPasswordEdited
+        )
+
+        state.passwordErrorId?.let {
+            ErrorText(messageId = it)
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        if (!state.isGenderEdited) {
             InputTextField(
-                value = state.name,
-                onValueChange = {
-                    viewModel.onEvent(AccountEvent.NameChanged(it))
-                },
-                labelId = R.string.name,
-                isError = state.nameErrorId != null,
-                leadingIcon = Icons.Default.Person,
-                trailingIcon = if (state.isNameEdited) Icons.Default.Clear else Icons.Default.Create,
+                value = state.gender.toString(),
+                onValueChange = { },
+                labelId = R.string.gender,
+                leadingIcon = Icons.Default.Face,
+                trailingIcon = Icons.Default.Create,
                 onTrailingIconClick = {
-                    if (state.isNameEdited) {
-                        viewModel.onEvent(AccountEvent.NameChanged(""))
-                    } else {
-                        viewModel.onEvent(AccountEvent.NameEdited(true))
-                    }
+                    viewModel.onEvent(AccountEvent.GenderEdited(true))
                 },
-                imeAction = ImeAction.Done,
-                readOnly = !state.isNameEdited
+                readOnly = true
             )
-
-            state.nameErrorId?.let {
-                ErrorText(messageId = it)
-            }
-
-            Spacer(Modifier.height(16.dp))
-
-            InputTextField(
-                value = state.email,
-                onValueChange = {
-                    viewModel.onEvent(AccountEvent.EmailChanged(it))
+        } else {
+            RadioGroup(
+                selected = state.gender,
+                onSelectionChange = {
+                    viewModel.onEvent(AccountEvent.GenderChanged(it))
+                    viewModel.onEvent(AccountEvent.GenderEdited(false))
                 },
-                labelId = R.string.email,
-                isError = state.emailErrorId != null,
-                leadingIcon = Icons.Default.Email,
-                trailingIcon = if (state.isEmailEdited) Icons.Default.Clear else Icons.Default.Create,
-                onTrailingIconClick = {
-                    if (state.isEmailEdited) {
-                        viewModel.onEvent(AccountEvent.EmailChanged(""))
-                    } else {
-                        viewModel.onEvent(AccountEvent.EmailEdited(true))
-                    }
-                },
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Done,
-                readOnly = !state.isEmailEdited
+                options = genders,
+                type = 0,
+                modifier = Modifier.padding(end = 16.dp)
             )
-
-            state.emailErrorId?.let {
-                ErrorText(messageId = it)
-            }
-
-            Spacer(Modifier.height(16.dp))
-
-            InputTextField(
-                value = state.password,
-                onValueChange = {
-                    viewModel.onEvent(AccountEvent.PasswordChanged(it))
-                },
-                labelId = R.string.password,
-                isError = state.passwordErrorId != null,
-                leadingIcon = Icons.Default.Lock,
-                trailingIcon = if (state.isPasswordEdited) Icons.Default.Clear else Icons.Default.Create,
-                onTrailingIconClick = {
-                    if (state.isPasswordEdited) {
-                        viewModel.onEvent(AccountEvent.PasswordChanged(""))
-                    } else {
-                        viewModel.onEvent(AccountEvent.PasswordEdited(true))
-                    }
-                },
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done,
-                visualTransformation = if (state.isPasswordEdited) VisualTransformation.None else PasswordVisualTransformation(),
-                readOnly = !state.isPasswordEdited
-            )
-
-            state.passwordErrorId?.let {
-                ErrorText(messageId = it)
-            }
-
-            Spacer(Modifier.height(16.dp))
-
-            if (!state.isGenderEdited) {
-                InputTextField(
-                    value = state.gender.toString(),
-                    onValueChange = { },
-                    labelId = R.string.gender,
-                    leadingIcon = Icons.Default.Face,
-                    trailingIcon = Icons.Default.Create,
-                    onTrailingIconClick = {
-                        viewModel.onEvent(AccountEvent.GenderEdited(true))
-                    },
-                    readOnly = true
-                )
-            } else {
-                RadioGroup(
-                    selected = state.gender,
-                    onSelectionChange = {
-                        viewModel.onEvent(AccountEvent.GenderChanged(it))
-                        viewModel.onEvent(AccountEvent.GenderEdited(false))
-                    },
-                    options = genders,
-                    type = 0,
-                    modifier = Modifier.padding(end = 16.dp)
-                )
-            }
         }
 
         Spacer(Modifier.height(16.dp))
@@ -222,15 +215,12 @@ fun AccountScreen() {
                 viewModel.onEvent(AccountEvent.OptionChanged(0))
                 viewModel.onEvent(AccountEvent.SubmitForm(2))
             },
-            modifier = Modifier.width(480.dp)
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(Modifier.height(16.dp))
 
-        Row(
-            modifier = Modifier.width(480.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             ActionButton(
                 textId = R.string.delete,
                 onClick = {

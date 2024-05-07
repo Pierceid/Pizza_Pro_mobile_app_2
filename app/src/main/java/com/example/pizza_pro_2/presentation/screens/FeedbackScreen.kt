@@ -2,13 +2,11 @@ package com.example.pizza_pro_2.presentation.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -70,7 +68,7 @@ fun FeedbackScreen(navController: NavController) {
         R.drawable.amazing
     )
 
-    DefaultColumn {
+    DefaultColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (state.isDialogVisible) {
             val message = stringResource(state.toastMessageId)
 
@@ -93,239 +91,233 @@ fun FeedbackScreen(navController: NavController) {
             )
         }
 
-        Column(
-            modifier = Modifier.width(480.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        HeaderText(
+            textId = R.string.how_would_you_rate_your_experience,
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        RadioGroup(
+            selected = state.satisfaction,
+            onSelectionChange = {
+                viewModel.onEvent(FeedbackEvent.SatisfactionChanged(it))
+            },
+            options = satisfactions,
+            type = 2,
+            modifier = Modifier.padding(horizontal = 8.dp),
+            imagePainterIds = imageIds
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        HeaderText(
+            textId = R.string.would_you_tell_us_a_little_more_about_your_experience,
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            HeaderText(
-                textId = R.string.how_would_you_rate_your_experience,
-                textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
+            Text(
+                text = stringResource(R.string.delivery_time),
+                style = MaterialTheme.typography.titleSmall,
+                color = White
             )
 
-            RadioGroup(
-                selected = state.satisfaction,
-                onSelectionChange = {
-                    viewModel.onEvent(FeedbackEvent.SatisfactionChanged(it))
-                },
-                options = satisfactions,
-                type = 2,
-                modifier = Modifier.padding(horizontal = 8.dp),
-                imagePainterIds = imageIds
-            )
-
-            Spacer(Modifier)
-
-            HeaderText(
-                textId = R.string.would_you_tell_us_a_little_more_about_your_experience,
-                textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.delivery_time),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = White
-                )
-
-                Row {
-                    IconButton(
-                        onClick = {
-                            viewModel.onEvent(FeedbackEvent.DeliveryTimeChanged(true))
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(R.string.delivery_time),
-                            tint = if (state.deliveryTime) Lime else Silver
-                        )
-                    }
-
-                    IconButton(
-                        onClick = {
-                            viewModel.onEvent(FeedbackEvent.DeliveryTimeChanged(false))
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.rotate(180f),
-                            imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(R.string.delivery_time),
-                            tint = if (!state.deliveryTime) Salmon else Silver
-                        )
-                    }
-                }
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.product_quality),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = White
-                )
-
-                Row {
-                    IconButton(
-                        onClick = {
-                            viewModel.onEvent(FeedbackEvent.ProductQualityChanged(true))
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(R.string.product_quality),
-                            tint = if (state.productQuality) Lime else Silver
-                        )
-                    }
-
-                    IconButton(
-                        onClick = {
-                            viewModel.onEvent(FeedbackEvent.ProductQualityChanged(false))
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.rotate(180f),
-                            imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(R.string.product_quality),
-                            tint = if (!state.productQuality) Salmon else Silver
-                        )
-                    }
-                }
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.customer_service),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = White
-                )
-
-                Row {
-                    IconButton(
-                        onClick = {
-                            viewModel.onEvent(FeedbackEvent.CustomerServiceChanged(true))
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(R.string.customer_service),
-                            tint = if (state.customerService) Lime else Silver
-                        )
-                    }
-
-                    IconButton(
-                        onClick = {
-                            viewModel.onEvent(FeedbackEvent.CustomerServiceChanged(false))
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.rotate(180f),
-                            imageVector = Icons.Default.ThumbUp,
-                            contentDescription = stringResource(R.string.customer_service),
-                            tint = if (!state.customerService) Salmon else Silver
-                        )
-                    }
-                }
-            }
-
-            Spacer(Modifier)
-
-            HeaderText(
-                textId = R.string.comment,
-                textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            InputTextField(
-                value = state.comment,
-                onValueChange = {
-                    viewModel.onEvent(FeedbackEvent.CommentChanged(it))
-                },
-                labelId = R.string.empty,
-                leadingIcon = Icons.Default.Create,
-                trailingIcon = Icons.Default.Clear,
-                onTrailingIconClick = {
-                    viewModel.onEvent(FeedbackEvent.CommentChanged(""))
-                },
-                imeAction = ImeAction.Done
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            HeaderText(
-                textId = R.string.may_we_follow_you_up_on_your_feedback,
-                textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.no),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = White
-                )
-
-                Switch(
-                    checked = state.followUp,
-                    onCheckedChange = {
-                        viewModel.onEvent(FeedbackEvent.FollowUpChanged(it))
-                    },
-                    thumbContent = {
-                        Icon(
-                            imageVector = if (state.followUp) Icons.Default.Check else Icons.Default.Clear,
-                            tint = White,
-                            contentDescription = stringResource(R.string.switcher)
-                        )
-                    },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = Teal,
-                        uncheckedThumbColor = Slate,
-                        checkedTrackColor = Sea,
-                        uncheckedTrackColor = Silver
-                    ),
-                )
-
-                Text(
-                    text = stringResource(R.string.yes),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = White
-                )
-            }
-
-            Spacer(Modifier)
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                ActionButton(
-                    textId = R.string.discard,
+            Row {
+                IconButton(
                     onClick = {
-                        viewModel.onEvent(FeedbackEvent.OptionChanged(0))
-                    },
-                    modifier = Modifier.weight(1f)
-                )
+                        viewModel.onEvent(FeedbackEvent.DeliveryTimeChanged(true))
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ThumbUp,
+                        contentDescription = stringResource(R.string.delivery_time),
+                        tint = if (state.deliveryTime) Lime else Silver
+                    )
+                }
 
-                ActionButton(
-                    textId = R.string.send,
+                IconButton(
                     onClick = {
-                        viewModel.onEvent(FeedbackEvent.OptionChanged(1))
-                    },
-                    modifier = Modifier.weight(1f)
-                )
+                        viewModel.onEvent(FeedbackEvent.DeliveryTimeChanged(false))
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.rotate(180f),
+                        imageVector = Icons.Default.ThumbUp,
+                        contentDescription = stringResource(R.string.delivery_time),
+                        tint = if (!state.deliveryTime) Salmon else Silver
+                    )
+                }
             }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.product_quality),
+                style = MaterialTheme.typography.titleSmall,
+                color = White
+            )
+
+            Row {
+                IconButton(
+                    onClick = {
+                        viewModel.onEvent(FeedbackEvent.ProductQualityChanged(true))
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ThumbUp,
+                        contentDescription = stringResource(R.string.product_quality),
+                        tint = if (state.productQuality) Lime else Silver
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        viewModel.onEvent(FeedbackEvent.ProductQualityChanged(false))
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.rotate(180f),
+                        imageVector = Icons.Default.ThumbUp,
+                        contentDescription = stringResource(R.string.product_quality),
+                        tint = if (!state.productQuality) Salmon else Silver
+                    )
+                }
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.customer_service),
+                style = MaterialTheme.typography.titleSmall,
+                color = White
+            )
+
+            Row {
+                IconButton(
+                    onClick = {
+                        viewModel.onEvent(FeedbackEvent.CustomerServiceChanged(true))
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ThumbUp,
+                        contentDescription = stringResource(R.string.customer_service),
+                        tint = if (state.customerService) Lime else Silver
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        viewModel.onEvent(FeedbackEvent.CustomerServiceChanged(false))
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.rotate(180f),
+                        imageVector = Icons.Default.ThumbUp,
+                        contentDescription = stringResource(R.string.customer_service),
+                        tint = if (!state.customerService) Salmon else Silver
+                    )
+                }
+            }
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        HeaderText(
+            textId = R.string.comment,
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        InputTextField(
+            value = state.comment,
+            onValueChange = {
+                viewModel.onEvent(FeedbackEvent.CommentChanged(it))
+            },
+            labelId = R.string.empty,
+            leadingIcon = Icons.Default.Create,
+            trailingIcon = Icons.Default.Clear,
+            onTrailingIconClick = {
+                viewModel.onEvent(FeedbackEvent.CommentChanged(""))
+            },
+            imeAction = ImeAction.Done
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        HeaderText(
+            textId = R.string.may_we_follow_you_up_on_your_feedback,
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.no),
+                style = MaterialTheme.typography.titleMedium,
+                color = White
+            )
+
+            Switch(
+                checked = state.followUp,
+                onCheckedChange = {
+                    viewModel.onEvent(FeedbackEvent.FollowUpChanged(it))
+                },
+                thumbContent = {
+                    Icon(
+                        imageVector = if (state.followUp) Icons.Default.Check else Icons.Default.Clear,
+                        tint = White,
+                        contentDescription = stringResource(R.string.switcher)
+                    )
+                },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Teal,
+                    uncheckedThumbColor = Slate,
+                    checkedTrackColor = Sea,
+                    uncheckedTrackColor = Silver
+                ),
+            )
+
+            Text(
+                text = stringResource(R.string.yes),
+                style = MaterialTheme.typography.titleMedium,
+                color = White
+            )
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            ActionButton(
+                textId = R.string.discard,
+                onClick = {
+                    viewModel.onEvent(FeedbackEvent.OptionChanged(0))
+                },
+                modifier = Modifier.weight(1f)
+            )
+
+            ActionButton(
+                textId = R.string.send,
+                onClick = {
+                    viewModel.onEvent(FeedbackEvent.OptionChanged(1))
+                },
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }

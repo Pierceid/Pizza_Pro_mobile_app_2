@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import com.example.pizza_pro_2.ui.theme.Pink
 
 @Stable
@@ -17,7 +18,14 @@ fun HeaderText(
     @StringRes textId: Int,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
-    color: Color = Pink
+    color: Color = Pink,
+    textAlign: TextAlign = TextAlign.Start
 ) {
-    Text(modifier = modifier, text = stringResource(textId), style = textStyle, color = color)
+    Text(
+        modifier = modifier,
+        text = stringResource(textId),
+        style = textStyle,
+        color = color,
+        textAlign = textAlign
+    )
 }
