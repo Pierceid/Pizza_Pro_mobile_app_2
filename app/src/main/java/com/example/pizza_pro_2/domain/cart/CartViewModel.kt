@@ -101,7 +101,7 @@ class CartViewModel(private val validatePlace: ValidatePlace = ValidatePlace()) 
                     }
                 }
 
-                CartEvent.SubmitForm -> {
+                is CartEvent.SubmitForm -> {
                     validateOrderPlace()
                     if (_state.value.isValidForm) {
                         onEvent(CartEvent.OptionChanged(2))

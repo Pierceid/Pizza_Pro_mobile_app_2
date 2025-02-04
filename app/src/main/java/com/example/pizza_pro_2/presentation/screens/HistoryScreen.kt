@@ -10,9 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pizza_pro_2.R
@@ -32,14 +29,14 @@ import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.history.HistoryEvent
 import com.example.pizza_pro_2.domain.history.HistoryViewModel
 import com.example.pizza_pro_2.options.OrderSortType
+import com.example.pizza_pro_2.options.ReviewSortType
 import com.example.pizza_pro_2.options.TableType
 import com.example.pizza_pro_2.presentation.components.ActionButton
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.presentation.components.HeaderText
 import com.example.pizza_pro_2.presentation.components.HistoryOrderCard
-import com.example.pizza_pro_2.presentation.components.HistoryUserCard
+import com.example.pizza_pro_2.presentation.components.HistoryReviewCard
 import com.example.pizza_pro_2.presentation.components.InfoDialog
-import com.example.pizza_pro_2.presentation.components.InputTextField
 import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.Pink
 
@@ -49,7 +46,8 @@ fun HistoryScreen() {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val listState = rememberLazyListState()
-    val sortTypes = listOf(OrderSortType.TIME, OrderSortType.PLACE, OrderSortType.PURCHASE)
+    val orderSortTypes = listOf(OrderSortType.TIME, OrderSortType.PURCHASE)
+    val reviewSortTypes = listOf(ReviewSortType.TIME, ReviewSortType.JOY)
 
     LaunchedEffect(key1 = state.orderSortType) {
         listState.scrollToItem(index = 0)
@@ -104,26 +102,21 @@ fun HistoryScreen() {
                 RadioGroup(
                     selected = state.orderSortType,
                     onSelectionChange = {
-                        viewModel.onEvent(HistoryEvent.SortTypeChanged(it))
+                        viewModel.onEvent(HistoryEvent.OrderSortTypeChanged(it))
                     },
-                    options = sortTypes,
+                    options = orderSortTypes,
                     type = 1
                 )
             }
 
-            TableType.USERS -> {
-                InputTextField(
-                    value = state.searchQuery,
-                    onValueChange = {
-                        viewModel.onEvent(HistoryEvent.SearchQueryChanged(it))
+            TableType.REVIEWS -> {
+                RadioGroup(
+                    selected = state.reviewSortType,
+                    onSelectionChange = {
+                        viewModel.onEvent(HistoryEvent.ReviewSortTypeChanged(it))
                     },
-                    labelId = R.string.search,
-                    leadingIcon = Icons.Default.Search,
-                    trailingIcon = Icons.Default.Clear,
-                    onTrailingIconClick = {
-                        viewModel.onEvent(HistoryEvent.SearchQueryChanged(""))
-                    },
-                    imeAction = ImeAction.Done
+                    options = reviewSortTypes,
+                    type = 1
                 )
             }
         }
@@ -148,13 +141,13 @@ fun HistoryScreen() {
                     }
                 }
 
-                TableType.USERS -> {
-                    items(items = state.users) { user ->
-                        HistoryUserCard(
-                            user = user,
+                TableType.REVIEWS -> {
+                    items(items = state.reviews) { review ->
+                        HistoryReviewCard(
+                            review = review,
                             onClick = {
                                 viewModel.onEvent(HistoryEvent.OptionChanged(1))
-                                viewModel.onEvent(HistoryEvent.ItemSelectionChanged(user))
+                                viewModel.onEvent(HistoryEvent.ItemSelectionChanged(review))
                             }
                         )
                     }
@@ -169,7 +162,7 @@ fun HistoryScreen() {
                     HistoryEvent.OptionChanged(
                         when (state.tableType) {
                             TableType.ORDERS -> 2
-                            TableType.USERS -> 3
+                            TableType.REVIEWS -> 3
                         }
                     )
                 )

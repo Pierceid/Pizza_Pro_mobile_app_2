@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.presentation.components.DefaultColumn
 import com.example.pizza_pro_2.ui.theme.Pink
-import com.example.pizza_pro_2.ui.theme.Silver
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
@@ -34,7 +33,7 @@ fun AboutAppScreen() {
         Text(
             text = stringResource(R.string.app_description),
             style = MaterialTheme.typography.bodyLarge,
-            color = Silver,
+            color = White,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -48,7 +47,7 @@ fun AboutAppScreen() {
         Text(
             text = stringResource(R.string.app_support),
             style = MaterialTheme.typography.bodyLarge,
-            color = Silver,
+            color = White,
             modifier = Modifier.fillMaxWidth()
         )
 

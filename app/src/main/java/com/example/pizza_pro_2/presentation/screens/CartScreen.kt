@@ -178,7 +178,9 @@ fun CartScreen(
             ActionButton(
                 textId = R.string.discard,
                 onClick = {
-                    viewModel.onEvent(CartEvent.OptionChanged(0))
+                    if (sharedState.orderedPizzas.isNotEmpty()) {
+                        viewModel.onEvent(CartEvent.OptionChanged(0))
+                    }
                 },
                 modifier = Modifier.weight(1f)
             )

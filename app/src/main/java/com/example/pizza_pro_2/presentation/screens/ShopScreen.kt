@@ -48,7 +48,7 @@ fun ShopScreen(
     onSharedEvent(SharedEvent.FilterPizzas(state.sortType, state.searchQuery))
 
     LaunchedEffect(key1 = state.sortType, key2 = state.searchQuery) {
-        gridState.scrollToItem(index = 0)
+        gridState.animateScrollToItem(index = 0)
     }
 
     DefaultColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {

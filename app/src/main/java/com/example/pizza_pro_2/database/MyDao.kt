@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.pizza_pro_2.database.entities.Order
+import com.example.pizza_pro_2.database.entities.Review
 import com.example.pizza_pro_2.database.entities.User
 import kotlinx.coroutines.flow.Flow
 
@@ -29,13 +30,19 @@ interface MyDao {
     @Delete
     suspend fun deleteOrder(order: Order)
 
-    @Transaction
-    @Query("DELETE FROM users")
-    suspend fun deleteAllUsers()
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertReview(review: Review)
+
+    @Delete
+    suspend fun deleteReview(review: Review)
 
     @Transaction
     @Query("DELETE FROM orders WHERE user = :user")
     suspend fun deleteUsersOrders(user: Int)
+
+    @Transaction
+    @Query("DELETE FROM reviews WHERE user = :user")
+    suspend fun deleteUsersReviews(user: Int)
 
     @Transaction
     @Query("SELECT * FROM users WHERE id = :id OR name = :name OR email = :email LIMIT 1")
@@ -54,6 +61,10 @@ interface MyDao {
     fun getOrdersBasedOnCost(user: Int): Flow<List<Order>>
 
     @Transaction
-    @Query("SELECT * FROM orders WHERE user = :user ORDER BY place ASC")
-    fun getOrdersBasedOnPlace(user: Int): Flow<List<Order>>
+    @Query("SELECT * FROM reviews WHERE user = :user ORDER BY time DESC")
+    fun getReviewsBasedOnTime(user: Int): Flow<List<Review>>
+
+    @Transaction
+    @Query("SELECT * FROM reviews WHERE user = :user ORDER BY joy ASC")
+    fun getReviewsBasedOnJoy(user: Int): Flow<List<Review>>
 }

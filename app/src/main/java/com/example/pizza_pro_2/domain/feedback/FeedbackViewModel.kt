@@ -3,14 +3,18 @@ package com.example.pizza_pro_2.domain.feedback
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.database.MyRepository
+import com.example.pizza_pro_2.database.entities.Review
+import com.example.pizza_pro_2.options.Satisfaction
 import com.example.pizza_pro_2.ui.theme.Maroon
 import com.example.pizza_pro_2.ui.theme.Teal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class FeedbackViewModel : ViewModel() {
+class FeedbackViewModel(private val myRepository: MyRepository) : ViewModel() {
     private val _state = MutableStateFlow(FeedbackState())
     val state = _state.asStateFlow()
 
@@ -97,7 +101,36 @@ class FeedbackViewModel : ViewModel() {
                 }
 
                 is FeedbackEvent.SendFeedback -> {
-                    _state.value = FeedbackState()
+                    myRepository.currentUser.firstOrNull()?.let {
+                        val joy = when (_state.value.satisfaction) {
+                            Satisfaction.AMAZING -> 0
+                            Satisfaction.GREAT -> 1
+                            Satisfaction.GOOD -> 2
+                            Satisfaction.BAD -> 3
+                            Satisfaction.AWFUL -> 4
+                        }
+
+                        val details = "Delivery: ${if (_state.value.deliveryTime) "1" else "0"} " +
+                                "Quality: ${if (_state.value.productQuality) "1" else "0"} " +
+                                "Service: ${if (_state.value.customerService) "1" else "0"}"
+
+                        val comment =
+                            if (_state.value.comment.trim().isEmpty()) "(none)"
+                            else "\"${_state.value.comment.trim().run { 
+                                take(100) + if (length > 100) "..." else "" 
+                            }}\""
+
+                        val review = Review(
+                            user = it.id,
+                            time = System.currentTimeMillis(),
+                            joy = joy,
+                            details = details,
+                            comment = comment
+                        )
+
+                        myRepository.insertReview(review)
+                        _state.value = FeedbackState()
+                    }
                 }
             }
         }

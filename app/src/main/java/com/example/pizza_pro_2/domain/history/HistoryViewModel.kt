@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.pizza_pro_2.R
 import com.example.pizza_pro_2.database.MyRepository
 import com.example.pizza_pro_2.database.entities.Order
-import com.example.pizza_pro_2.database.entities.User
+import com.example.pizza_pro_2.database.entities.Review
 import com.example.pizza_pro_2.options.OrderSortType
+import com.example.pizza_pro_2.options.ReviewSortType
 import com.example.pizza_pro_2.options.TableType
 import com.example.pizza_pro_2.ui.theme.Maroon
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,43 +19,49 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.system.exitProcess
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
     private val _tableType = MutableStateFlow(TableType.ORDERS)
-    private val _sortType = MutableStateFlow(OrderSortType.TIME)
-    private val _searchQuery = MutableStateFlow("")
+    private val _orderSortType = MutableStateFlow(OrderSortType.TIME)
+    private val _reviewSortType = MutableStateFlow(ReviewSortType.TIME)
     private val _items =
-        combine(_searchQuery, _tableType, _sortType) { query, tableType, sortType ->
-            Triple(query, tableType, sortType)
-        }.flatMapLatest { (query, tableType, sortType) ->
+        combine(
+            _tableType,
+            _orderSortType,
+            _reviewSortType
+        ) { tableType, orderSortType, reviewSortType ->
+            Triple(tableType, orderSortType, reviewSortType)
+        }.flatMapLatest { (tableType, orderSortType, reviewSortType) ->
             when (tableType) {
-                TableType.USERS -> myRepository.getUsers(query)
                 TableType.ORDERS -> myRepository.getOrders(
-                    myRepository.currentUser.firstOrNull()!!.id, sortType
+                    myRepository.currentUser.firstOrNull()!!.id, orderSortType
+                )
+
+                TableType.REVIEWS -> myRepository.getReviews(
+                    myRepository.currentUser.firstOrNull()!!.id, reviewSortType
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _state = MutableStateFlow(HistoryState())
     val state = combine(
-        _state, _tableType, _sortType, _searchQuery, _items
-    ) { state, tableType, sortType, searchQuery, items ->
+        _state, _tableType, _orderSortType, _reviewSortType, _items
+    ) { state, tableType, orderSortType, reviewSortType, items ->
         state.copy(
             tableType = tableType,
-            orderSortType = sortType,
-            searchQuery = searchQuery,
+            orderSortType = orderSortType,
+            reviewSortType = reviewSortType,
             headerId = when (tableType) {
                 TableType.ORDERS -> R.string.your_orders
-                TableType.USERS -> R.string.active_accounts
+                TableType.REVIEWS -> R.string.your_reviews
             },
             switchToTable = when (tableType) {
-                TableType.ORDERS -> TableType.USERS
-                TableType.USERS -> TableType.ORDERS
+                TableType.ORDERS -> TableType.REVIEWS
+                TableType.REVIEWS -> TableType.ORDERS
             },
             orders = items.filterIsInstance<Order>(),
-            users = items.filterIsInstance<User>()
+            reviews = items.filterIsInstance<Review>()
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HistoryState())
 
@@ -65,12 +72,12 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                     _tableType.value = event.type
                 }
 
-                is HistoryEvent.SortTypeChanged -> {
-                    _sortType.value = event.type
+                is HistoryEvent.OrderSortTypeChanged -> {
+                    _orderSortType.value = event.type
                 }
 
-                is HistoryEvent.SearchQueryChanged -> {
-                    _searchQuery.value = event.query
+                is HistoryEvent.ReviewSortTypeChanged -> {
+                    _reviewSortType.value = event.type
                 }
 
                 is HistoryEvent.DialogVisibilityChanged -> {
@@ -105,9 +112,9 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                         1 -> {
                             _state.update {
                                 it.copy(
-                                    dialogTitleId = R.string.remove_account,
-                                    dialogTextId = R.string.are_you_sure_you_want_to_remove_this_account,
-                                    toastMessageId = R.string.user_removed_successfully,
+                                    dialogTitleId = R.string.cancel_feedback,
+                                    dialogTextId = R.string.are_you_sure_you_want_to_cancel_this_review,
+                                    toastMessageId = R.string.review_cancelled_successfully,
                                     dialogEvent = HistoryEvent.Remove,
                                     dialogColor = Maroon
                                 )
@@ -130,7 +137,7 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                             _state.update {
                                 it.copy(
                                     dialogTitleId = R.string.clear_history,
-                                    dialogTextId = R.string.are_you_certain_you_want_to_proceed_with_removing_all_active_accounts,
+                                    dialogTextId = R.string.are_you_certain_you_want_to_proceed_with_cancelling_all_of_your_reviews,
                                     toastMessageId = R.string.history_cleared_successfully,
                                     dialogEvent = HistoryEvent.Clear,
                                     dialogColor = Maroon
@@ -149,12 +156,8 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                                 myRepository.deleteOrder(it)
                             }
 
-                            TableType.USERS -> (item as? User)?.let {
-                                val currentId = myRepository.currentUser.firstOrNull()!!.id
-                                myRepository.deleteUser(it)
-                                if (it.id == currentId) {
-                                    exitProcess(0)
-                                }
+                            TableType.REVIEWS -> (item as? Review)?.let {
+                                myRepository.deleteReview(it)
                             }
                         }
                     }
@@ -167,9 +170,8 @@ class HistoryViewModel(private val myRepository: MyRepository) : ViewModel() {
                                 myRepository.deleteUsersOrders(it.id)
                             }
 
-                            TableType.USERS -> {
-                                myRepository.deleteAllUsers()
-                                exitProcess(0)
+                            TableType.REVIEWS -> {
+                                myRepository.deleteUsersReviews(it.id)
                             }
                         }
                     }

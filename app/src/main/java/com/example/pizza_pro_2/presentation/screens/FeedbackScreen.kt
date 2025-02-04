@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pizza_pro_2.R
+import com.example.pizza_pro_2.domain.MyViewModelProvider
 import com.example.pizza_pro_2.domain.feedback.FeedbackEvent
 import com.example.pizza_pro_2.domain.feedback.FeedbackViewModel
 import com.example.pizza_pro_2.options.Satisfaction
@@ -50,7 +51,7 @@ import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
 fun FeedbackScreen(navController: NavController) {
-    val viewModel: FeedbackViewModel = viewModel()
+    val viewModel: FeedbackViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val satisfactions = listOf(
