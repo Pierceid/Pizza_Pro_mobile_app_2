@@ -115,6 +115,7 @@
     <!-- Toast -->
     <string name="signed_up_successfully">Signed up successfully!</string>
     <string name="signed_in_successfully">Signed in successfully!</string>
+    <string name="signed_out_successfully">Signed out successfully!</string>
     <string name="order_placed_successfully">Order has been\n placed successfully!</string>
     <string name="order_discarded_successfully">Order has been\n discarded successfully!</string>
     <string name="order_cancelled_successfully">Order has been\n cancelled successfully!</string>
@@ -122,6 +123,7 @@
     <string name="feedback_sent_successfully">Feedback has been\n sent successfully!</string>
     <string name="feedback_discarded_successfully">Feedback has been\n discarded successfully!</string>
     <string name="account_updated_successfully">Account has been\n updated successfully!</string>
+    <string name="account_deleted_successfully">Account has been\n deleted successfully!</string>
     <string name="history_cleared_successfully">History has been\n cleared successfully!</string>
     <!-- Error -->
     <string name="name_must_be_unique_and_not_blank">Name must be unique and not blank.</string>
@@ -130,4 +132,5 @@
     <string name="password_must_be_at_least_8_characters_long_and_contain_at_least_1_letter_and_number">Password must be at least 8 characters long and contain at least 1 letter and number.</string>
     <string name="incorrect_password">Incorrect password.</string>
     <string name="place_must_not_be_blank">Place must not be blank.</string>
+    <string name="phone_must_not_be_blank">Phone must not be blank.</string>
 </resources>

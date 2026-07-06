@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -46,10 +45,6 @@ fun ShopScreen(
     val sortTypes = listOf(PizzaSortType.NAME, PizzaSortType.RATING, PizzaSortType.PRICE)
 
     onSharedEvent(SharedEvent.FilterPizzas(state.sortType, state.searchQuery))
-
-    LaunchedEffect(key1 = state.sortType, key2 = state.searchQuery) {
-        gridState.animateScrollToItem(index = 0)
-    }
 
     DefaultColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         InputTextField(

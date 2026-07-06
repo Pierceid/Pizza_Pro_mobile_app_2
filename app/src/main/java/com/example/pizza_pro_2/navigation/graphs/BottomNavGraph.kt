@@ -14,6 +14,7 @@ import com.example.pizza_pro_2.presentation.screens.ShopScreen
 
 @Composable
 fun BottomNavGraph(
+    rootNavController: NavHostController,
     navController: NavHostController,
     sharedState: SharedState,
     onSharedEvent: (SharedEvent) -> Unit
@@ -40,6 +41,6 @@ fun BottomNavGraph(
         composable(route = Screen.Feedback.route) {
             FeedbackScreen(navController = navController)
         }
-        settingsNavGraph(navController = navController)
+        settingsNavGraph(rootNavController = rootNavController, navController = navController)
     }
 }

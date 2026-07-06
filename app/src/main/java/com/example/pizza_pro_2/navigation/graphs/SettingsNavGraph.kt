@@ -11,16 +11,27 @@ import com.example.pizza_pro_2.presentation.screens.HistoryScreen
 import com.example.pizza_pro_2.presentation.screens.Screen
 import com.example.pizza_pro_2.presentation.screens.SettingsScreen
 
-fun NavGraphBuilder.settingsNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.settingsNavGraph(
+    rootNavController: NavHostController,
+    navController: NavHostController
+) {
     navigation(
         startDestination = Screen.Settings.route,
         route = GraphRoute.SettingsGraph.name
     ) {
+        val exitAccount = {
+            rootNavController.navigate(GraphRoute.AuthGraph.name) {
+                popUpTo(GraphRoute.RootGraph.name) {
+                    inclusive = true
+                }
+            }
+        }
+
         composable(route = Screen.Settings.route) {
             SettingsScreen(navController = navController)
         }
         composable(route = Screen.Account.route) {
-            AccountScreen()
+            AccountScreen(onSignOut = exitAccount, onDeleteAccount = exitAccount)
         }
         composable(route = Screen.History.route) {
             HistoryScreen()

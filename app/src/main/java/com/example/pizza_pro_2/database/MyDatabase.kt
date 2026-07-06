@@ -8,7 +8,7 @@ import com.example.pizza_pro_2.database.entities.Order
 import com.example.pizza_pro_2.database.entities.Review
 import com.example.pizza_pro_2.database.entities.User
 
-@Database(entities = [User::class, Order::class, Review::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Order::class, Review::class], version = 2, exportSchema = false)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract val myDao: MyDao

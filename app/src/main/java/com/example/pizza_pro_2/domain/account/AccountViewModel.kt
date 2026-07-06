@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.system.exitProcess
 
 class AccountViewModel(
     private val myRepository: MyRepository,
@@ -84,9 +83,7 @@ class AccountViewModel(
 
                 is AccountEvent.GenderChanged -> {
                     _state.update {
-                        it.copy(
-                            gender = event.gender, imageId = getImageId(event.gender)
-                        )
+                        it.copy(gender = event.gender, imageId = getImageId(event.gender))
                     }
                 }
 
@@ -144,6 +141,7 @@ class AccountViewModel(
                     _state.update {
                         it.copy(buttonOption = event.option)
                     }
+
                     when (event.option) {
                         0 -> {
                             _state.update {
@@ -161,9 +159,10 @@ class AccountViewModel(
                             _state.update {
                                 it.copy(
                                     isDialogVisible = true,
-                                    dialogTitleId = R.string.delete_account,
-                                    dialogTextId = R.string.are_you_certain_you_want_to_proceed_with_deleting_your_account,
-                                    dialogEvent = AccountEvent.DeleteAccount,
+                                    dialogTitleId = R.string.sign_out,
+                                    dialogTextId = R.string.are_you_certain_you_want_to_sign_out_of_your_account,
+                                    toastMessageId = R.string.signed_out_successfully,
+                                    dialogEvent = AccountEvent.SignOut,
                                     dialogColor = Maroon
                                 )
                             }
@@ -173,9 +172,10 @@ class AccountViewModel(
                             _state.update {
                                 it.copy(
                                     isDialogVisible = true,
-                                    dialogTitleId = R.string.sign_out,
-                                    dialogTextId = R.string.are_you_certain_you_want_to_sign_out_of_your_account,
-                                    dialogEvent = AccountEvent.LogOut,
+                                    dialogTitleId = R.string.delete_account,
+                                    dialogTextId = R.string.are_you_certain_you_want_to_proceed_with_deleting_your_account,
+                                    toastMessageId = R.string.account_deleted_successfully,
+                                    dialogEvent = AccountEvent.DeleteAccount,
                                     dialogColor = Maroon
                                 )
                             }
@@ -193,16 +193,16 @@ class AccountViewModel(
                     updateAccount()
                 }
 
+                is AccountEvent.SignOut -> {
+                    delay(200)
+                }
+
                 is AccountEvent.DeleteAccount -> {
                     myRepository.currentUser.firstOrNull()?.let {
                         myRepository.deleteUser(it)
                     }
-                    delay(300)
-                    exitProcess(0)
-                }
 
-                is AccountEvent.LogOut -> {
-                    exitProcess(0)
+                    delay(200)
                 }
             }
         }

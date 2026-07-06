@@ -17,5 +17,5 @@ sealed class AccountEvent {
     data class SubmitForm(val type: Int): AccountEvent()
     data object UpdateAccount : AccountEvent()
     data object DeleteAccount: AccountEvent()
-    data object LogOut: AccountEvent()
+    data object SignOut: AccountEvent()
 }

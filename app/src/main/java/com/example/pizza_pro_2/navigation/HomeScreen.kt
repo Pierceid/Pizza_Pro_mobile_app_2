@@ -37,7 +37,7 @@ import com.example.pizza_pro_2.presentation.components.InfoDialog
 import com.example.pizza_pro_2.presentation.screens.Screen
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(rootNavController: NavHostController) {
     val sharedViewModel: SharedViewModel = viewModel(factory = MyViewModelProvider.factory)
     val sharedState by sharedViewModel.state.collectAsState()
     val onSharedEvent = sharedViewModel::onEvent
@@ -65,7 +65,7 @@ fun HomeScreen() {
             }
 
             Box(modifier = Modifier.padding(innerPadding)) {
-                BottomNavGraph(navController, sharedState, onSharedEvent)
+                BottomNavGraph(rootNavController, navController, sharedState, onSharedEvent)
             }
         }
     )

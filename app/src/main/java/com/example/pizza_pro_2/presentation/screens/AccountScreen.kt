@@ -50,7 +50,7 @@ import com.example.pizza_pro_2.presentation.components.RadioGroup
 import com.example.pizza_pro_2.ui.theme.White
 
 @Composable
-fun AccountScreen() {
+fun AccountScreen(onSignOut: () -> Unit, onDeleteAccount: () -> Unit) {
     val viewModel: AccountViewModel = viewModel(factory = MyViewModelProvider.factory)
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -80,6 +80,11 @@ fun AccountScreen() {
                 onConfirm = {
                     state.dialogEvent?.let {
                         viewModel.onEvent(it)
+                        when (it) {
+                            is AccountEvent.SignOut -> onSignOut()
+                            is AccountEvent.DeleteAccount -> onDeleteAccount()
+                            else -> {}
+                        }
                     }
                     viewModel.onEvent(AccountEvent.DialogVisibilityChanged(false))
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
@@ -222,7 +227,7 @@ fun AccountScreen() {
 
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             ActionButton(
-                textId = R.string.delete,
+                textId = R.string.sign_out,
                 onClick = {
                     viewModel.onEvent(AccountEvent.OptionChanged(1))
                 },
@@ -230,7 +235,7 @@ fun AccountScreen() {
             )
 
             ActionButton(
-                textId = R.string.sign_out,
+                textId = R.string.delete,
                 onClick = {
                     viewModel.onEvent(AccountEvent.OptionChanged(2))
                 },
